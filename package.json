@@ -1,0 +1,32 @@
+{
+  "name": "quality-of-life-explorer",
+  "version": "4.0.0",
+  "author": "Tobin Bradley",
+  "license": "MIT",
+  "description": "Mecklenburg County Quality of Life Explorer",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prebuild": "node build/build.cjs",
+    "test": "ava ./test/test.cjs"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.37",
+    "autoprefixer": "^10.4.2",
+    "ava": "^4.1.0",
+    "csvtojson": "^2.0.10",
+    "marked": "^4.0.12",
+    "postcss": "^8.4.7",
+    "postcss-load-config": "^3.1.3",
+    "svelte": "^3.46.4",
+    "svelte-preprocess": "^4.10.4",
+    "tailwindcss": "^3.0.23",
+    "vite": "^2.8.4"
+  },
+  "dependencies": {
+    "maplibre-gl": "^2.1.7",
+    "simple-statistics": "^7.7.5"
+  }
+}

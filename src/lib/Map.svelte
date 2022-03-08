@@ -1,0 +1,241 @@
+<script>
+  import Legend from './Legend.svelte'
+  import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig } from "../store/store"
+  import { isNumeric, formatNumber } from "./utils"
+  import "maplibre-gl/dist/maplibre-gl.css"
+  import mapStyle from "../assets/positron-mecklenburg.json"
+
+  // TODO: Search results point
+  // TODO: Search control to map
+  // TODO: highlight neighborhoods
+
+  let map
+  let mapReady
+
+  function init(node) {
+    ;(async () => {
+      const { default: gl } = await import("maplibre-gl")
+      createMap(gl)
+    })()
+  }
+
+
+  $: if (mapReady && $breaks && $selectedData && ($yearIdx >= 0)) {
+    renderPolys()
+  }
+
+  $: if (mapReady && $selectedNeighborhoods) {
+    renderLines()
+  }
+
+
+  function createMap(gl) {
+    let mapOptions = {
+      container: "map",
+      style: mapStyle,
+      attributionControl: false,
+      minZoom: 8,
+      bounds: [
+        [-81.058099999999996, 35.0016000000000034],
+        [-80.5503999999999962, 35.5152000000000001],
+      ],
+      maxBounds: [
+        [-82.641, 34.115],
+        [-79.008, 36.762],
+      ],
+      preserveDrawingBuffer:
+        navigator.userAgent.toLowerCase().indexOf("firefox") > -1,
+    }
+
+    map = new gl.Map(mapOptions)
+
+    map.addControl(new gl.NavigationControl(), "top-right")
+    map.addControl(new FullExtent({}), "top-right")
+    map.addControl(new ClearSelected({}), "top-right")
+    map.addControl(new gl.FullscreenControl(), "bottom-right")
+
+    let popup = new gl.Popup({
+      closeButton: false,
+      closeOnClick: false
+    })
+
+    map.on("click", "neighborhoods", e => {
+      const id = e.features[0].properties.id
+      const idx = $selectedNeighborhoods.indexOf(id)
+      if (idx === -1) {
+        $selectedNeighborhoods.push(id)
+      } else {
+        $selectedNeighborhoods.splice(idx, 1)
+      }
+      $selectedNeighborhoods = $selectedNeighborhoods
+    })
+
+    map.on("mousemove", "neighborhoods", e => {
+      map.getCanvas().style.cursor = "pointer"
+      const id = e.features[0].properties.id
+
+      popup
+        .setLngLat(e.lngLat)
+        .setHTML(
+          `<div style="text-align: center; margin: 0; padding: 0;"><h3 style="font-size: 1.2em; margin: 0; padding: 0; line-height: 1em; font-weight: bold;">NPA ${
+            id
+          }</h3>${formatNumber($selectedData.m[id][$yearIdx], $selectedConfig.format || null, $selectedConfig.decimals || null)}</div>`
+        )
+        .addTo(map)
+    })
+
+    map.on("mouseleave", "neighborhoods", e => {
+      popup.remove()
+      map.getCanvas().style.cursor = ""
+    })
+
+    map.on("rotate", (e) => {
+      if (map.getPitch() >= 20) {
+        map.setLayoutProperty("neighborhoods-3d", "visibility", "visible")
+      } else {
+        map.setLayoutProperty("neighborhoods-3d", "visibility", "none")
+      }
+    })
+
+    map.on("load", () => { mapReady = true })
+  }
+
+  function renderPolys() {
+    let stops = []
+    let heights = []
+
+    for (const key in $selectedData.m) {
+      $breaks.every((el, idx) => {
+        if (!isNumeric($selectedData.m[key][$yearIdx])) return false
+
+        if ($selectedData.m[key][$yearIdx] <= el) {
+          stops.push([key, $colors[idx]])
+          heights.push([key, el * (3000 / $breaks[$breaks.length - 1])])
+          return false
+        }
+        return true
+      })
+    }
+
+    map.setPaintProperty(
+      "neighborhoods",
+      "fill-color",
+      {
+        "property": "id",
+        "default": "rgb(242,243,240)",
+        "type": "categorical",
+        "stops": stops
+      }
+    )
+
+    map.setPaintProperty(
+      "neighborhoods-3d",
+      "fill-extrusion-color",
+      {
+        property: "id",
+        "default": "rgb(242,243,240)",
+        type: "categorical",
+        stops: stops
+      }
+    )
+
+    map.setPaintProperty(
+      "neighborhoods-3d",
+      "fill-extrusion-height",
+      {
+        property: "id",
+        default: 0,
+        type: "categorical",
+        stops: heights
+      }
+    )
+  }
+
+  function renderLines() {
+    if ($selectedNeighborhoods.length > 0) {
+      map.setFilter("neighborhoods-outline", ["match", ["get", "id"], $selectedNeighborhoods, true, false])
+    } else {
+      map.setFilter("neighborhoods-outline", ["match", ["get", "id"], ["-1"], true, false])
+    }
+  }
+
+  // full extent button
+  class FullExtent {
+    constructor({ center = [-80.84, 35.26], zoom = 9.3 }) {
+      this._center = center
+      this._zoom = zoom
+    }
+    onAdd(map) {
+      this._map = map
+      let _this = this
+      this._btn = document.createElement("button")
+      this._btn.className = "mapboxgl-ctrl-icon mapboxgl-ctrl-fullextent"
+      this._btn.type = "button"
+      this._btn.setAttribute("aria-label", "Zoom to full extent")
+      this._btn.setAttribute("title", "Zoom to full extent")
+      this._btn.onclick = function () {
+        map.flyTo({ center: _this._center, zoom: _this._zoom })
+      }
+      this._container = document.createElement("div")
+      this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group"
+      this._container.appendChild(this._btn)
+
+      return this._container
+    }
+    onRemove() {
+      this._container.parentNode.removeChild(this._container)
+      this._map = undefined
+    }
+  }
+
+  // clear selected
+  class ClearSelected {
+    constructor({  }) {
+    }
+    onAdd(map) {
+      this._map = map
+      let _this = this
+      this._btn = document.createElement("button")
+      this._btn.className = "mapboxgl-ctrl-icon mapboxgl-ctrl-clear"
+      this._btn.type = "button"
+      this._btn.setAttribute("aria-label", "Zoom to full extent")
+      this._btn.setAttribute("title", "Zoom to full extent")
+      this._btn.onclick = function () {
+        $selectedNeighborhoods = []
+      }
+      this._container = document.createElement("div")
+      this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group"
+      this._container.appendChild(this._btn)
+
+      return this._container
+    }
+    onRemove() {
+      this._container.parentNode.removeChild(this._container)
+      this._map = undefined
+    }
+  }
+</script>
+
+<div id="map" use:init />
+<Legend />
+
+
+<style>
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+  :global(.mapboxgl-ctrl-fullextent) {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNMTc2LjMgMTE4LjhoNjQuNVY0NC4xQzIxNS4zIDY1LjMgMTkyLjQgOTAuNSAxNzYuMyAxMTguOHoiLz48cGF0aCBkPSJNMTQxLjYgMjY5LjJjMS43IDMxLjQgOC43IDY1LjIgMjAuNSA5My41aDc4Ljd2LTkzLjVIMTQxLjZ6Ii8+PHBhdGggZD0iTTE3Ni43IDM5My4yYzE2LjEgMjguMyAzOC42IDUzLjUgNjQuMSA3NC43VjM5My4ySDE3Ni43eiIvPjxwYXRoIGQ9Ik00ODkuOSAxNDkuMkgzODIuM2MxMC41IDI4LjYgMTYuNSA1OC41IDE4IDg5LjZINTEyQzUxMC4xIDIwNi45IDUwMi41IDE3NyA0ODkuOSAxNDkuMnoiLz48cGF0aCBkPSJNMjcxLjIgNDQuNHY3NC40aDY0QzMxOS4yIDkwLjYgMjk2LjcgNjUuNiAyNzEuMiA0NC40eiIvPjxwYXRoIGQ9Ik0xNjIuMSAxNDkuMmMtMTEuOCAyOC4zLTE4LjggNTguMi0yMC41IDg5LjZoOTkuMnYtODkuNkgxNjIuMXoiLz48cGF0aCBkPSJNNDAwLjMgMjY5LjJjLTEuNSAzMS4xLTcuNSA2NS0xOCA5My41aDEwNy42YzEyLjYtMjcuNyAyMC4zLTYxLjYgMjIuMS05My41SDQwMC4zeiIvPjxwYXRoIGQ9Ik0yNzEuMiAwdjYuOGM0MS42IDI5LjQgNzUuOSA2Ny43IDk3LjkgMTEyaDEwNC42QzQzMS4xIDUwLjkgMzU2IDUgMjcxLjIgMHoiLz48cGF0aCBkPSJNMzguMyAxMTguOGgxMDQuNmMyMi00NC4zIDU2LjQtODIuNiA5OC0xMTJWMEMxNTYuMSA1IDgwLjkgNTAuOSAzOC4zIDExOC44eiIvPjxwYXRoIGQ9Ik0xNDIuOSAzOTMuMkgzOC4zQzgwLjkgNDYxLjEgMTU2LjEgNTA3IDI0MC44IDUxMnYtNi44QzE5OS4yIDQ3NS43IDE2NC45IDQzNy41IDE0Mi45IDM5My4yeiIvPjxwYXRoIGQ9Ik0yMi4xIDE0OS4yQzkuNSAxNzcgMS45IDIwNi45IDAgMjM4LjhoMTExLjdjMS41LTMxLjEgNy41LTYxIDE4LTg5LjZIMjIuMXoiLz48cGF0aCBkPSJNMzY5LjEgMzkzLjJjLTIyIDQ0LjMtNTYuMyA4Mi42LTk3LjkgMTEyVjUxMmM4NC43LTUgMTU5LjgtNTAuOSAyMDIuNS0xMTguOEgzNjkuMXoiLz48cGF0aCBkPSJNMTExLjcgMjY5LjJIMGMxLjkgMzEuOSA5LjUgNjUuOCAyMi4xIDkzLjVIMTI5LjhDMTE5LjIgMzM0LjIgMTEzLjMgMzAwLjQgMTExLjcgMjY5LjJ6Ii8+PHBhdGggZD0iTTI3MS4yIDI2OS4ydjkzLjVoNzguN2MxMS44LTI4LjMgMTguNi02Mi4yIDIwLjMtOTMuNUgyNzEuMnoiLz48cGF0aCBkPSJNMzUwIDE0OS4ySDI3MS4ydjg5LjZoOTlDMzY4LjYgMjA3LjUgMzYxLjcgMTc3LjUgMzUwIDE0OS4yeiIvPjxwYXRoIGQ9Ik0yNzEuMiAzOTMuMnY3NC40YzI1LjQtMjEuMiA0OC00Ni4yIDY0LTc0LjRIMjcxLjJ6Ii8+PC9zdmc+);
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  :global(.mapboxgl-ctrl-clear) {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTI1LjQxIDExMS42IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIHN0eWxlPSJmaWxsOiMwMTAxMDE7c3Ryb2tlLXdpZHRoOi4yNjQ1ODMiIGQ9Ik00Ny43MiAxMzMuMzdjLTkuMDUtOS4wNi05LjQ4LTkuNTQtMTAuMzgtMTEuNDlhMTIuODQgMTIuODQgMCAwIDEtLjk0LTIuNDRjMC0uMjMtLjEyLS40Mi0uMjYtLjQyLS4zMSAwLS4zOC02LjUyLS4wNy02LjY1LjExLS4wNS40Mi0uNzUuNjgtMS41NS4yNy0uOC45LTIuMDggMS40LTIuODUgMS4xLTEuNjggNzEuODktNzIuMyA3NC4yNS03NC4wNmExMy40NSAxMy40NSAwIDAgMSA5LjItMi42NWMyLjk0LjE2IDUuMDYuODIgNy4yIDIuMjUgMS45NSAxLjMgMjguMjYgMjcuMjUgMjkuNyAyOS4yOSAxLjEyIDEuNiAyLjI2IDMuOTggMi4yNiA0Ljc1IDAgLjIyLjEyLjQxLjI2LjQxLjE2IDAgLjI3IDEuMjguMjcgMy4zIDAgMS44My0uMSAzLjMxLS4yMiAzLjMxcy0uNDIuNjQtLjY2IDEuNDJjLS4yNS43OC0uOSAyLjEyLTEuNDYgMi45OC0uNjggMS4wNS0xMC42MSAxMS4xLTMwLjM1IDMwLjczbC0yOS4zNCAyOS4xN2gxMy43N2M5LjM4IDAgMTQuMDUuMSAxNC42Mi4yOSAxLjQxLjUgMS43NiAxLjc3LjggMi45OGwtLjU0LjdINTcuMTVabTU4LjItNi42MmM2Ljc0LTYuNjUgMTIuMjQtMTIuMjIgMTIuMjQtMTIuMzggMC0uMTYtNC4wMi00LjI1LTguOTMtOS4xYTU0MjcuNCA1NDI3LjQgMCAwIDEtMjAuMy0yMC4xNEw3Ny41MyA3My44IDU5LjYyIDkxLjU4Yy0xNS45NSAxNS44My0xOCAxNy45NS0xOC42IDE5LjMtMSAyLjI1LTEuMzQgNC40LTEgNi40My42MiAzLjU3LjkgMy45MiAxMC4yIDEzLjEybDguNTQgOC40MmgzNC45MmwxMi4yNS0xMi4xeiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM1Ljg3IC0zMS4yMykiLz48L3N2Zz4=);
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+</style>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Svelte + Vite App</title>
+  </head>
+  <body class="bg-slate-100">
+    <header class="bg-slate-800 text-white grid grid-cols-3 px-4">
+      <h1 class="col-span-2 font-bold text-xl py-4">
+        <a href="./">
+        <span class="hidden md:inline">Charlotte/Mecklenburg </span>Quality of
+        Life Explorer</a>
+      </h1>
+      <div class="text-right">
+        <a
+          href="http://charlottenc.gov/HNS/CE/CommunityInfo/Pages/QOL.aspx"
+          target="_blank"
+          class="hidden md:inline-block h-full px-6 box-border border-y-4 border-slate-800 hover:border-b-pink-500"
+          style="line-height: 50px"
+          >About</a
+        >
+        <a
+          href="downloads/qol-data.zip"
+          target="_blank"
+          class="hidden md:inline-block h-full px-6 box-border border-y-4 border-slate-800 hover:border-b-pink-500"
+          style="line-height: 50px"
+          >Download Data</a
+        >
+      </div>
+    </header>
+
+    <main class="mx-auto px-4 my-4">
+      <!-- data tabs -->
+      <nav class="bg-white mt-4 shadow-md" id="tabs"></nav>
+
+      <!-- main stuff -->
+      <div class="mt-4 grid grid-cols-3 gap-4">
+        <div class="col-span-2 bg-white shadow-md">
+          <div id="mapContainer" style="height: 600px" class="w-full relative"></div>
+          <div class="px-3" id="misccontrols"></div>
+        </div>
+
+        <div class="flex flex-col gap-y-4">
+          <div class="bg-white">Search</div>
+          <!-- social links -->
+          <div class="text-center">
+            <button
+              onclick="window.open(`https://twitter.com/intent/tweet?url=${window.location}&text=Quality of Life Explorer`)"
+              title="Click to share on Twitter"
+            >
+              <svg class="h-8 w-8 inline">
+                <use xlink:href="#icon-twitter"></use>
+              </svg>
+            </button>
+            <button
+              onclick="window.open(`https://www.facebook.com/sharer.php?u=${window.location}`)"
+              title="Click to share on Facebook"
+            >
+              <svg class="h-8 w-8 inline">
+                <use xlink:href="#icon-facebook"></use>
+              </svg>
+            </button>
+            <button
+              onclick="window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${window.location}`)"
+              title="Click to share on Linedin"
+            >
+              <svg class="h-8 w-8 inline">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </button>
+          </div>
+          <div>Chart 1</div>
+          <div>Chart 2</div>
+        </div>
+      </div>
+
+      <!-- metadata -->
+      <div id="meta"></div>
+
+      <!-- embed and contact -->
+      <div class="mt-4 grid grid-cols-3">
+        <div>Embed</div>
+        <div>Contact</div>
+      </div>
+
+      <div id="app"></div>
+    </main>
+
+    <footer class="text-center m-4 mt-20">
+      <div class="mb-3">
+        <img
+          class="inline"
+          height="36"
+          src="img/seals.png"
+          alt="City and County Seals"
+        />
+      </div>
+      <div class="mb-3">
+        <a
+          class="mr-4 text-pink-600 underline"
+          href="http://charlottenc.gov/HNS/CE/CommunityInfo/Pages/QOL.aspx"
+          target="_blank"
+          >About</a
+        >
+        <a
+          class="mr-4 text-pink-600 underline"
+          href="downloads/qol-data.zip"
+          target="_blank"
+          >Download Data</a
+        >
+        <a
+          class="mr-4 text-pink-600 underline"
+          href="http://maps.co.mecklenburg.nc.us/openmapping/"
+          target="_blank"
+          >Mecklenburg County Open Mapping</a
+        >
+        <a
+          class="text-pink-600 underline"
+          href="https://data.charlottenc.gov/"
+          target="_blank"
+          >City of Charlotte Open Data Portal</a
+        >
+      </div>
+
+      <div>
+        Created by
+        <a
+          class="text-pink-600 underline"
+          href="http://charmeck.org/mecklenburg/county/Pages/Default.aspx"
+          >Mecklenburg County</a
+        >, the
+        <a
+          class="text-pink-600 underline"
+          href="http://charmeck.org/city/charlotte/Pages/default.aspx"
+          >City of Charlotte</a
+        >, and
+        <a class="text-pink-600 underline" href="http://www.uncc.edu/"
+          >UNC Charlotte</a
+        >
+        with much &#9829; for the projects that make this site possible:
+        <br />
+        <a
+          class="text-pink-600 underline"
+          href="https://www.openstreetmap.org/"
+          target="_blank"
+          >OpenStreetMap</a
+        >,
+        <a
+          class="text-pink-600 underline"
+          href="http://osm2vectortiles.org/"
+          target="_blank"
+          >OSM2VectorTiles</a
+        >,
+        <a
+          class="text-pink-600 underline"
+          href="https://www.mapbox.com/mapbox-gl-js/api/"
+          target="_blank"
+          >Mapbox GL JS</a
+        >,
+        <a
+          class="text-pink-600 underline"
+          href="http://vuejs.org/"
+          target="_blank"
+          >Vue.js</a
+        >, and
+        <a
+          class="text-pink-600 underline"
+          href="http://getmdl.io/"
+          target="_blank"
+          >Material Design Lite</a
+        >.
+      </div>
+    </footer>
+
+    <svg
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      role="img"
+      aria-label="SVG Icons"
+    >
+      <defs>
+        <symbol id="icon-trending_up" viewBox="0 0 24 24">
+          <path
+            d="M15.984 6h6v6l-2.297-2.297-6.281 6.281-3.984-3.984-6 6-1.406-1.406 7.406-7.406 3.984 3.984 4.875-4.875z"
+          ></path>
+        </symbol>
+        <symbol id="icon-trending_down" viewBox="0 0 24 24">
+          <path
+            d="M15.984 18l2.297-2.297-4.875-4.875-3.984 3.984-7.406-7.406 1.406-1.406 6 6 3.984-3.984 6.281 6.281 2.297-2.297v6h-6z"
+          ></path>
+        </symbol>
+
+        <symbol id="icon-linkedin" viewBox="0 0 32 32">
+          <path
+            fill="#0077b5"
+            style="fill: var(--color1, #0077b5)"
+            d="M27.263 27.269h-4.739v-7.425c0-1.771-0.036-4.049-2.469-4.049-2.471 0-2.848 1.927-2.848 3.919v7.556h-4.739v-15.269h4.552v2.081h0.061c0.636-1.2 2.183-2.467 4.493-2.467 4.801 0 5.689 3.16 5.689 7.273zM7.116 9.911c-1.525 0-2.751-1.235-2.751-2.753 0-1.517 1.227-2.751 2.751-2.751 1.52 0 2.752 1.233 2.752 2.751 0 1.519-1.233 2.753-2.752 2.753zM9.492 27.269h-4.752v-15.269h4.752zM29.633 0h-27.272c-1.305 0-2.361 1.032-2.361 2.305v27.389c0 1.275 1.056 2.305 2.361 2.305h27.268c1.304 0 2.371-1.031 2.371-2.305v-27.389c0-1.273-1.067-2.305-2.371-2.305z"
+          ></path>
+        </symbol>
+        <symbol id="icon-facebook" viewBox="0 0 32 32">
+          <path
+            fill="#1877f2"
+            style="fill: var(--color2, #1877f2)"
+            d="M31.997 15.999c0-8.836-7.163-15.999-15.999-15.999s-15.999 7.163-15.999 15.999c0 7.985 5.851 14.604 13.499 15.804v-11.18h-4.062v-4.625h4.062v-3.525c0-4.010 2.389-6.225 6.043-6.225 1.75 0 3.581 0.313 3.581 0.313v3.937h-2.017c-1.987 0-2.607 1.233-2.607 2.498v3.001h4.437l-0.709 4.625h-3.728v11.18c7.649-1.2 13.499-7.819 13.499-15.804z"
+          ></path>
+        </symbol>
+        <symbol id="icon-twitter" viewBox="0 0 32 32">
+          <path
+            fill="#1da1f2"
+            style="fill: var(--color3, #1da1f2)"
+            d="M31.939 6.092c-1.18 0.519-2.44 0.872-3.767 1.033 1.352-0.815 2.392-2.099 2.884-3.631-1.268 0.74-2.673 1.279-4.169 1.579-1.195-1.279-2.897-2.079-4.788-2.079-3.623 0-6.56 2.937-6.56 6.556 0 0.52 0.060 1.020 0.169 1.499-5.453-0.257-10.287-2.876-13.521-6.835-0.569 0.963-0.888 2.081-0.888 3.3 0 2.28 1.16 4.284 2.917 5.461-1.076-0.035-2.088-0.331-2.971-0.821v0.081c0 3.18 2.257 5.832 5.261 6.436-0.551 0.148-1.132 0.228-1.728 0.228-0.419 0-0.82-0.040-1.221-0.115 0.841 2.604 3.26 4.503 6.139 4.556-2.24 1.759-5.079 2.807-8.136 2.807-0.52 0-1.039-0.031-1.56-0.089 2.919 1.859 6.357 2.945 10.076 2.945 12.072 0 18.665-9.995 18.665-18.648 0-0.279 0-0.56-0.020-0.84 1.281-0.919 2.4-2.080 3.28-3.397z"
+          ></path>
+        </symbol>
+      </defs>
+    </svg>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
