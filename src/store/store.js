@@ -1,6 +1,7 @@
 import { writable, readable, derived } from 'svelte/store'
 import dataJSON from '../../data/data.json'
-import {ckmeans} from 'simple-statistics'
+import { ckmeans } from 'simple-statistics'
+import { isNumeric } from '../lib/utils'
 
 // BUG: how do I verify the passed NPA's are solid?
 
@@ -45,24 +46,30 @@ selectedMetric.subscribe(value => {
     })
 })
 
+
 // breaks
-export let breaks = writable()
-selectedData.subscribe(value => {
-  if (value) {
-    let breakSet = []
-    for (const key in value.m) {
-      breakSet = breakSet.concat(value.m[key])
-    }
-    breaks.set(ckmeans(breakSet, 5).map(el => Math.max(...el)))
+export let breaks = derived(selectedData, value => {
+  if (!value) return null
+  let breakSet = []
+  for (const key in value.m) {
+    breakSet = breakSet.concat(value.m[key])
   }
+  return ckmeans(breakSet, 5).map(el => Math.max(...el))
+})
+export let minBreak = derived(selectedData, value => {
+  if (!value) return null
+  let breakSet = []
+  for (const key in value.m) {
+    breakSet = breakSet.concat(value.m[key])
+  }
+  return Math.min(...breakSet.filter(el => el !== null))
 })
 
+
 // year info
-export let yearIdx = writable(null)
-selectedData.subscribe(value => {
-  if (value) {
-    yearIdx.set(value.years.length - 1)
-  }
+export let yearIdx = derived(selectedData, value => {
+  if (!value) return null
+  return value.years.length - 1
 })
 
 // selected NPA
@@ -80,4 +87,100 @@ const hash = derived([selectedMetric, selectedNeighborhoods], ([v1, v2]) => {
 
 hash.subscribe(value => {
   window.history.replaceState( {} , '', value )
+})
+
+// Aggregate county value
+export let calcCounty = derived([selectedData, selectedConfig, yearIdx], ([data, config, yearIdx]) => {
+  if (!data) return null
+  // short circuit if override present
+  if (config.world_val && config.world_val[`y_${data.years[yearIdx]}`]) {
+    return config.world_val[`y_${data.years[yearIdx]}`]
+  }
+
+  // handle sum
+  if (config.sum) {
+    let total = 0
+    for (const key in data.m) {
+      const yearval = data.m[key][yearIdx]
+      if (isNumeric(yearval)) total += yearval
+    }
+    return total
+  }
+
+  if (data.m && data.d) {
+    let n = 0
+    let d = 0
+    for (const key in data.m) {
+      const mval = data.m[key][yearIdx]
+      const dval = data.d[key][yearIdx]
+      if (isNumeric(mval) && isNumeric(dval)) {
+        d = d + dval
+        n = n + mval * dval
+      }
+    }
+    return n / d
+  }
+})
+
+// Aggregate selected value
+export let calcSelected = derived([selectedData, selectedNeighborhoods, selectedConfig, yearIdx], ([data, neighborhoods, config, yearIdx]) => {
+  if (!data) return null
+  // handle sum
+  if (config.sum) {
+    let total = 0
+    for (const key in data.m) {
+      const yearval = data.m[key][yearIdx]
+      if (isNumeric(yearval) && neighborhoods.indexOf(key) !== -1) total += yearval
+    }
+    return total
+  }
+
+  if (data.m && data.d) {
+    let n = 0
+    let d = 0
+    for (const key in data.m) {
+      const mval = data.m[key][yearIdx]
+      const dval = data.d[key][yearIdx]
+      if (isNumeric(mval) && isNumeric(dval) && neighborhoods.indexOf(key) !== -1) {
+        d = d + dval
+        n = n + mval * dval
+      }
+    }
+    return n / d
+  }
+})
+
+// Aggregate selected value
+export let calcSelectedRaw = derived([selectedData, selectedNeighborhoods, selectedConfig, yearIdx], ([data, neighborhoods, config, yearIdx]) => {
+  if (!data) return null
+  if (config.raw_label) {
+    let total = 0
+    for (const key in data.d) {
+      const n = data.m[key][yearIdx]
+      const d = data.d[key][yearIdx]
+      if (isNumeric(n) && isNumeric(d) && neighborhoods.indexOf(key) !== -1) total += n * d
+    }
+    return total
+  }
+  return null
+})
+
+// Aggregate selected value
+export let calcCountyRaw = derived([selectedData, selectedConfig, yearIdx], ([data, config, yearIdx]) => {
+  if (!data) return null
+  // short circuit if override present
+  if (config.raw_val && config.raw_val[`y_${data.years[yearIdx]}`]) {
+    return config.raw_val[`y_${data.years[yearIdx]}`]
+  }
+  
+  if (config.raw_label) {
+    let total = 0
+    for (const key in data.d) {
+      const n = data.m[key][yearIdx]
+      const d = data.d[key][yearIdx]
+      if (isNumeric(n) && isNumeric(d)) total += n * d
+    }
+    return total
+  }
+  return null
 })
