@@ -22,7 +22,7 @@
 </style>
 
 <div class="md:hidden">
-  <select bind:value={$selectedMetric} class="w-full py-3 px-1 cursor-pointer text-xl font-bold bg-white">
+  <select bind:value={$selectedMetric} class="w-full py-3 px-1 rounded cursor-pointer text-xl font-bold bg-white">
     {#each categories as cat}
     <optgroup label={cat}>
 			{#each $dataConfig.filter(el => el.category === cat) as metric}
