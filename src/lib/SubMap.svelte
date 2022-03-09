@@ -28,7 +28,7 @@ import Tabs from "./Tabs.svelte"
 <Time />
 <div class="pt-3 text-right">
   <button
-    class="text-white bg-pink-600 shadow transition-shadow  hover:shadow-lg  px-3 py-1 rounded"
+    class="text-white bg-pink-600 shadow transition-shadow  hover:shadow-lg px-3 py-1 rounded"
     on:click={print}
     >Print</button
   >
