@@ -53,7 +53,7 @@
   </thead>
   <tbody>
     {#each $selectedNeighborhoods as neighborhood}
-    <tr on:mouseleave={() => $highlightNeighborhoods = []} on:mouseenter={() => $highlightNeighborhoods = [neighborhood]} class="hover:bg-pink-100">
+    <tr on:mouseleave={() => $highlightNeighborhoods = []} on:mouseenter={() => $highlightNeighborhoods = [neighborhood]} class="hover:bg-yellow-100 transition-colors">
       <td  class="text-center">
         {neighborhood}
       </td>
