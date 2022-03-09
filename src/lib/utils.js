@@ -20,11 +20,15 @@ export function formatNumber(n, format = null, decimals = 0) {
       maximumFractionDigits: 1
     }).format(n / 100)
   }
+  if (format === "short") {
+    return Intl.NumberFormat('en-US', { notation: "compact",  maximumFractionDigits: 1}).format(n)
+  }
 
   return Intl.NumberFormat("en-US", {
     maximumFractionDigits: decimals
   }).format(n)
 }
+
 
 // send download
 export function download(payload, encoding = null, filename) {
