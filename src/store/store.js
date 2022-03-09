@@ -48,28 +48,29 @@ selectedMetric.subscribe(value => {
 
 
 // breaks
-export let breaks = derived(selectedData, value => {
+export let breakCkmeans = derived(selectedData, value => {
   if (!value) return null
   let breakSet = []
   for (const key in value.m) {
     breakSet = breakSet.concat(value.m[key])
   }
-  return ckmeans(breakSet, 5).map(el => Math.max(...el))
+  return ckmeans(breakSet.filter(el => el !== null), 5)
 })
-export let minBreak = derived(selectedData, value => {
+export let breaks = derived(breakCkmeans, value => {
   if (!value) return null
-  let breakSet = []
-  for (const key in value.m) {
-    breakSet = breakSet.concat(value.m[key])
-  }
-  return Math.min(...breakSet.filter(el => el !== null))
+  return value.map(el => Math.max(...el))
+})
+export let minBreak = derived(breakCkmeans, value => {
+  if (!value) return null
+  return Math.min(...value[0])
 })
 
 
 // year info
-export let yearIdx = derived(selectedData, value => {
+export let yearIdx = writable(null)
+selectedData.subscribe(value => {
   if (!value) return null
-  return value.years.length - 1
+  yearIdx.set(value.years.length - 1)
 })
 
 // selected NPA
@@ -172,7 +173,7 @@ export let calcCountyRaw = derived([selectedData, selectedConfig, yearIdx], ([da
   if (config.raw_val && config.raw_val[`y_${data.years[yearIdx]}`]) {
     return config.raw_val[`y_${data.years[yearIdx]}`]
   }
-  
+
   if (config.raw_label) {
     let total = 0
     for (const key in data.d) {
