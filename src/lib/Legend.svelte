@@ -1,6 +1,6 @@
 <script>
   import { selectedConfig, selectedData, breaks, minBreak, yearIdx, colors, calcCounty, calcCountyRaw, calcSelected, calcSelectedRaw, selectedNeighborhoods } from "../store/store"
-  import { formatNumber, shortNumber } from "./utils"
+  import { formatNumber } from "./utils"
 
   // TODO: legend hover
 </script>
