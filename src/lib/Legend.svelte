@@ -1,8 +1,23 @@
 <script>
-  import { selectedConfig, selectedData, breaks, minBreak, yearIdx, colors, calcCounty, calcCountyRaw, calcSelected, calcSelectedRaw, selectedNeighborhoods } from "../store/store"
-  import { formatNumber } from "./utils"
+  import { selectedConfig, selectedData, breaks, minBreak, yearIdx, colors, calcCounty, calcCountyRaw, calcSelected, calcSelectedRaw, selectedNeighborhoods, highlightNeighborhoods } from "../store/store"
+  import { formatNumber, isNumeric } from "./utils"
 
-  // TODO: legend hover
+  // BUG: fonts jank on Linux - default font stack?
+
+  // filter id's by break range for hover and select
+  function getIds(rIdx) {
+    const range = [...$breaks]
+    range.unshift(-1)
+    const ids = []
+    rIdx += 1
+    for (const key in $selectedData.m) {
+      const yearval = $selectedData.m[key][$yearIdx]
+      if (isNumeric(yearval) && yearval > range[rIdx - 1] && yearval <= range[rIdx])  {
+        ids.push(key)
+      }
+    }
+    return ids
+  }
 </script>
 
 <div
@@ -15,44 +30,44 @@
       {$selectedData.years[$yearIdx]}
     {/if}
   </h2>
-  <div class="text-center text-sm text-stone-600 p-1">
-    {$selectedConfig.subtitle}
+  <div class="text-center text-sm text-stone-600 p-1 leading-tight">
+    {@html $selectedConfig.subtitle}
   </div>
 
   {#if $selectedData}
-  <div class="flex columns-2">
+  <div class="flex columns-2 p-1">
     {#if $selectedNeighborhoods.length > 0}
     <div class="flex-grow text-center">
-      <div class="text-sm">SELECTED</div>
+      <div class="text-sm text-stone-600 font-semibold">SELECTED</div>
       <div class="font-semibold">
         {formatNumber($calcSelected, $selectedConfig.format || null)}
       </div>
       {#if $selectedConfig.label}
-      <div class="lowercase text-sm">{$selectedConfig.label}</div>
+      <div class="lowercase text-sm leading-none text-stone-600">{@html $selectedConfig.label}</div>
       {/if}
       {#if $selectedConfig.raw_label}
-      <div class="text-sm">or</div>
-      <div class="font-semibold">
+      <div class="text">or</div>
+      <div class="font-semibold text-sm">
         {formatNumber($calcSelectedRaw)}
       </div>
-      <div class="text-sm lowercase">
+      <div class="text-sm lowercase leading-none text-stone-600">
         {$selectedConfig.raw_label}
       </div>
       {/if}
-    </div>    
+    </div>
     {/if}
     <div class="flex-grow text-center">
       <div class="text-sm">COUNTY</div>
       <div class="font-semibold">{formatNumber($calcCounty, $selectedConfig.format || null)}</div>
       {#if $selectedConfig.label}
-      <div class="lowercase text-sm">{$selectedConfig.label}</div>
+      <div class="lowercase text-sm leading-none text-stone-600">{$selectedConfig.label}</div>
       {/if}
       {#if $selectedConfig.raw_label}
-      <div class="text-sm">or</div>
-      <div class="font-semibold">
+      <div class="text">or</div>
+      <div class="font-semibold text-sm">
         {formatNumber($calcCountyRaw)}
       </div>
-      <div class="text-sm lowercase">
+      <div class="text-sm lowercase leading-none text-stone-600">
         {$selectedConfig.raw_label}
       </div>
       {/if}
@@ -79,6 +94,9 @@
           height="25"
           width="50"
           style="fill: {$colors[0]}"
+          on:mouseenter={() => $highlightNeighborhoods = getIds(0)}
+          on:click={() => $selectedNeighborhoods = getIds(0)}
+          on:mouseleave={() => $highlightNeighborhoods = []}
         />
         <rect
           width="50"
@@ -86,6 +104,9 @@
           x="28.9"
           y="865.9"
           style="fill: {$colors[1]}"
+          on:mouseenter={() => $highlightNeighborhoods = getIds(1)}
+          on:click={() => $selectedNeighborhoods = getIds(1)}
+          on:mouseleave={() => $highlightNeighborhoods = []}
         />
         <rect
           width="50"
@@ -93,6 +114,9 @@
           x="78.5"
           y="865.9"
           style="fill: {$colors[2]}"
+          on:mouseenter={() => $highlightNeighborhoods = getIds(2)}
+          on:click={() => $selectedNeighborhoods = getIds(2)}
+          on:mouseleave={() => $highlightNeighborhoods = []}
         />
         <rect
           y="865.9"
@@ -100,6 +124,9 @@
           height="25"
           width="50"
           style="fill: {$colors[3]}"
+          on:mouseenter={() => $highlightNeighborhoods = getIds(3)}
+          on:click={() => $selectedNeighborhoods = getIds(3)}
+          on:mouseleave={() => $highlightNeighborhoods = []}
         />
         <rect
           width="50"
@@ -107,6 +134,9 @@
           x="177.6"
           y="865.9"
           style="fill: {$colors[4]}"
+          on:mouseenter={() => $highlightNeighborhoods = getIds(4)}
+          on:click={() => $selectedNeighborhoods = getIds(4)}
+          on:mouseleave={() => $highlightNeighborhoods = []}
         />
         <text x="-19.5" y="864.3" class="legendText">
           <tspan x="-19.5" y="864.3">{formatNumber($minBreak, "short")}</tspan>
