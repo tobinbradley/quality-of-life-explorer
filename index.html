@@ -43,14 +43,16 @@
         </div>
 
         <div class="flex flex-col gap-y-4">
-          <div class="bg-white">Search</div>
+          <div class="bg-white shadow-md p-2" id="search"></div>
+          
+          <div id="trendchart"></div>
           <!-- social links -->
-          <div class="text-center">
+          <div class="text-center mt-5">
             <button
               onclick="window.open(`https://twitter.com/intent/tweet?url=${window.location}&text=Quality of Life Explorer`)"
               title="Click to share on Twitter"
             >
-              <svg class="h-8 w-8 inline">
+              <svg class="h-6 w-6 inline">
                 <use xlink:href="#icon-twitter"></use>
               </svg>
             </button>
@@ -58,7 +60,7 @@
               onclick="window.open(`https://www.facebook.com/sharer.php?u=${window.location}`)"
               title="Click to share on Facebook"
             >
-              <svg class="h-8 w-8 inline">
+              <svg class="h-6 w-6 inline">
                 <use xlink:href="#icon-facebook"></use>
               </svg>
             </button>
@@ -66,13 +68,12 @@
               onclick="window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${window.location}`)"
               title="Click to share on Linedin"
             >
-              <svg class="h-8 w-8 inline">
+              <svg class="h-6 w-6 inline">
                 <use xlink:href="#icon-linkedin"></use>
               </svg>
             </button>
           </div>
-          <div>Chart 1</div>
-          <div>Chart 2</div>
+
         </div>
       </div>
 
