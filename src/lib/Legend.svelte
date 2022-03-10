@@ -37,10 +37,11 @@
   {#if $selectedData}
   <div class="flex columns-2 p-1">
     {#if $selectedNeighborhoods.length > 0}
+    <!-- selected -->
     <div class="flex-grow text-center">
-      <div class="text-sm text-stone-600 font-semibold">SELECTED</div>
+      <div class="text-sm text-stone-600 font-semibold">SELECTED</div>      
       <div class="font-semibold">
-        {formatNumber($calcSelected, $selectedConfig.format || null)}
+        {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
       </div>
       {#if $selectedConfig.label}
       <div class="lowercase text-sm leading-none text-stone-600">{@html $selectedConfig.label}</div>
@@ -48,7 +49,7 @@
       {#if $selectedConfig.raw_label}
       <div class="text">or</div>
       <div class="font-semibold text-sm">
-        {formatNumber($calcSelectedRaw)}
+        {formatNumber($calcSelectedRaw[$yearIdx])}
       </div>
       <div class="text-sm lowercase leading-none text-stone-600">
         {$selectedConfig.raw_label}
@@ -56,16 +57,18 @@
       {/if}
     </div>
     {/if}
+
+    <!-- county -->
     <div class="flex-grow text-center">
       <div class="text-sm">COUNTY</div>
-      <div class="font-semibold">{formatNumber($calcCounty, $selectedConfig.format || null)}</div>
+      <div class="font-semibold">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>
       {#if $selectedConfig.label}
       <div class="lowercase text-sm leading-none text-stone-600">{$selectedConfig.label}</div>
       {/if}
       {#if $selectedConfig.raw_label}
       <div class="text">or</div>
       <div class="font-semibold text-sm">
-        {formatNumber($calcCountyRaw)}
+        {formatNumber($calcCountyRaw[$yearIdx])}
       </div>
       <div class="text-sm lowercase leading-none text-stone-600">
         {$selectedConfig.raw_label}
@@ -179,5 +182,8 @@
 }
 .legendText:first-of-type {
   text-anchor: start;
+}
+rect {
+  cursor: pointer;
 }
 </style>

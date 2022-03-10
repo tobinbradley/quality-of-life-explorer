@@ -2,6 +2,8 @@
   import { selectedData, yearIdx, selectedConfig, selectedNeighborhoods, highlightNeighborhoods } from '../store/store'
   import { isNumeric, formatNumber } from "./utils"
 
+  // BUG: level trend comes out as dash
+
   function trend(val1, val2, percent = null) {
     if (!isNumeric(val1) || !isNumeric(val2) || val2 === 0) return '--'
 
@@ -11,13 +13,13 @@
     if (Math.round(trend) > 0) {
       return `
       <svg class="inline h-6 w-6"><use xlink:href="#icon-trending_up"></use></svg>
-      ${formatNumber(Math.abs(trend), percent)}
+      ${formatNumber(trend, percent)}
       `
     }
     if (Math.round(trend) < 0) {
       return `
       <svg class="inline h-6 w-6"><use xlink:href="#icon-trending_down"></use></svg>
-      ${formatNumber(Math.abs(trend), percent)}
+      ${formatNumber(trend, percent)}
       `
     }
     return '--'
@@ -81,7 +83,7 @@
               $selectedData.m[neighborhood][0] * $selectedData.d[neighborhood][0],
               $selectedData.m[neighborhood][$selectedData.years.length - 1] * $selectedData.d[neighborhood][$selectedData.years.length - 1]
             )
-          } { $selectedConfig.raw_label }
+          } 
         </td>
         {/if}
       {/if}

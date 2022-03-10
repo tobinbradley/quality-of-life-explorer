@@ -29,6 +29,64 @@ export function formatNumber(n, format = null, decimals = 0) {
   }).format(n)
 }
 
+// calc raw values 
+export function calcRaw(data, config, county = false, selected = null) {
+  const raw = []
+
+  data.years.forEach((year, yearIdx) => { 
+    // short circuit if override present
+    if (county && config.raw_val && config.raw_val[`y_${data.years[yearIdx]}`]) {
+      return config.raw_val[`y_${data.years[yearIdx]}`]
+    }
+    
+    let total = 0
+    for (const key in data.d) {
+      const n = data.m[key][yearIdx]
+      const d = data.d[key][yearIdx]
+      if (isNumeric(n) && isNumeric(d) && ((selected && selected.indexOf(key) !== -1) || !selected)) total += n * d
+    }
+    raw.push(total)    
+  })
+
+  return raw
+}
+
+// calculate agg values
+export function calcAggregate (data, config, county = false, selected = null) {
+  const agg = []
+
+  data.years.forEach((year, yearIdx) => { 
+    // short circuit if override present
+    if (county && config.world_val && config.world_val[`y_${data.years[yearIdx]}`]) {
+      agg.push(config.world_val[`y_${data.years[yearIdx]}`])
+    }
+
+    // handle sum
+    if (config.sum) {
+      let total
+      for (const key in data.m) {
+        const yearval = data.m[key][yearIdx]
+        if (isNumeric(yearval) && ((selected && selected.indexOf(key) !== -1) || !selected)) total += yearval
+      }
+      agg.push(total)
+    }
+
+    if (data.m && data.d) {
+      let n = 0
+      let d = 0
+      for (const key in data.m) {
+        const mval = data.m[key][yearIdx]
+        const dval = data.d[key][yearIdx]
+        if (isNumeric(mval) && isNumeric(dval) && ((selected && selected.indexOf(key) !== -1) || !selected)) {
+          d = d + dval
+          n = n + mval * dval          
+        }
+      }
+      agg.push(n / d)
+    }
+  })
+  return agg
+}
 
 // send download
 export function download(payload, encoding = null, filename) {

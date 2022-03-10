@@ -8,6 +8,7 @@
   // TODO: Search results point
   // TODO: Search control to map
   // TODO: highlight neighborhoods
+  // TODO: zoom selected
 
   let map
   let mapReady
@@ -198,8 +199,8 @@
       this._btn = document.createElement("button")
       this._btn.className = "mapboxgl-ctrl-icon mapboxgl-ctrl-clear"
       this._btn.type = "button"
-      this._btn.setAttribute("aria-label", "Zoom to full extent")
-      this._btn.setAttribute("title", "Zoom to full extent")
+      this._btn.setAttribute("aria-label", "Clear selected")
+      this._btn.setAttribute("title", "Clear selected")
       this._btn.onclick = function () {
         $selectedNeighborhoods = []
       }
