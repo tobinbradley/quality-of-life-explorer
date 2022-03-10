@@ -26,6 +26,7 @@
     "vite": "^2.8.4"
   },
   "dependencies": {
+    "apexcharts": "^3.33.2",
     "maplibre-gl": "^2.1.7",
     "simple-statistics": "^7.7.5"
   }
