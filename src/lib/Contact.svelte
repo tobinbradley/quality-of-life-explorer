@@ -27,11 +27,11 @@
   <h3 class="text-gray-500 font-bold">Contact Us</h3>
 
   <div class="mb-3" >
-    <input placeholder="Email address" aria-label="email address" class="border-b-2 border-gray-200 w-full py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:border-purple-500" id="report-title" bind:value={email} onclick="this.select()" name="email">
+    <input placeholder="Email address" aria-label="email address" class="border-b-2 border-gray-200 w-full py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:border-purple-500" bind:value={email} onclick="this.select()" name="email">
   </div>
 
   <div class="mb-3" >
-    <textarea aria-label="message" placeholder="Message..." cols="4" class="border-b-2 border-gray-200 w-full py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:border-purple-500" id="report-title" bind:value={message} onclick="this.select()" name="message"></textarea>
+    <textarea aria-label="message" placeholder="Message..." cols="4" class="border-b-2 border-gray-200 w-full py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:border-purple-500" bind:value={message} onclick="this.select()" name="message"></textarea>
   </div>
 
 

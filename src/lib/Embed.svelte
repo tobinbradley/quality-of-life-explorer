@@ -9,9 +9,9 @@
 </script>
 
 <div class="bg-white shadow-md p-2">
-  <label class="block text-gray-500 font-bold" for="report-title">
+  <label class="block text-gray-500 font-bold" for="mapembedtext">
     Map Embed Code
   </label>
-  <textarea rows="4" class="border-b-2 border-gray-200 w-full py-2 px-1 text-sm text-gray-700 leading-tight focus:outline-none focus:border-pink-600" id="report-title" bind:value={embedCode} onclick="this.select()"></textarea>
+  <textarea id="mapembedtext" aria-label="map embed code" rows="4" class="border-b-2 border-gray-200 w-full py-2 px-1 text-sm text-gray-700 leading-tight focus:outline-none focus:border-pink-600"  bind:value={embedCode} onclick="this.select()"></textarea>
 
 </div>
