@@ -1,42 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Svelte + Vite App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Exploring neighborhood character, economics, education, engagement, environment, health, housing, safety and transportation.">
+    <meta name="author" content="Tobin Bradley">
+
+    <title>Charlotte/Mecklenburg Quality of Life Explorer</title>
+
+    <!-- preconnect for performance -->
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://storage.googleapis.com">
+
+    <!-- icon and theme stuff -->
+    <link rel="icon" href="img/favicon.png" type="image/png"><!-- 32×32 -->
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png"><!-- 180×180 -->
+    <meta name="theme-color" content="#2A4365"/>
+    <link rel="manifest" href="manifest.json">
+
   </head>
-  <body class="bg-slate-100">
-    <header class="bg-slate-800 text-white grid grid-cols-3 px-4">
-      <h1 class="col-span-2 font-semibold text-xl py-4">
-        <a href="./">
-        <span class="hidden md:inline">Charlotte/Mecklenburg </span>Quality of
-        Life Explorer</a>
-      </h1>
-      <div class="text-right">
-        <a
-          href="http://charlottenc.gov/HNS/CE/CommunityInfo/Pages/QOL.aspx"
-          target="_blank"
-          class="hidden md:inline-block h-full px-6 box-border border-y-4 border-slate-800 hover:border-b-pink-500"
-          style="line-height: 50px"
-          >About</a
-        >
-        <a
-          href="downloads/qol-data.zip"
-          target="_blank"
-          class="hidden md:inline-block h-full px-6 box-border border-y-4 border-slate-800 hover:border-b-pink-500"
-          style="line-height: 50px"
-          >Download Data</a
-        >
+  <body class="bg-slate-200">
+    <header class="bg-slate-800 text-white  px-4">
+      <div class="max-w-7xl grid grid-cols-3 px-4 mx-auto">
+        <h1 class="col-span-2 font-semibold text-xl py-4">
+          <a href="./">
+          <span class="hidden md:inline">Charlotte/Mecklenburg </span>Quality of
+          Life Explorer</a>
+        </h1>
+        <div class="text-right">
+          <a
+            href="http://charlottenc.gov/HNS/CE/CommunityInfo/Pages/QOL.aspx"
+            target="_blank"
+            class="hidden md:inline-block h-full px-6 box-border border-y-4 border-slate-800 hover:border-b-pink-500"
+            style="line-height: 50px"
+            >About</a
+          >
+          <!-- <a
+            href="downloads/qol-data.zip"
+            target="_blank"
+            class="hidden md:inline-block h-full px-6 box-border border-y-4 border-slate-800 hover:border-b-pink-500"
+            style="line-height: 50px"
+            >Download Data</a
+          > -->
+        </div>
       </div>
     </header>
 
-    <main class="mx-auto px-4 my-4">
+    <main class="mx-auto px-4 my-4 max-w-7xl">
       <!-- data tabs -->
       <nav class="bg-white mt-4 shadow-md" id="tabs"></nav>
 
       <!-- main stuff -->
-      <div class="mt-4 grid md:grid-cols-3 gap-4">
+      <div class="mt-4 grid lg:grid-cols-3 gap-4">
         <div class="col-span-2 bg-white shadow-md">
           <div id="mapContainer" style="height: 600px" class="w-full relative"></div>
           <div class="px-3" id="misccontrols"></div>
@@ -44,7 +60,7 @@
 
         <div class="flex flex-col gap-y-4">
           <div class="bg-white shadow-md p-2" id="search"></div>
-          
+
           <div id="trendchart"></div>
           <!-- social links -->
           <div class="text-center mt-5">
@@ -72,6 +88,7 @@
                 <use xlink:href="#icon-linkedin"></use>
               </svg>
             </button>
+            <p class="text-sm text-stone-600 tracking-widest">SHARE</p>
           </div>
 
         </div>
@@ -81,9 +98,9 @@
       <div id="meta"></div>
 
       <!-- embed and contact -->
-      <div class="mt-4 grid grid-cols-3">
-        <div>Embed</div>
-        <div>Contact</div>
+      <div class="mt-4 grid md:grid-cols-3 gap-2">
+        <div id="contact"></div>
+        <div id="embed"></div>
       </div>
 
       <div id="app"></div>
@@ -100,25 +117,25 @@
       </div>
       <div class="mb-3">
         <a
-          class="mr-4 text-pink-600 underline"
+          class="mr-4 text-pink-700 underline"
           href="http://charlottenc.gov/HNS/CE/CommunityInfo/Pages/QOL.aspx"
           target="_blank"
           >About</a
         >
         <a
-          class="mr-4 text-pink-600 underline"
+          class="mr-4 text-pink-700 underline"
           href="downloads/qol-data.zip"
           target="_blank"
           >Download Data</a
         >
         <a
-          class="mr-4 text-pink-600 underline"
+          class="mr-4 text-pink-700 underline"
           href="http://maps.co.mecklenburg.nc.us/openmapping/"
           target="_blank"
           >Mecklenburg County Open Mapping</a
         >
         <a
-          class="text-pink-600 underline"
+          class="text-pink-700 underline"
           href="https://data.charlottenc.gov/"
           target="_blank"
           >City of Charlotte Open Data Portal</a
@@ -128,52 +145,56 @@
       <div>
         Created by
         <a
-          class="text-pink-600 underline"
+          class="text-pink-700 underline"
           href="http://charmeck.org/mecklenburg/county/Pages/Default.aspx"
           >Mecklenburg County</a
         >, the
         <a
-          class="text-pink-600 underline"
+          class="text-pink-700 underline"
           href="http://charmeck.org/city/charlotte/Pages/default.aspx"
           >City of Charlotte</a
         >, and
-        <a class="text-pink-600 underline" href="http://www.uncc.edu/"
+        <a class="text-pink-700 underline" href="http://www.uncc.edu/"
           >UNC Charlotte</a
         >
         with much &#9829; for the projects that make this site possible:
         <br />
         <a
-          class="text-pink-600 underline"
+          class="text-pink-700 underline"
           href="https://www.openstreetmap.org/"
           target="_blank"
           >OpenStreetMap</a
         >,
         <a
-          class="text-pink-600 underline"
-          href="http://osm2vectortiles.org/"
+          class="text-pink-700 underline"
+          href="https://maplibre.org/"
           target="_blank"
-          >OSM2VectorTiles</a
+          >Maplibre GL</a
         >,
         <a
-          class="text-pink-600 underline"
-          href="https://www.mapbox.com/mapbox-gl-js/api/"
+          class="text-pink-700 underline"
+          href="https://svelte.dev/"
           target="_blank"
-          >Mapbox GL JS</a
-        >,
-        <a
-          class="text-pink-600 underline"
-          href="http://vuejs.org/"
-          target="_blank"
-          >Vue.js</a
+          >Svelte</a
         >, and
         <a
-          class="text-pink-600 underline"
-          href="http://getmdl.io/"
+          class="text-pink-700 underline"
+          href="https://tailwindcss.com/"
           target="_blank"
-          >Material Design Lite</a
+          >Tailwind CSS</a
         >.
       </div>
+      <div class="py-2">
+        The source code for the Quality of Life Explorer is on <a
+        class="text-pink-700 underline"
+        href="https://github.com/tobinbradley/quality-of-life-explorer"
+        target="_blank"
+        >Github</a
+      >!
+      </div>
     </footer>
+
+    <div id="toast"></div>
 
     <svg
       style="position: absolute; width: 0; height: 0; overflow: hidden"
@@ -194,7 +215,9 @@
             d="M15.984 18l2.297-2.297-4.875-4.875-3.984 3.984-7.406-7.406 1.406-1.406 6 6 3.984-3.984 6.281 6.281 2.297-2.297v6h-6z"
           ></path>
         </symbol>
-
+        <symbol id="icon-trending_neutral" viewBox="0 0 24 24">
+          <path d="M21.984 12l-3.984 3.984v-3h-15v-1.969h15v-3z"></path>
+          </symbol>
         <symbol id="icon-linkedin" viewBox="0 0 32 32">
           <path
             fill="#0077b5"
@@ -220,5 +243,30 @@
     </svg>
 
     <script type="module" src="/src/main.js"></script>
+    <!--   Google Analytics -->
+    <script>
+      ;(function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r
+        ;(i[r] =
+          i[r] ||
+          function () {
+            ;(i[r].q = i[r].q || []).push(arguments)
+          }),
+          (i[r].l = 1 * new Date())
+        ;(a = s.createElement(o)), (m = s.getElementsByTagName(o)[0])
+        a.async = 1
+        a.src = g
+        m.parentNode.insertBefore(a, m)
+      })(
+        window,
+        document,
+        "script",
+        "//www.google-analytics.com/analytics.js",
+        "ga"
+      )
+
+      ga("create", "UA-48797957-1", "auto")
+      ga("send", "pageview")
+    </script>
   </body>
 </html>

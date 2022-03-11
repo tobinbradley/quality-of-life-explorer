@@ -2,13 +2,58 @@
   import Time from "./Time.svelte"
   import Table from './Table.svelte'
   import groups from "../assets/neighborhod-groups.json"
-  import { selectedNeighborhoods, selectedMetric } from '../store/store'
-import Tabs from "./Tabs.svelte"
+  import { selectedNeighborhoods, selectedMetric, selectedData, selectedConfig, dataConfig, yearIdx } from '../store/store'
+  import { sendDownload, formatNumber } from './utils'
 
   let download
 
   function doDownload() {
-    console.log("downloading", download)
+    if (download === "geojson") {
+      fetch('./public/data/geography/geography.geojson.json')
+        .then(response => response.json())
+        .then(json => {
+          json.features.forEach(elem => {
+            $selectedData.years.forEach((y, idx) => {
+              elem.properties[y] = $selectedData.m[elem.properties.id][idx]
+            })
+          })
+          sendDownload(JSON.stringify(json), 'data:text/json;charset=utf-8;', `${$selectedConfig.title}.geojson`)
+        })
+        .catch(error => {
+          console.error('There has been a problem with your fetch operation:', error);
+        })
+    }
+    if (download === "csv") {
+      const header = []
+
+      let body = ""
+
+      header.push("NPA")
+      header.push(...$selectedData.years)
+
+      // TODO: add raw value to CSV
+
+      for (const key in $selectedData.m) {
+        let row = [key, ...$selectedData.m[key].map(el => formatNumber(el, $selectedConfig.format || null))]
+        body += row.join(",") + "\n"
+        // if ($selectedConfig.raw_label) {
+        //   let row = [key, ...$selectedData.d[key].map(el => `${formatNumber(el)} ${$selectedConfig.raw_label}`)]
+        // body += row.join(",") + "\n"
+        // }
+      }
+
+      sendDownload(
+        header.join(",") + "\n" + body,
+        "data:text/csv;charset=utf-8;",
+        `${$selectedConfig.title}.csv`
+      )
+    }
+    if (download === "zip") {
+      window.open('downloads/qol-data.zip')
+    }
+    if (download === "metadata") {
+      window.open(`data/meta/${$selectedConfig.metric}.html`)
+    }
     download = "default"
   }
 
@@ -22,7 +67,6 @@ import Tabs from "./Tabs.svelte"
     window.open(`./report.html#${$selectedMetric.replace('m','')}/${$selectedNeighborhoods.join(',')}`)
   }
 
-  // TODO: Download operations. Will need map to send geojson to store variable
 </script>
 
 <Time />
@@ -41,6 +85,7 @@ import Tabs from "./Tabs.svelte"
     <option value="csv">CSV</option>
     <option value="geojson">GeoJSON</option>
     <option value="metadata">Metadata</option>
+    <option value="zip">All Data (zip)</option>
   </select>
 </div>
 <div class="py-3 text-right">

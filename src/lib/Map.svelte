@@ -1,32 +1,72 @@
 <script>
   import Legend from './Legend.svelte'
-  import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig } from "../store/store"
+  import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig, highlightNeighborhoods, mapZoom } from "../store/store"
   import { isNumeric, formatNumber } from "./utils"
   import "maplibre-gl/dist/maplibre-gl.css"
   import mapStyle from "../assets/positron-mecklenburg.json"
 
-  // TODO: Search results point
-  // TODO: Search control to map
-  // TODO: highlight neighborhoods
-  // TODO: zoom selected
+  // TODO: adress search point
 
   let map
   let mapReady
+  let maplibre
+  let geoJSON
+
+  // get GeoJSON for zooming
+  fetch('data/geography/geography.geojson.json')
+    .then(response => response.json())
+    .then(json => geoJSON = json)
+    .catch(error => {
+      console.error('There has been a problem with your fetch operation:', error);
+    })
 
   function init(node) {
-    ;(async () => {
+    (async () => {
       const { default: gl } = await import("maplibre-gl")
+      maplibre = gl
       createMap(gl)
     })()
   }
 
-
+  // shade in things
   $: if (mapReady && $breaks && $selectedData && ($yearIdx >= 0)) {
     renderPolys()
   }
 
+  // zoom to selected on page load or on search result
+  $: if (mapReady && geoJSON && $mapZoom && $selectedNeighborhoods.length > 0) {
+    $mapZoom = false
+    let bounds = new maplibre.LngLatBounds()
+
+    geoJSON.features.forEach(el => {
+      if ($selectedNeighborhoods.indexOf(el.properties.id) !== -1) {
+        el.geometry.coordinates.forEach(coords => {
+            coords.forEach(coord => {
+              bounds.extend(coord)
+            })
+          })
+      }
+    })
+
+    map.fitBounds(bounds, { padding: 100 })
+  }
+
+  // show selected
   $: if (mapReady && $selectedNeighborhoods) {
-    renderLines()
+    if ($selectedNeighborhoods.length > 0) {
+      map.setFilter("neighborhoods-outline", ["match", ["get", "id"], $selectedNeighborhoods, true, false])
+    } else {
+      map.setFilter("neighborhoods-outline", ["match", ["get", "id"], ["-1"], true, false])
+    }
+  }
+
+  // show highlighted neighborhoods
+  $: if (mapReady && $highlightNeighborhoods) {
+    if ($highlightNeighborhoods.length > 0) {
+      map.setFilter("neighborhoods-highlight", ["match", ["get", "id"], $highlightNeighborhoods, true, false])
+    } else {
+      map.setFilter("neighborhoods-highlight", ["match", ["get", "id"], ["-1"], true, false])
+    }
   }
 
 
@@ -44,8 +84,7 @@
         [-82.641, 34.115],
         [-79.008, 36.762],
       ],
-      preserveDrawingBuffer:
-        navigator.userAgent.toLowerCase().indexOf("firefox") > -1,
+      preserveDrawingBuffer: navigator.userAgent.toLowerCase().indexOf("firefox") > -1
     }
 
     map = new gl.Map(mapOptions)
@@ -54,6 +93,7 @@
     map.addControl(new FullExtent({}), "top-right")
     map.addControl(new ClearSelected({}), "top-right")
     map.addControl(new gl.FullscreenControl(), "bottom-right")
+    map.addControl(new gl.AttributionControl(), 'bottom-left')
 
     let popup = new gl.Popup({
       closeButton: false,
@@ -152,13 +192,6 @@
     )
   }
 
-  function renderLines() {
-    if ($selectedNeighborhoods.length > 0) {
-      map.setFilter("neighborhoods-outline", ["match", ["get", "id"], $selectedNeighborhoods, true, false])
-    } else {
-      map.setFilter("neighborhoods-outline", ["match", ["get", "id"], ["-1"], true, false])
-    }
-  }
 
   // full extent button
   class FullExtent {

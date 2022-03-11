@@ -1,11 +1,11 @@
 import { writable, readable, derived } from 'svelte/store'
 import dataJSON from '../../data/data.json'
 import { ckmeans } from 'simple-statistics'
-import { isNumeric, calcAggregate, calcRaw } from '../lib/utils'
+import { calcAggregate, calcRaw } from '../lib/utils'
 
 // BUG: how do I verify the passed NPA's are solid?
 
-// read URL params on load
+// read URL params on load for selected metric and neighborhoods
 let metric = dataJSON[Math.floor(Math.random() * dataJSON.length)].metric
 let selected = []
 const args = window.location.hash.replace('#', '').split('/')
@@ -20,13 +20,18 @@ export const dataConfig = readable(dataJSON.sort((a, b) => {
   return a.category - b.category || a.title - b.title
 }))
 
+// what's new list
 export const whatsnew = readable([
-  "m80", "m23", "m57", "m54", "m55", "m56", "m44", "m11", "m19", "m21", "m22", "m24", "m25", "m27", "m32", "m34", "m35", "m4", "m45", "m46", "m51", "m52", "m53", "m58", "m59", "m60", "m61", "m72", "m73", "m78", "m8", "m83", "m9"
+  "m5", "m6", "m7", "m30", "m53", "m68", "m69", "m75", "m76"
  ])
 
 
-
+// the selected metric, either random or from url hash
 export let selectedMetric = writable(metric)
+
+// map zoom to selected toggle
+export let mapZoom = writable(selected.length > 0 ? true : false)
+
 
 // derived selected data config
 export let selectedConfig = derived([dataConfig, selectedMetric], $values => {

@@ -1,9 +1,9 @@
 <script>
-  import { selectedNeighborhoods, selectedData } from '../store/store'
+  import { selectedNeighborhoods, selectedData, mapZoom } from '../store/store'
   import { isNumeric } from './utils'
 
   let searchString = ''
-  let searchResults = []  
+  let searchResults = []
 
   function search () {
     searchResults = []
@@ -31,7 +31,7 @@
     // if string and larger than 4 chars
     if (!isNumeric(str) && str.length >= 4) {
       // Address
-      const filter = encodeURIComponent(`ts @@ to_tsquery('addressing_en', '${str.toUpperCase().replace(/ /g, '&') + ':*'}')`)      
+      const filter = encodeURIComponent(`ts @@ to_tsquery('addressing_en', '${str.toUpperCase().replace(/ /g, '&') + ':*'}')`)
       fetch(`https://api.mcmap.org/v1/query/master_address_table?columns=objectid as id, full_address as label, 'ADDRESS' as cat&limit=10&filter=${filter}`)
         .then(response => response.json())
         .then(json => {
@@ -56,12 +56,14 @@
   function selectResults(cat, id) {
     if (cat === 'NPA') {
       $selectedNeighborhoods = [id]
+      $mapZoom = true
     }
     if (cat === 'NSA') {
       fetch(`https://api.mcmap.org/v1/intersect_feature/neighborhood_statistical_areas/neighborhoods?geom_column_from=the_geom&geom_column_to=the_geom&columns=neighborhoods.id&filter=neighborhood_statistical_areas.gid=${id}`)
       .then(response => response.json())
       .then(json => {
         $selectedNeighborhoods = json.map(el => el.id.toString())
+        $mapZoom = true
       })
       .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
@@ -72,6 +74,7 @@
       .then(response => response.json())
       .then(json => {
         $selectedNeighborhoods = json.map(el => el.id.toString())
+        $mapZoom = true
       })
       .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
@@ -82,6 +85,7 @@
       .then(response => response.json())
       .then(json => {
         $selectedNeighborhoods = json.map(el => el.id.toString())
+        $mapZoom = true
       })
       .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
@@ -95,20 +99,20 @@
 <div class="relative">
   <div class="mb-2">
     <input class="border-b-stone-200 border-b-2 w-full focus:border-b-pink-600"
-      bind:value={searchString} 
-      on:input={search} 
+      bind:value={searchString}
+      on:input={search}
       on:focus={search}
       on:blur={() => setTimeout(() => searchResults = [], 250)} placeholder="Search...">
   </div>
 
   {#if searchResults.length > 0}
   <div class="absolute w-full bg-white overflow-y-auto overflow-x-hidden z-50" style="max-height: 200px;">
-    {#each searchResults as result} 
-    <div 
+    {#each searchResults as result}
+    <div
       class="cursor-pointer whitespace-nowrap text-sm rounded text-blue-700 py-2 px-1 hover:bg-blue-500 hover:text-white transition-colors"
       on:click={() => selectResults(result.cat, result.id)}
-      
-      
+
+
       >
       <span class="bg-blue-500 text-white mr-2 p-1 font-semibold">{result.cat.substring(0,3)}</span>
       {result.label}

@@ -2,7 +2,6 @@
   import { selectedData, yearIdx, selectedConfig, selectedNeighborhoods, highlightNeighborhoods } from '../store/store'
   import { isNumeric, formatNumber } from "./utils"
 
-  // BUG: level trend comes out as dash
 
   function trend(val1, val2, percent = null) {
     if (!isNumeric(val1) || !isNumeric(val2) || val2 === 0) return '--'
@@ -22,7 +21,7 @@
       ${formatNumber(trend, percent)}
       `
     }
-    return '--'
+    return '<svg class="inline h-6 w-6"><use xlink:href="#icon-trending_neutral"></use></svg>'
   }
 
 </script>
@@ -83,7 +82,7 @@
               $selectedData.m[neighborhood][0] * $selectedData.d[neighborhood][0],
               $selectedData.m[neighborhood][$selectedData.years.length - 1] * $selectedData.d[neighborhood][$selectedData.years.length - 1]
             )
-          } 
+          }
         </td>
         {/if}
       {/if}

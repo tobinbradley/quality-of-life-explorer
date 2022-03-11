@@ -1,11 +1,9 @@
 <script>
   import { selectedData, selectedConfig, calcCounty, calcSelected, selectedNeighborhoods } from '../store/store'
   import { isNumeric, formatNumber } from "./utils"
-  import ApexCharts from 'apexcharts'
 
   let chart
-
-  // TODO: chart line colors
+  let ApexCharts
 
   $: {
     if (chart && $selectedNeighborhoods && $selectedData && $selectedData.years.length > 1) {
@@ -18,7 +16,7 @@
     }
   }
 
-  
+
   function renderChart() {
     let options = {
       title: {
@@ -59,7 +57,7 @@
           data: $calcCounty
         }
       ],
-      xaxis: {       
+      xaxis: {
         categories: $selectedData.years
       },
       stroke: {
@@ -86,7 +84,7 @@
       options.yaxis.max = 100
     }
 
-    if (!chart) { 
+    if (!chart) {
     chart = new ApexCharts(document.querySelector("#tchart"), options);
     chart.render();
     } else {
@@ -95,9 +93,13 @@
   }
 
   function initChart(node) {
-    if ($selectedData && $selectedData.years.length > 1) renderChart()
+    (async () => {
+      const {default: apexcharts} = await import("apexcharts")
+      ApexCharts = apexcharts
+      if ($selectedData && $selectedData.years.length > 1) renderChart()
+    })()
   }
-    
+
 </script>
 
 {#if $selectedData && $selectedData.years.length > 1}

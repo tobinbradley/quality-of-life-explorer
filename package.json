@@ -10,6 +10,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "prebuild": "node build/build.cjs",
+    "postbuild": "workbox generateSW workbox-config.cjs",
     "test": "ava ./test/test.cjs"
   },
   "devDependencies": {
@@ -23,7 +24,8 @@
     "svelte": "^3.46.4",
     "svelte-preprocess": "^4.10.4",
     "tailwindcss": "^3.0.23",
-    "vite": "^2.8.4"
+    "vite": "^2.8.4",
+    "workbox-cli": "^6.5.1"
   },
   "dependencies": {
     "apexcharts": "^3.33.2",
