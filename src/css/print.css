@@ -1,0 +1,24 @@
+@page {
+  size: 8.5in 11in;
+  margin: 0.75in;
+}
+
+main {
+  width: 6.9in;
+}
+
+/* page */
+.page {
+  width: 6.9in;
+  height: 9.4in;
+  overflow: hidden;
+  @apply my-6 print:my-0;
+}
+
+
+/* table */
+
+/* map */
+.maplibregl-control-container {
+  @apply print:hidden;
+}

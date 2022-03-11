@@ -1,0 +1,20 @@
+table {
+  @apply w-full whitespace-normal text-sm;
+}
+table tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+table th {
+  @apply p-2 text-base font-normal;
+}
+table:first-of-type {
+  margin-bottom: 15px;
+}
+table td {
+  @apply text-left p-1;
+
+}
+table td, table th {
+  @apply text-left;
+
+}
