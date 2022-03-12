@@ -15,14 +15,9 @@ import NavMenu from './lib/NavMenu.svelte'
 import Help from './lib/Help.svelte'
 
 
-// TODO: style toasts
-// TODO: toast intro message once so I don't have that huge dongus intro
-// TODO: toast position top bottom as option?
-
 new NavMenu({
   target: document.getElementById("navmenu")
 })
-
 
 new Tabs({
   target: document.getElementById("tabs")

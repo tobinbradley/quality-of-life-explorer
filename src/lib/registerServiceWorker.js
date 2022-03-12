@@ -20,7 +20,7 @@ if ('serviceWorker' in navigator) {
             if (navigator.serviceWorker.controller) {
               console.log('New content is available, please refresh.')
               newWorker.postMessage({ type: 'SKIP_WAITING' })
-              notifications.info('The Explorer has been updated! Refresh your browser to see the latest changes.', 10000)
+              notifications.info('The Explorer has been updated!<br>Refresh your browser to see the latest changes.', 8000)
             }
 
             break;
