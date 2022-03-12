@@ -5,16 +5,15 @@
 
   function sendMail() {
     fetch('https://mcmap.org/utilities/mail-qol.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      },
-      body: [
-        `encodeURIComponent('email')=encodeURIComponent(${email})`,
-        `encodeURIComponent('website')=encodeURIComponent('')`,
-        `encodeURIComponent('message')=encodeURIComponent(${message})`
-      ].join("&")
-    })
+        method: 'POST',
+        body: JSON.stringify({
+          email: email,
+          message: message
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+      })
       .then(res => res.text())
       .then(res => console.log(res))
       .catch(err => console.log("Error sending request", err))
@@ -39,7 +38,7 @@
       {#if !sent}
       <button class="bg-pink-600 text-white shadow-md py-1 px-2 rounded" on:click={sendMail}>Send</button>
       {:else}
-      Thanks!
+      Thanks for the feedback!
       {/if}
     </div>
 </div>
