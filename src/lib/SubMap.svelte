@@ -2,7 +2,7 @@
   import Time from "./Time.svelte"
   import Table from './Table.svelte'
   import groups from "../assets/neighborhod-groups.json"
-  import { selectedNeighborhoods, selectedMetric, selectedData, selectedConfig, dataConfig, yearIdx } from '../store/store'
+  import { selectedNeighborhoods, selectedMetric, selectedData, selectedConfig, mapZoom } from '../store/store'
   import { sendDownload, formatNumber } from './utils'
 
   let download
@@ -58,9 +58,9 @@
   }
 
   function selecGroup(group) {
-    console.log(group, download)
     $selectedNeighborhoods = groups[group][download]
     download = "default"
+    $mapZoom = true
   }
 
   function print() {
@@ -70,7 +70,26 @@
 </script>
 
 <Time />
+
 <div class="pt-3 text-right">
+  Approximate:
+
+  {#each Object.keys(groups) as group}
+  <select
+    class="ml-1 text-white bg-pink-600 shadow transition-shadow  hover:shadow-lg pl-3 py-1 rounded"
+    bind:value={download}
+    on:change={() => selecGroup(group)}
+  >
+    <option value="default">{group}</option>
+    {#each Object.keys(groups[group]) as geounit}
+    <option value={geounit}>{geounit}</option>
+    {/each}
+  </select>
+  {/each}
+
+</div>
+
+<div class="py-3 text-right">
   <button
     class="text-white bg-pink-600 shadow transition-shadow  hover:shadow-lg px-3 py-1 rounded"
     on:click={print}
@@ -88,22 +107,6 @@
     <option value="zip">All Data (zip)</option>
   </select>
 </div>
-<div class="py-3 text-right">
-  Approximate:
 
-  {#each Object.keys(groups) as group}
-  <select
-    class="ml-1 text-white bg-pink-600 shadow transition-shadow  hover:shadow-lg pl-3 py-1 rounded"
-    bind:value={download}
-    on:change={() => selecGroup(group)}
-  >
-    <option value="default">{group}</option>
-    {#each Object.keys(groups[group]) as geounit}
-    <option value={geounit}>{geounit}</option>
-    {/each}
-  </select>
-  {/each}
-
-</div>
 
 <Table />
