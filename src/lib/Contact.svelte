@@ -6,14 +6,14 @@
   function sendMail() {
     fetch('https://mcmap.org/utilities/mail-qol.php', {
       method: 'POST',
-      body: JSON.stringify({
-        email: email,
-        website: null,
-        message: message
-      }),
       headers: {
-          'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      body: [
+        `encodeURIComponent('email')=encodeURIComponent(${email})`,
+        `encodeURIComponent('website')=encodeURIComponent('')`,
+        `encodeURIComponent('message')=encodeURIComponent(${message})`
+      ].join("&")
     })
       .then(res => res.text())
       .then(res => console.log(res))
