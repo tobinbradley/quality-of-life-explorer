@@ -30,9 +30,9 @@
 
 </script>
 
-{#if $printOptions.data}
+
 {#each categories as cat}
-<div class="relative bg-white shadow-md print:shadow-none page p-2">
+<div class="relative bg-white shadow-md print:shadow-none page p-2" class:hidden="{!$printOptions.data}">
   <h2 class="font-semibold my-2 text-2xl">{cat}</h2>
   <table>
     <thead>
@@ -98,4 +98,3 @@
 
 </div>
 {/each}
-{/if}

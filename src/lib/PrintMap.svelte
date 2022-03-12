@@ -1,11 +1,8 @@
 <script>
-import Map from './Map.svelte'
-import { printOptions } from '../store/print'
+  import Map from './Map.svelte'
+  import { printOptions } from '../store/print'
 </script>
 
-
-{#if $printOptions.map}
-<div class="relative shadow-md print:shadow-none page">
+<div class="relative shadow-md print:shadow-none page" class:hidden="{!$printOptions.map}">
   <Map />
 </div>
-{/if}

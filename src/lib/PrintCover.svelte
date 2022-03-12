@@ -20,8 +20,8 @@ async function fetchData(metric, calc = "agg", county = false, selected = null) 
 
 </script>
 
-{#if $printOptions.cover}
-<div class="relative bg-white shadow-md print:shadow-none p-2 page">
+
+<div class="relative bg-white shadow-md print:shadow-none p-2 page" class:hidden="{!$printOptions.cover}">
   <div class="text-center">
     <img src="img/report-logo.jpg" alt="">
   </div>
@@ -162,4 +162,3 @@ async function fetchData(metric, calc = "agg", county = false, selected = null) 
     </div>
   </div>
 </div>
-{/if}
