@@ -4,7 +4,7 @@
 
 <div class="dropdown relative inline-block h-full">
   <button
-    class="dropbtn cursor-default inline-block h-full px-6 box-border border-y-4 transition-colors border-slate-800 hover:border-b-pink-500"
+    class="dropbtn cursor-default inline-block h-full px-6 box-border border-y-4 transition-colors border-slate-800"
     >Help</button
   >
   <div class="dropdown-content absolute text-center min-w-full bg-white shadow-lg z-10 right-0">
@@ -22,6 +22,10 @@
 
   .dropdown-content {
     display: none;
+  }
+
+  .dropdown:hover .dropbtn {
+    @apply border-b-pink-500;
   }
 
   .dropdown:hover .dropdown-content {
