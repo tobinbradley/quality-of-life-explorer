@@ -17,33 +17,19 @@
     <link rel="icon" href="img/logo.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="img/apple-touch-icon.png"><!-- 180×180 -->
     <meta name="theme-color" content="#2A4365"/>
+
     <link rel="manifest" href="manifest.json">
 
   </head>
   <body class="bg-slate-200">
     <header class="bg-slate-800 text-white  px-4">
-      <div class="max-w-7xl grid grid-cols-3 px-4 mx-auto">
-        <h1 class="col-span-2 font-semibold text-xl py-4">
+      <div class="max-w-7xl flex justify-between px-4 mx-auto">
+        <h1 class="font-semibold text-xl py-4">
           <a href="./">
           <span class="hidden md:inline">Charlotte/Mecklenburg </span>Quality of
           Life Explorer</a>
         </h1>
-        <div class="text-right">
-          <a
-            href="http://charlottenc.gov/HNS/CE/CommunityInfo/Pages/QOL.aspx"
-            target="_blank"
-            class="hidden md:inline-block h-full px-6 box-border border-y-4 border-slate-800 hover:border-b-pink-500"
-            style="line-height: 50px"
-            >About</a
-          >
-          <!-- <a
-            href="downloads/qol-data.zip"
-            target="_blank"
-            class="hidden md:inline-block h-full px-6 box-border border-y-4 border-slate-800 hover:border-b-pink-500"
-            style="line-height: 50px"
-            >Download Data</a
-          > -->
-        </div>
+        <div class="text-right relative" id="navmenu"></div>
       </div>
     </header>
 
@@ -195,6 +181,7 @@
     </footer>
 
     <div id="toast"></div>
+    <div id="help"></div>
 
     <svg
       style="position: absolute; width: 0; height: 0; overflow: hidden"
@@ -237,6 +224,11 @@
             fill="#1da1f2"
             style="fill: var(--color3, #1da1f2)"
             d="M31.939 6.092c-1.18 0.519-2.44 0.872-3.767 1.033 1.352-0.815 2.392-2.099 2.884-3.631-1.268 0.74-2.673 1.279-4.169 1.579-1.195-1.279-2.897-2.079-4.788-2.079-3.623 0-6.56 2.937-6.56 6.556 0 0.52 0.060 1.020 0.169 1.499-5.453-0.257-10.287-2.876-13.521-6.835-0.569 0.963-0.888 2.081-0.888 3.3 0 2.28 1.16 4.284 2.917 5.461-1.076-0.035-2.088-0.331-2.971-0.821v0.081c0 3.18 2.257 5.832 5.261 6.436-0.551 0.148-1.132 0.228-1.728 0.228-0.419 0-0.82-0.040-1.221-0.115 0.841 2.604 3.26 4.503 6.139 4.556-2.24 1.759-5.079 2.807-8.136 2.807-0.52 0-1.039-0.031-1.56-0.089 2.919 1.859 6.357 2.945 10.076 2.945 12.072 0 18.665-9.995 18.665-18.648 0-0.279 0-0.56-0.020-0.84 1.281-0.919 2.4-2.080 3.28-3.397z"
+          ></path>
+        </symbol>
+        <symbol id="icon-cancel" viewBox="0 0 32 32">
+          <path
+            d="M19.587 16.001l6.096 6.096c0.396 0.396 0.396 1.039 0 1.435l-2.151 2.151c-0.396 0.396-1.038 0.396-1.435 0l-6.097-6.096-6.097 6.096c-0.396 0.396-1.038 0.396-1.434 0l-2.152-2.151c-0.396-0.396-0.396-1.038 0-1.435l6.097-6.096-6.097-6.097c-0.396-0.396-0.396-1.039 0-1.435l2.153-2.151c0.396-0.396 1.038-0.396 1.434 0l6.096 6.097 6.097-6.097c0.396-0.396 1.038-0.396 1.435 0l2.151 2.152c0.396 0.396 0.396 1.038 0 1.435l-6.096 6.096z"
           ></path>
         </symbol>
       </defs>
