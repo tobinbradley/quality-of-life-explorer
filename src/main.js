@@ -13,10 +13,14 @@ import Embed from './lib/Embed.svelte'
 import Contact from './lib/Contact.svelte'
 import NavMenu from './lib/NavMenu.svelte'
 import Help from './lib/Help.svelte'
-
+import Welcome from './lib/Welcome.svelte'
 
 new NavMenu({
   target: document.getElementById("navmenu")
+})
+
+new Welcome({
+  target: document.getElementById("welcome")
 })
 
 new Tabs({
