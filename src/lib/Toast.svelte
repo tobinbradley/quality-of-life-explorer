@@ -35,6 +35,7 @@
   .toast {
       flex: 0 0 auto;
       margin-bottom: 10px;
+      max-width: 80%;
   }
 
 </style>
