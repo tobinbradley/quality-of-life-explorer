@@ -7,8 +7,6 @@ import PrintData from './lib/PrintData.svelte'
 import PrintCover from './lib/PrintCover.svelte'
 import PrintControls from './lib/PrintControls.svelte'
 
-// BUG: some metrics not showing county raw value
-
 new PrintMap({
   target: document.getElementById("mapContainer")
 })
