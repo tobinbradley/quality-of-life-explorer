@@ -11,6 +11,17 @@ import Search from './lib/Search.svelte'
 import Toast from './lib/Toast.svelte'
 import Embed from './lib/Embed.svelte'
 import Contact from './lib/Contact.svelte'
+import NavMenu from './lib/NavMenu.svelte'
+import Help from './lib/Help.svelte'
+
+
+// TODO: style toasts
+// TODO: toast intro message once so I don't have that huge dongus intro
+// TODO: toast position top bottom as option?
+
+new NavMenu({
+  target: document.getElementById("navmenu")
+})
 
 
 new Tabs({
@@ -39,6 +50,10 @@ new Search({
 
 new Toast({
   target: document.getElementById("toast")
+})
+
+new Help({
+  target: document.getElementById("help")
 })
 
 new Embed({

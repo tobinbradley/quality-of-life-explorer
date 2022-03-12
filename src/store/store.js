@@ -118,3 +118,6 @@ export let calcCountyRaw = derived([selectedData, selectedConfig], ([data, confi
   if (!data || !config.raw_label) return null
   return calcRaw(data, config, true)
 })
+
+// toggle help modal
+export let help = writable(false)
