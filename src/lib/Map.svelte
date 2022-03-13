@@ -208,7 +208,7 @@
       this._btn.setAttribute("aria-label", "Zoom to full extent")
       this._btn.setAttribute("title", "Zoom to full extent")
       this._btn.onclick = function () {
-        map.flyTo({ center: _this._center, zoom: _this._zoom })
+        map.flyTo({ center: _this._center, zoom: _this._zoom, pitch: 0, bearing: 0 })
       }
       this._container = document.createElement("div")
       this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group"
