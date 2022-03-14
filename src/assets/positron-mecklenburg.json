@@ -1180,9 +1180,8 @@
       "layout": {},
       "filter": ["match", ["get", "id"], ["-1"], true, false],
       "paint": {
-        "line-color": "purple",
-        "line-width": 6,
-        "line-blur": 3
+        "line-color": "#DB2777",
+        "line-width": 3
       }
     },
     {
