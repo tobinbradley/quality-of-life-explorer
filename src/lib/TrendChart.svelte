@@ -64,6 +64,7 @@
         curve: 'smooth'
       },
       yaxis: {
+        min: 0,
         labels: {
           formatter: value => formatNumber(value, $selectedConfig.format || null)
         }
@@ -80,7 +81,7 @@
     }
 
     if ($selectedConfig.format && $selectedConfig.format === "percent") {
-      options.yaxis.min = 0
+      //options.yaxis.min = 0
       options.yaxis.max = 100
     }
 
