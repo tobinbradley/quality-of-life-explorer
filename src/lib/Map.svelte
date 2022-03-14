@@ -91,8 +91,7 @@
 
     map.addControl(new gl.NavigationControl(), "top-right")
     map.addControl(new FullExtent({}), "top-right")
-    map.addControl(new ClearSelected({}), "top-right")
-    map.addControl(new gl.FullscreenControl(), "bottom-right")
+    map.addControl(new gl.FullscreenControl(), "top-right")
     map.addControl(new gl.AttributionControl(), 'bottom-left')
 
     let popup = new gl.Popup({
@@ -222,35 +221,12 @@
     }
   }
 
-  // clear selected
-  class ClearSelected {
-    constructor({  }) {
-    }
-    onAdd(map) {
-      this._map = map
-      let _this = this
-      this._btn = document.createElement("button")
-      this._btn.className = "mapboxgl-ctrl-icon mapboxgl-ctrl-clear"
-      this._btn.type = "button"
-      this._btn.setAttribute("aria-label", "Clear selected")
-      this._btn.setAttribute("title", "Clear selected")
-      this._btn.onclick = function () {
-        $selectedNeighborhoods = []
-      }
-      this._container = document.createElement("div")
-      this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group"
-      this._container.appendChild(this._btn)
-
-      return this._container
-    }
-    onRemove() {
-      this._container.parentNode.removeChild(this._container)
-      this._map = undefined
-    }
-  }
 </script>
 
 <div id="map" use:init />
+<button class="absolute bottom-2 right-2 mapboxgl-ctrl-group hover:bg-gray-100 px-2 py-1"
+on:click={() => $selectedNeighborhoods = []}
+>Clear</button>
 <Legend />
 
 
@@ -266,10 +242,4 @@
     background-position: center center;
   }
 
-  :global(.mapboxgl-ctrl-clear) {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTI1LjQxIDExMS42IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIHN0eWxlPSJmaWxsOiMwMTAxMDE7c3Ryb2tlLXdpZHRoOi4yNjQ1ODMiIGQ9Ik00Ny43MiAxMzMuMzdjLTkuMDUtOS4wNi05LjQ4LTkuNTQtMTAuMzgtMTEuNDlhMTIuODQgMTIuODQgMCAwIDEtLjk0LTIuNDRjMC0uMjMtLjEyLS40Mi0uMjYtLjQyLS4zMSAwLS4zOC02LjUyLS4wNy02LjY1LjExLS4wNS40Mi0uNzUuNjgtMS41NS4yNy0uOC45LTIuMDggMS40LTIuODUgMS4xLTEuNjggNzEuODktNzIuMyA3NC4yNS03NC4wNmExMy40NSAxMy40NSAwIDAgMSA5LjItMi42NWMyLjk0LjE2IDUuMDYuODIgNy4yIDIuMjUgMS45NSAxLjMgMjguMjYgMjcuMjUgMjkuNyAyOS4yOSAxLjEyIDEuNiAyLjI2IDMuOTggMi4yNiA0Ljc1IDAgLjIyLjEyLjQxLjI2LjQxLjE2IDAgLjI3IDEuMjguMjcgMy4zIDAgMS44My0uMSAzLjMxLS4yMiAzLjMxcy0uNDIuNjQtLjY2IDEuNDJjLS4yNS43OC0uOSAyLjEyLTEuNDYgMi45OC0uNjggMS4wNS0xMC42MSAxMS4xLTMwLjM1IDMwLjczbC0yOS4zNCAyOS4xN2gxMy43N2M5LjM4IDAgMTQuMDUuMSAxNC42Mi4yOSAxLjQxLjUgMS43NiAxLjc3LjggMi45OGwtLjU0LjdINTcuMTVabTU4LjItNi42MmM2Ljc0LTYuNjUgMTIuMjQtMTIuMjIgMTIuMjQtMTIuMzggMC0uMTYtNC4wMi00LjI1LTguOTMtOS4xYTU0MjcuNCA1NDI3LjQgMCAwIDEtMjAuMy0yMC4xNEw3Ny41MyA3My44IDU5LjYyIDkxLjU4Yy0xNS45NSAxNS44My0xOCAxNy45NS0xOC42IDE5LjMtMSAyLjI1LTEuMzQgNC40LTEgNi40My42MiAzLjU3LjkgMy45MiAxMC4yIDEzLjEybDguNTQgOC40MmgzNC45MmwxMi4yNS0xMi4xeiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM1Ljg3IC0zMS4yMykiLz48L3N2Zz4=);
-    background-size: 22px 22px;
-    background-repeat: no-repeat;
-    background-position: center center;
-  }
 </style>
