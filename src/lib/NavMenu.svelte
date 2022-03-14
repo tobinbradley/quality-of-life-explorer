@@ -8,11 +8,16 @@
     >Help</button
   >
   <div class="dropdown-content absolute text-center min-w-full bg-white shadow-lg z-10 right-0">
-    <button class="text-black w-full px-2 py-3 block hover:bg-slate-300" on:click={() => ($help = true)}>Tutorial</button>
+    <button class="text-black w-full px-2 py-2 block hover:bg-slate-300" on:click={() => ($help = true)}>Tutorial</button>
     <a
       href="http://charlottenc.gov/HNS/CE/CommunityInfo/Pages/QOL.aspx"
-      class="text-black px-2 py-3 block hover:bg-slate-300"
+      class="text-black px-2 py-2 block hover:bg-slate-300"
       target="_blank">About</a
+    >
+    <a
+      href="https://github.com/tobinbradley/quality-of-life-explorer"
+      class="text-black px-2 py-2 block hover:bg-slate-300"
+      target="_blank">Github</a
     >
   </div>
 </div>
