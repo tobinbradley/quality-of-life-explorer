@@ -15,7 +15,7 @@
       >
       </button>
     </div>
-    <iframe src="https://www.youtube.com/embed/w5zEiT2PCfo?autoplay=1" class="w-full h-full" frameborder="0" title="video tutorial" />
+    <iframe src="https://www.youtube.com/embed/73Eu1H_-iVk?autoplay=1" class="w-full h-full" frameborder="0" title="video tutorial" />
   </div>
 
 {/if}
