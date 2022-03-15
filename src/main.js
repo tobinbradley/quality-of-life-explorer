@@ -6,7 +6,7 @@ import Tabs from './lib/Tabs.svelte'
 import Meta from './lib/Meta.svelte'
 import Map from './lib/Map.svelte'
 import SubMap from './lib/SubMap.svelte'
-import TrendChart from './lib/TrendChart.svelte'
+import Charts from './lib/Charts.svelte'
 import Search from './lib/Search.svelte'
 import Toast from './lib/Toast.svelte'
 import Embed from './lib/Embed.svelte'
@@ -39,8 +39,8 @@ new SubMap({
   target: document.getElementById("misccontrols")
 })
 
-new TrendChart({
-  target: document.getElementById("trendchart")
+new Charts({
+  target: document.getElementById("charts")
 })
 
 new Search({
