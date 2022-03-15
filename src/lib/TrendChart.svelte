@@ -1,6 +1,6 @@
 <script>
   import { selectedData, selectedConfig, calcCounty, calcSelected, selectedNeighborhoods } from '../store/store'
-  import { isNumeric, formatNumber } from "./utils"
+  import { formatNumber } from "./utils"
 
   let chart
   let ApexCharts
