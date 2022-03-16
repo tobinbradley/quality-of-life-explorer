@@ -39,7 +39,7 @@
   <div class="flex columns-2 p-1  gap-1">
     {#if $selectedNeighborhoods.length > 0}
     <!-- selected -->
-    <div class="flex-grow text-center text-pink-600">
+    <div class="flex-grow text-center text-stone-800">
       <div class="font-semibold">SELECTED</div>      
       <div class="font-bold text-2xl">
         {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
