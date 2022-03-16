@@ -2,8 +2,6 @@
   import { selectedConfig, selectedData, breaks, minBreak, yearIdx, colors, calcCounty, calcCountyRaw, calcSelected, calcSelectedRaw, selectedNeighborhoods, highlightNeighborhoods } from "../store/store"
   import { formatNumber, isNumeric } from "./utils"
 
-  // BUG: fonts jank on Linux - default font stack?
-
   // filter id's by break range for hover and select
   function getIds(rIdx) {
     const range = [...$breaks]
@@ -30,49 +28,38 @@
       {$selectedData.years[$yearIdx]}
     {/if}
   </h2>
-  <div class="text-center text-sm text-stone-600 p-1 leading-tight">
+  <div class="text-xs text-stone-600 p-1 leading-tight">
     {@html $selectedConfig.subtitle}
+    {#if $selectedConfig.label}
+    (<span class="italic">{@html $selectedConfig.label}</span>)
+    {/if}
   </div>
 
   {#if $selectedData}
-  <div class="flex columns-2 p-1">
+  <div class="flex columns-2 p-1  gap-1">
     {#if $selectedNeighborhoods.length > 0}
     <!-- selected -->
-    <div class="flex-grow text-center">
-      <div class="text-sm text-stone-600 font-semibold">SELECTED</div>      
-      <div class="font-semibold">
+    <div class="flex-grow text-center text-pink-600">
+      <div class="font-semibold">SELECTED</div>      
+      <div class="font-bold text-2xl">
         {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
       </div>
-      {#if $selectedConfig.label}
-      <div class="lowercase text-sm leading-none text-stone-600">{@html $selectedConfig.label}</div>
-      {/if}
       {#if $selectedConfig.raw_label}
-      <div class="text">or</div>
-      <div class="font-semibold text-sm">
-        {formatNumber($calcSelectedRaw[$yearIdx])}
-      </div>
-      <div class="text-sm lowercase leading-none text-stone-600">
-        {$selectedConfig.raw_label}
-      </div>
+      <div class="text-xs pt-1">
+        {formatNumber($calcSelectedRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
+      </div>      
       {/if}
     </div>
     {/if}
 
     <!-- county -->
-    <div class="flex-grow text-center">
-      <div class="text-sm">COUNTY</div>
-      <div class="font-semibold">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>
-      {#if $selectedConfig.label}
-      <div class="lowercase text-sm leading-none text-stone-600">{$selectedConfig.label}</div>
-      {/if}
+    <div class="flex-grow text-center text-stone-800">
+      <div class="font-semibold">COUNTY</div>
+      <div class="font-bold text-2xl">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>      
       {#if $selectedConfig.raw_label}
-      <div class="text">or</div>
-      <div class="font-semibold text-sm">
-        {formatNumber($calcCountyRaw[$yearIdx])}
-      </div>
-      <div class="text-sm lowercase leading-none text-stone-600">
-        {$selectedConfig.raw_label}
-      </div>
+      <div class="text-xs pt-1">
+        {formatNumber($calcCountyRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
+      </div>      
       {/if}
     </div>
   </div>
