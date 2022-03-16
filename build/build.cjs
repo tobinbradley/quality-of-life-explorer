@@ -9,6 +9,13 @@ const metaDest = './public/data/meta/'
 const dataSrc = path.resolve('./data/metric/')
 const dataDest = path.resolve('./public/data/metric/')
 
+fs.mkdirSync(metaDest, { recursive: true }, (err) => {
+  if (err) throw err
+})
+fs.mkdirSync(dataDest, { recursive: true }, (err) => {
+  if (err) throw err
+})
+
 /********************************************* */
 // Start Meta
 /********************************************* */
