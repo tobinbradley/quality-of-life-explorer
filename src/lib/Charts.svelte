@@ -6,6 +6,7 @@
     calcSelected,
     selectedNeighborhoods,
     breakCkmeans,
+    yearIdx
   } from "../store/store"
   import { formatNumber } from "./utils"
   import { bin } from "d3-array"
@@ -38,17 +39,17 @@
   }
 
   // histogram
-  $: if (mounted && $breakCkmeans) {
+  $: if (mounted && $selectedNeighborhoods && $selectedData && $yearIdx >= 0) {
     distributionChart()
   }
 
   function trendChart() {
     let options = {
       title: {
-        text: $selectedConfig.title,
+        text: $selectedConfig.title
       },
       legend: {
-        showForSingleSeries: true,
+        showForSingleSeries: true
       },
       chart: {
         type: "line",
@@ -60,47 +61,48 @@
             zoomin: false,
             zoomout: false,
             pan: false,
-            reset: false,
+            reset: false
           },
           export: {
             csv: {
               filename: $selectedConfig.title,
-              headerCategory: "Year",
+              headerCategory: "Year"
             },
             svg: {
-              filename: $selectedConfig.title,
+              filename: $selectedConfig.title
             },
             png: {
-              filename: $selectedConfig.title,
-            },
-          },
-        },
+              filename: $selectedConfig.title
+            }
+          }
+        }
       },
       series: [
         {
           name: "County",
-          data: $calcCounty,
-        },
+          data: $calcCounty
+        }
       ],
       xaxis: {
-        categories: $selectedData.years,
+        categories: $selectedData.years
       },
       stroke: {
-        curve: "smooth",
+        curve: "smooth"
       },
+      colors: ["#008FFB", "#DB2777"],
       yaxis: {
         min: 0,
         labels: {
           formatter: (value) =>
-            formatNumber(value, $selectedConfig.format || null),
-        },
-      },
+            formatNumber(value, $selectedConfig.format || null)
+        }
+      }
     }
 
     if ($selectedNeighborhoods.length > 0) {
       options.series.push({
         name: "Selected",
-        data: $calcSelected,
+        data: $calcSelected
       })
     }
 
@@ -121,56 +123,104 @@
     const histGenerator = bin()
     const histData = histGenerator($breakCkmeans.flat())
     const data = []
+    const sdata = []
 
-    histData.forEach((el) => {
-      data.push(el.length)
+    // make array for selected values
+    const selecteVals = []
+    $selectedNeighborhoods.forEach((el) => {
+      selecteVals.push($selectedData.m[el][$yearIdx])
     })
 
-    var options = {
+    histData.forEach((el, idx) => {
+      //data.push(el.length)
+      const datum = {
+        x: idx + 1,
+        y: el.length + 1
+      }
+
+      if (el.some((r) => selecteVals.indexOf(r) >= 0)) {
+        datum.goals = [
+          {
+            name: "Expected",
+            value: 0,
+            strokeHeight: 4,
+            strokeColor: "#DB2777"
+          }
+        ]
+      }
+
+      data.push(datum)
+    })
+
+    const options = {
       title: {
-        text: "Distribution",
+        text: "Histogram",
+        margin: 0,
+        offsetY: 20
       },
       series: [
         {
-          name: "Frequency",
-          data: data,
-        },
+          name: "Actual",
+          data: data
+        }
       ],
       chart: {
+        height: 100,
         type: "bar",
-        height: 60,
         sparkline: {
-          enabled: true,
+          enabled: false
         },
+        toolbar: {
+          offsetY: 20,
+          tools: {
+            download: true,
+            selection: false,
+            zoom: false,
+            zoomin: false,
+            zoomout: false,
+            pan: false,
+            reset: false
+          },
+          export: {
+            csv: {
+              filename: $selectedConfig.title + ' Histogram',
+              headerCategory: "Year"
+            },
+            svg: {
+              filename: $selectedConfig.title + ' Histogram'
+            },
+            png: {
+              filename: $selectedConfig.title + ' Histogram'
+            }
+          }
+        }
       },
       plotOptions: {
         bar: {
-          horizontal: false,
-          columnWidth: "90%",
-          endingShape: "rounded",
-        },
+          columnWidth: "95%"
+        }
       },
       dataLabels: {
-        enabled: false,
+        enabled: false
       },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"],
+      yaxis: {
+        show: false
       },
       xaxis: {
-        categories: [""],
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        floating: true
       },
-      fill: {
-        opacity: 1,
+      grid: {
+        show: false
       },
       tooltip: {
-        // y: {
-        //   formatter: function (val) {
-        //     return "$ " + val + " thousands"
-        //   }
-        // }
-      },
+        enabled: false
+      }
     }
 
     if (!dchart) {
