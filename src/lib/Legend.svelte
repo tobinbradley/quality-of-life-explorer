@@ -40,14 +40,14 @@
     {#if $selectedNeighborhoods.length > 0}
     <!-- selected -->
     <div class="flex-grow text-center text-stone-800">
-      <div class="font-semibold">SELECTED</div>      
+      <div class="font-semibold">SELECTED</div>
       <div class="font-bold text-2xl">
         {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
       </div>
       {#if $selectedConfig.raw_label}
       <div class="text-xs pt-1">
         {formatNumber($calcSelectedRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
-      </div>      
+      </div>
       {/if}
     </div>
     {/if}
@@ -55,11 +55,11 @@
     <!-- county -->
     <div class="flex-grow text-center text-stone-800">
       <div class="font-semibold">COUNTY</div>
-      <div class="font-bold text-2xl">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>      
+      <div class="font-bold text-2xl">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>
       {#if $selectedConfig.raw_label}
       <div class="text-xs pt-1">
         {formatNumber($calcCountyRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
-      </div>      
+      </div>
       {/if}
     </div>
   </div>
@@ -67,84 +67,21 @@
 
   {#if $breaks}
   <div class="pt-1">
-    <svg
-      class="block w-full h-11"
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYMid meet"
-      viewBox="0 0 248.4 39.2"
-      id="maplegend"
-      role="img"
-      aria-label="choropleth legend"
-    >
-      <g transform="translate(20.714293 -851.75475)">
-        <rect
-          y="865.9"
-          x="-20.7"
-          height="25"
-          width="50"
-          style="fill: {$colors[0]}"
-          on:mouseenter={() => $highlightNeighborhoods = getIds(0)}
-          on:click={() => $selectedNeighborhoods = getIds(0)}
+    <svg width='100%' height='45px' role="img" aria-label="choropleth legend">
+      <g class='bars'>
+        {#each $colors as color, idx}
+        <rect fill="{color}" x="{20 * idx}%" y="20" width='20%' height='25'
+          on:mouseenter={() => $highlightNeighborhoods = getIds(idx)}
+          on:click={() => $selectedNeighborhoods = getIds(idx)}
           on:mouseleave={() => $highlightNeighborhoods = []}
-        />
-        <rect
-          width="50"
-          height="25"
-          x="28.9"
-          y="865.9"
-          style="fill: {$colors[1]}"
-          on:mouseenter={() => $highlightNeighborhoods = getIds(1)}
-          on:click={() => $selectedNeighborhoods = getIds(1)}
-          on:mouseleave={() => $highlightNeighborhoods = []}
-        />
-        <rect
-          width="50"
-          height="25"
-          x="78.5"
-          y="865.9"
-          style="fill: {$colors[2]}"
-          on:mouseenter={() => $highlightNeighborhoods = getIds(2)}
-          on:click={() => $selectedNeighborhoods = getIds(2)}
-          on:mouseleave={() => $highlightNeighborhoods = []}
-        />
-        <rect
-          y="865.9"
-          x="128.1"
-          height="25"
-          width="50"
-          style="fill: {$colors[3]}"
-          on:mouseenter={() => $highlightNeighborhoods = getIds(3)}
-          on:click={() => $selectedNeighborhoods = getIds(3)}
-          on:mouseleave={() => $highlightNeighborhoods = []}
-        />
-        <rect
-          width="50"
-          height="25"
-          x="177.6"
-          y="865.9"
-          style="fill: {$colors[4]}"
-          on:mouseenter={() => $highlightNeighborhoods = getIds(4)}
-          on:click={() => $selectedNeighborhoods = getIds(4)}
-          on:mouseleave={() => $highlightNeighborhoods = []}
-        />
-        <text x="-19.5" y="864.3" class="legendText">
-          <tspan x="-19.5" y="864.3">{formatNumber($minBreak, "short")}</tspan>
-        </text>
-        <text y="864.4" x="28.6" class="legendText">
-          <tspan y="864.4" x="28.6">{formatNumber($breaks[0], "short")}</tspan>
-        </text>
-        <text x="78.4" y="864.4" class="legendText">
-          <tspan x="78.4" y="864.4">{formatNumber($breaks[1], "short")}</tspan>
-        </text>
-        <text y="864.4" x="128" class="legendText">
-          <tspan y="864.4" x="128">{formatNumber($breaks[2], "short")}</tspan>
-        </text>
-        <text x="177.8" y="864.4" class="legendText">
-          <tspan x="177.8" y="864.4">{formatNumber($breaks[3], "short")}</tspan>
-        </text>
-        <text y="864.3" x="225.8" class="legendText">
-          <tspan y="864.3" x="225.8">{formatNumber($breaks[4], "short")}</tspan>
-        </text>
+        ></rect>
+        {/each}
+      </g>
+      <g class="labels">
+        <text class="legendText" x='0' y='19'>{formatNumber($minBreak, "short")}</text>
+        {#each $breaks as brake, idx}
+        <text class="legendText" x='{(idx + 1) * 20}%' y='19'>{formatNumber(brake, "short")}</text>
+        {/each}
       </g>
     </svg>
   </div>
