@@ -74,9 +74,8 @@
       viewBox="0 0 248.4 39.2"
       id="maplegend"
       role="img"
-      aria-labelledby="svgTitle"
+      aria-label="choropleth legend"
     >
-      <title id="svgTitle">Choropleth legend</title>
       <g transform="translate(20.714293 -851.75475)">
         <rect
           y="865.9"
