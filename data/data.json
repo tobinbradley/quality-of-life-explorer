@@ -2,7 +2,7 @@
   {
     "metric": "m2",
     "category": "Character",
-    "label": "Years",
+    "label": "years",
     "title": "Age of Residents",
     "world_val": {
       "y_2017": 35
@@ -12,7 +12,7 @@
   {
     "metric": "m1",
     "category": "Character",
-    "label": "Acres",
+    "label": "acres",
     "title": "Area",
     "sum": true,
     "subtitle": "Total land area"
@@ -34,8 +34,8 @@
   {
     "metric": "m47",
     "category": "Character",
-    "label": "People per Acre",
-    "raw_label": "People",
+    "label": "people per Acre",
+    "raw_label": "people",
     "title": "Population Density",
     "subtitle": "Concentration of residents",
     "raw_val": {
@@ -81,22 +81,22 @@
     "metric": "m11",
     "category": "Character",
     "format": "percent",
-    "raw_label": "Acres",
+    "raw_label": "acres",
     "title": "Vacant Land",
     "subtitle": "Percentage of land area that is classified as vacant"
   },
   {
     "metric": "m42",
     "category": "Economy",
-    "label": "Years",
+    "label": "years",
     "title": "Commercial Building Age",
     "subtitle": "Average age of commercial buildings"
   },
   {
     "metric": "m19",
     "category": "Economy",
-    "label": "Permits per 100 Acres",
-    "raw_label": "Permits",
+    "label": "permits per 100 acres",
+    "raw_label": "permits",
     "title": "Commercial Construction",
     "decimals": 1,
     "subtitle": "Concentration of commercial building permits"
@@ -104,8 +104,8 @@
   {
     "metric": "m41",
     "category": "Economy",
-    "label": "Average Square Feet",
-    "raw_label": "Square Feet",
+    "label": "average ft<sup>2</sup>",
+    "raw_label": "ft<sup>2</sup>",
     "title": "Commercial Space",
     "subtitle": "Average square footage of commercial space per parcel"
   },
@@ -136,8 +136,8 @@
   {
     "metric": "m75",
     "category": "Economy",
-    "label": "Jobs per Acre",
-    "raw_label": "Jobs",
+    "label": "jobs per acre",
+    "raw_label": "jobs",
     "title": "Job Density",
     "decimals": 1,
     "subtitle": "Concentration of jobs"
@@ -146,7 +146,7 @@
     "metric": "m71",
     "category": "Environment",
     "format": "percent",
-    "raw_label": "Miles",
+    "raw_label": "miles",
     "title": "Adopt-a-Street Participation",
     "subtitle": "Percentage of eligible streets adopted for clean-up"
   },
@@ -154,7 +154,7 @@
     "metric": "m79",
     "category": "Economy",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Proximity to Financial Services",
     "subtitle": "Percentage of housing units within &#189;-mile of a bank or credit union"
   },
@@ -204,7 +204,7 @@
     "metric": "m21",
     "category": "Education",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Proximity to Early Care and Education",
     "subtitle": "Percentage of housing units within &#189;-mile of a licensed early care and education program for children birth to age 5"
   },
@@ -212,7 +212,7 @@
     "metric": "m22",
     "category": "Education",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Proximity to School-Age Care",
     "subtitle": "Percentage of housing units within &#189;-mile of a licensed school-age program for children ages 5-12"
   },
@@ -247,8 +247,8 @@
   {
     "metric": "m52",
     "category": "Engagement",
-    "label": "Calls per 100 People",
-    "raw_label": "Calls",
+    "label": "calls per 100 people",
+    "raw_label": "calls",
     "title": "311 Requests",
     "decimals": 1,
     "subtitle": "Concentration of 311 requests from residents"
@@ -257,22 +257,22 @@
     "metric": "m50",
     "category": "Engagement",
     "format": "percent",
-    "raw_label": "Households",
+    "raw_label": "households",
     "title": "Arts and Culture Participation",
     "subtitle": "Percentage of households that participate in ASC-sponsored arts or cultural activities"
   },
   {
     "metric": "m72",
     "category": "Engagement",
-    "label": "Residents serving per 1,000 People",
-    "raw_label": "People",
+    "label": "residents serving per 1,000 people",
+    "raw_label": "people",
     "title": "Municipal Board/Committee Participation",
     "subtitle": "Number of residents that serve on appointed public boards, committees and commissions per 1,000 residents"
   },
   {
     "metric": "m73",
     "category": "Engagement",
-    "label": "Organizations",
+    "label": "organizations",
     "title": "Neighborhood Organizations",
     "type": "sum",
     "subtitle": "Number of neighborhood organizations registered with the Charlotte-Mecklenburg Planning Department"
@@ -281,7 +281,7 @@
     "metric": "m48",
     "category": "Engagement",
     "format": "percent",
-    "raw_label": "People",
+    "raw_label": "people",
     "title": "Voter Participation",
     "subtitle": "Percentage of registered voters that voted in the general election"
   },
@@ -289,7 +289,7 @@
     "metric": "m43",
     "category": "Environment",
     "format": "percent",
-    "raw_label": "Miles",
+    "raw_label": "miles",
     "title": "Adopt-a-Stream Participation",
     "subtitle": "Percentage of eligible streams adopted for clean-up"
   },
@@ -298,7 +298,7 @@
     "category": "Environment",
     "format": "percent",
     "title": "Commuters Driving Alone",
-    "raw_label": "",
+    "raw_label": "commuters",
     "subtitle": "Percentage of workers who commute by driving alone",
     "world_val": {
       "y_2017": 83
@@ -307,16 +307,16 @@
   {
     "metric": "m26",
     "category": "Environment",
-    "label": "Kilowatt hours per month per unit",
-    "raw_label": "Kilowatt hours per month",
+    "label": "<span title='Kilowatt-Hour' class='underline cursor-pointer'>kWh</span> per month per unit",
+    "raw_label": "<span title='Kilowatt-Hour' class='underline cursor-pointer'>kWh</span> per month",
     "title": "Energy Consumption - Electricity",
     "subtitle": "Average monthly household electricity consumption"
   },
   {
     "metric": "m77",
     "category": "Environment",
-    "label": "Therms per month per unit",
-    "raw_label": "Therms per month",
+    "label": "therms per month per unit",
+    "raw_label": "therms per month",
     "title": "Energy Consumption - Natural Gas",
     "subtitle": "Average monthly household natural gas consumption"
   },
@@ -324,7 +324,7 @@
     "metric": "m4",
     "category": "Environment",
     "format": "percent",
-    "raw_label": "Acres",
+    "raw_label": "acres",
     "title": "Impervious Surface",
     "subtitle": "Percentage of land area that is impervious"
   },
@@ -332,15 +332,15 @@
     "metric": "m23",
     "category": "Environment",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Residential Recycling",
     "subtitle": "Percentage of eligible households that participate in municipal curbside recycling"
   },
   {
     "metric": "m24",
     "category": "Environment",
-    "label": "Pounds per Day per unit",
-    "raw_label": "Pounds per Day",
+    "label": "pounds per day per unit",
+    "raw_label": "pounds per day",
     "title": "Residential Solid Waste",
     "decimals": 1,
     "subtitle": "Average daily waste generation per household"
@@ -349,7 +349,7 @@
     "metric": "m25",
     "category": "Environment",
     "format": "percent",
-    "raw_label": "Tons",
+    "raw_label": "tons",
     "title": "Residential Solid Waste Diversion",
     "decimals": 1,
     "subtitle": "Percentage of residential solid waste diverted from landfills through recycling and yard waste processing"
@@ -358,7 +358,7 @@
     "metric": "m3",
     "category": "Environment",
     "format": "percent",
-    "raw_label": "Acres",
+    "raw_label": "acres",
     "title": "Tree Canopy",
     "subtitle": "Percentage of land area covered by tree canopy"
   },
@@ -366,22 +366,22 @@
     "metric": "m49",
     "category": "Environment",
     "format": "percent",
-    "raw_label": "Acres",
+    "raw_label": "acres",
     "title": "Tree Canopy - Residential",
     "subtitle": "Percentage of residential land area covered by tree canopy"
   },
   {
     "metric": "m27",
     "category": "Environment",
-    "label": "Gallons per Day per unit",
-    "raw_label": "Gallons per Day",
+    "label": "gallons per day per unit",
+    "raw_label": "gallons per day",
     "title": "Water Consumption",
     "subtitle": "Average daily water consumption for single-family housing units"
   },
   {
     "metric": "m57",
     "category": "Health",
-    "label": "Years",
+    "label": "years",
     "title": "Age of Death",
     "subtitle": "Average age of death"
   },
@@ -411,7 +411,7 @@
     "metric": "m46",
     "category": "Health",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Proximity to a Pharmacy",
     "subtitle": "Percentage of housing units within &#189;-mile of a pharmacy"
   },
@@ -419,7 +419,7 @@
     "metric": "m28",
     "category": "Health",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Proximity to Low-Cost Health Care",
     "subtitle": "Percentage of housing units within &#189;-mile of a Medicaid provider or free clinic"
   },
@@ -427,7 +427,7 @@
     "metric": "m74",
     "category": "Health",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Proximity to Public Outdoor Recreation",
     "subtitle": "Percentage of housing units within &#189;-mile of an outdoor public recreation area"
   },
@@ -435,7 +435,7 @@
     "metric": "m45",
     "category": "Health",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Proximity to a Grocery Store",
     "subtitle": "Percentage of housing units within &#189;-mile of a full-service, chain grocery store"
   },
@@ -463,7 +463,7 @@
   {
     "metric": "m7",
     "category": "Housing",
-    "label": "Years",
+    "label": "years",
     "title": "Housing Age",
     "subtitle": "Average age of single-family housing units"
   },
@@ -471,23 +471,23 @@
     "metric": "m82",
     "category": "Housing",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Housing Assistance – Development-Based",
     "subtitle": "Percentage of housing units with development-based rental assistance"
   },
   {
     "metric": "m68",
     "category": "Housing",
-    "label": "Violations per 100 Units",
+    "label": "violations per 100 units",
     "title": "Housing Code Violations",
-    "raw_label": "Violations",
+    "raw_label": "violations",
     "subtitle": "Housing-related code violations per 100 units"
   },
   {
     "metric": "m5",
     "category": "Housing",
-    "label": "Units per Acre",
-    "raw_label": "Units",
+    "label": "units per acre",
+    "raw_label": "units",
     "title": "Housing Density",
     "decimals": 1,
     "subtitle": "Concentration of housing units"
@@ -495,7 +495,7 @@
   {
     "metric": "m6",
     "category": "Housing",
-    "label": "Average Sqft",
+    "label": "average ft<sup>2</sup>",
     "title": "Housing Size",
     "subtitle": "Average heated living space of single-family housing units"
   },
@@ -513,14 +513,14 @@
     "metric": "m53",
     "category": "Housing",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Rental Houses",
     "subtitle": "Percentage of detached single-family dwellings that are rentals"
   },
   {
     "metric": "m83",
     "category": "Housing",
-    "label": "Demos per 1,000 units",
+    "label": "demos per 1,000 units",
     "raw_label": "demolitions",
     "title": "Residential Demolitions",
     "decimals": 1,
@@ -530,7 +530,7 @@
     "metric": "m69",
     "category": "Housing",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Residential Foreclosures",
     "decimals": 1,
     "subtitle": "Percentage of dwellings that were foreclosed"
@@ -538,8 +538,8 @@
   {
     "metric": "m8",
     "category": "Housing",
-    "label": "Units per 100 Acres",
-    "raw_label": "Units",
+    "label": "units per 100 acres",
+    "raw_label": "units",
     "title": "Residential New Construction",
     "decimals": 1,
     "subtitle": "Concentration of residential units permitted for new construction"
@@ -554,8 +554,8 @@
   {
     "metric": "m9",
     "category": "Housing",
-    "label": "Units per 100 Acres",
-    "raw_label": "Units",
+    "label": "units per 100 acres",
+    "raw_label": "units",
     "title": "Residential Renovation",
     "decimals": 1,
     "subtitle": "Concentration of residential units permitted for renovation"
@@ -564,15 +564,15 @@
     "metric": "m30",
     "category": "Housing",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Single-Family Housing",
     "subtitle": "Percentage of housing units that are single-family houses"
   },
   {
     "metric": "m61",
     "category": "Safety",
-    "label": "Calls per 1,000 People",
-    "raw_label": "Calls",
+    "label": "calls per 1,000 people",
+    "raw_label": "calls",
     "title": "Calls for Animal Care and Control",
     "decimals": 1,
     "subtitle": "Animal control calls per 1,000 residents"
@@ -580,8 +580,8 @@
   {
     "metric": "m59",
     "category": "Safety",
-    "label": "Crimes per 1,000 People",
-    "raw_label": "Crimes",
+    "label": "crimes per 1,000 people",
+    "raw_label": "crimes",
     "title": "Crime - Property",
     "decimals": 1,
     "subtitle": "Property crime rate per 1,000 residents"
@@ -589,8 +589,8 @@
   {
     "metric": "m58",
     "category": "Safety",
-    "label": "Crimes per 1,000 People",
-    "raw_label": "Crimes",
+    "label": "crimes per 1,000 people",
+    "raw_label": "crimes",
     "title": "Crime - Violent",
     "decimals": 1,
     "subtitle": "Violent crime rate per 1,000 residents"
@@ -598,8 +598,8 @@
   {
     "metric": "m60",
     "category": "Safety",
-    "label": "Calls per 1,000 People",
-    "raw_label": "Calls",
+    "label": "calls per 1,000 people",
+    "raw_label": "calls",
     "title": "Disorder-related Calls",
     "decimals": 1,
     "subtitle": "Disorder-related calls per 1,000 residents"
@@ -607,8 +607,8 @@
   {
     "metric": "m78",
     "category": "Safety",
-    "label": "Calls per 1,000 People",
-    "raw_label": "Calls",
+    "label": "calls per 1,000 people",
+    "raw_label": "calls",
     "title": "Fire Calls for Service",
     "decimals": 1,
     "subtitle": "Fire calls for service per 1,000 residents"
@@ -616,8 +616,8 @@
   {
     "metric": "m32",
     "category": "Safety",
-    "label": "Violations per 100 Units",
-    "raw_label": "Violations",
+    "label": "violations per 100 units",
+    "raw_label": "violations",
     "title": "Nuisance Violations",
     "decimals": 1,
     "subtitle": "Nuisance violations per 100 housing units"
@@ -625,7 +625,7 @@
   {
     "metric": "m34",
     "category": "Transportation",
-    "label": "Index Value (1-3)",
+    "label": "index value (1-3)",
     "title": "Bicycle Friendliness",
     "decimals": 1,
     "subtitle": "Index measuring the transportation network's ability to comfortably support cycling"
@@ -644,7 +644,7 @@
     "metric": "m36",
     "category": "Transportation",
     "format": "percent",
-    "raw_label": "Units",
+    "raw_label": "units",
     "title": "Proximity to Public Transportation",
     "subtitle": "Percentage of housing units within &#189;-mile of a transit stop"
   },
@@ -652,7 +652,7 @@
     "metric": "m70",
     "category": "Transportation",
     "format": "percent",
-    "raw_label": "Miles",
+    "raw_label": "miles",
     "title": "Sidewalk Availability",
     "decimals": 1,
     "subtitle": "Percentage of paved streets that have sidewalks"
@@ -660,7 +660,7 @@
   {
     "metric": "m35",
     "category": "Transportation",
-    "label": "Index Value (1-3)",
+    "label": "index value (1-3)",
     "title": "Street Connectivity",
     "decimals": 2,
     "subtitle": "Index measuring the connectedness of the street network"
@@ -668,8 +668,8 @@
   {
     "metric": "m44",
     "category": "Transportation",
-    "label": "Boardings per stop",
-    "raw_label": "Weekly boardings",
+    "label": "boardings per stop",
+    "raw_label": "weekly boardings",
     "title": "Transit Ridership",
     "subtitle": "Average weekly bus and train boardings per stop"
   }
