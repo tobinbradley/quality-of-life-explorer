@@ -70,7 +70,7 @@
     <svg width='100%' height='45px' role="img" aria-label="choropleth legend">
       <g class='bars'>
         {#each $colors as color, idx}
-        <rect fill="{color}" x="{20 * idx}%" y="20" width='20%' height='25'
+        <rect fill="{color}" x="{(100 / $colors.length) * idx}%" y="20" width='{100 / $colors.length}%' height='25'
           on:mouseenter={() => $highlightNeighborhoods = getIds(idx)}
           on:click={() => $selectedNeighborhoods = getIds(idx)}
           on:mouseleave={() => $highlightNeighborhoods = []}
@@ -80,7 +80,7 @@
       <g class="labels">
         <text class="legendText" x='0' y='19'>{formatNumber($minBreak, "short")}</text>
         {#each $breaks as brake, idx}
-        <text class="legendText" x='{(idx + 1) * 20}%' y='19'>{formatNumber(brake, "short")}</text>
+        <text class="legendText" x='{(idx + 1) * (100 / $colors.length)}%' y='19'>{formatNumber(brake, "short")}</text>
         {/each}
       </g>
     </svg>

@@ -3,6 +3,9 @@ import dataJSON from '../../data/data.json'
 import { ckmeans } from 'simple-statistics'
 import { calcAggregate, calcRaw } from '../lib/utils'
 
+// This will control the number of breaks
+const colorList = ["rgb(238,250,227)", "rgb(186,228,188)", "rgb(123,204,196)", "rgb(67,162,202)", "rgb(8,104,172)"]
+
 // BUG: how do I verify the passed NPA's are solid?
 
 // read URL params on load for selected metric and neighborhoods
@@ -59,7 +62,7 @@ export let breakCkmeans = derived(selectedData, value => {
   for (const key in value.m) {
     breakSet = breakSet.concat(value.m[key])
   }
-  return ckmeans(breakSet.filter(el => el !== null), 5)
+  return ckmeans(breakSet.filter(el => el !== null), colorList.length)
 })
 export let breaks = derived(breakCkmeans, value => {
   if (!value) return null
@@ -85,7 +88,7 @@ export let selectedNeighborhoods = writable(selected)
 export let highlightNeighborhoods = writable([])
 
 // colors
-export const colors = readable(["rgb(238,250,227)", "rgb(186,228,188)", "rgb(123,204,196)", "rgb(67,162,202)", "rgb(8,104,172)"])
+export const colors = readable(colorList)
 
 const hash = derived([selectedMetric, selectedNeighborhoods], ([v1, v2]) => {
   return `#${v1.replace('m', '')}/${v2.join(',')}`
