@@ -1,5 +1,5 @@
 <script>
-  import { selectedMetric } from '../store/store'
+  import { selectedConfig, selectedMetric, dataConfig } from '../store/store'
 
   let meta = ''
   let about = ''
@@ -17,14 +17,13 @@
     return string.split(subString, index).join(subString).length;
   }
 
-  // TODO: Change meta markdown to handle related variables
-  window.setMetric = metric => {
+  function relatedVariable(metric) {
     $selectedMetric = metric
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
-
-
-
-  // make global links
 
 </script>
 
@@ -32,5 +31,15 @@
   <div class="md:col-span-2 p-4 shadow-md bg-white">{@html meta}</div>
   <div>
     <div class="p-4 shadow-md bg-white">{@html about}</div>
+    {#if $selectedConfig.related}
+    <div class="p-4 shadow-md bg-white mt-4">
+      <h2>Related Variables</h2>
+      <ul class="ml-2">
+        {#each $selectedConfig.related as metric}
+          <li><button class="text-pink-600 underline" on:click={() => relatedVariable(metric)}>{ $dataConfig.filter(el => el.metric === metric)[0].title}</button></li>
+        {/each}
+      </ul>
+    </div>
+    {/if}
   </div>
 </div>
