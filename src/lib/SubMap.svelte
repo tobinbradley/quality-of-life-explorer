@@ -4,42 +4,49 @@
   import groups from "../assets/neighborhod-groups.json"
   import { selectedNeighborhoods, selectedMetric, selectedData, selectedConfig, mapZoom } from '../store/store'
   import { sendDownload, formatNumber } from './utils'
-
+  
   let download
 
+  // TODO: Add raw values to csv and geojson downloads
+
   function doDownload() {
-    if (download === "geojson") {
+    const selectedFilter = download === "sgeojson" || download === "scsv" ? true : false
+
+    if (download === "geojson" || download === "sgeojson") {
+      const outJSON = {
+        "type": "FeatureCollection",
+        "features": []
+      }
       fetch('./public/data/geography/geography.geojson.json')
         .then(response => response.json())
         .then(json => {
-          json.features.forEach(elem => {
+          json.features.forEach((elem, jsonidx) => {
             $selectedData.years.forEach((y, idx) => {
               elem.properties[y] = $selectedData.m[elem.properties.id][idx]
             })
+            if (!selectedFilter || ( selectedFilter && $selectedNeighborhoods.indexOf(elem.properties.id) !== -1 )) {
+              outJSON.features.push(elem)
+            }
           })
-          sendDownload(JSON.stringify(json), 'data:text/json;charset=utf-8;', `${$selectedConfig.title}.geojson`)
+          sendDownload(JSON.stringify(outJSON), 'data:text/json;charset=utf-8;', `${$selectedConfig.title}.geojson`)
         })
         .catch(error => {
+          download = "default"
           console.error('There has been a problem with your fetch operation:', error);
         })
     }
-    if (download === "csv") {
+    if (download === "csv" || download === "scsv") {
       const header = []
-
       let body = ""
 
       header.push("NPA")
       header.push(...$selectedData.years)
 
-      // TODO: add raw value to CSV
-
       for (const key in $selectedData.m) {
         let row = [key, ...$selectedData.m[key].map(el => formatNumber(el, $selectedConfig.format || null))]
-        body += row.join(",") + "\n"
-        // if ($selectedConfig.raw_label) {
-        //   let row = [key, ...$selectedData.d[key].map(el => `${formatNumber(el)} ${$selectedConfig.raw_label}`)]
-        // body += row.join(",") + "\n"
-        // }
+        if (!selectedFilter || ( selectedFilter && $selectedNeighborhoods.indexOf(key) !== -1 )) {
+          body += row.join(",") + "\n"
+        }
       }
 
       sendDownload(
@@ -54,6 +61,7 @@
     if (download === "metadata") {
       window.open(`data/meta/${$selectedConfig.metric}.html`)
     }
+
     download = "default"
   }
 
@@ -96,13 +104,15 @@
     >Print</button
   >
   <select
-    class="ml-1 text-white bg-pink-600 shadow transition-shadow  hover:shadow-lg px-3 py-1 rounded"
+    class="ml-1 text-white bg-pink-600 shadow transition-shadow hover:shadow-lg px-3 py-1 rounded"
     bind:value={download}
     on:change={doDownload}
   >
     <option value="default">Download</option>
     <option value="csv">CSV</option>
     <option value="geojson">GeoJSON</option>
+    <option value="scsv" class="disabled:text-gray-300" disabled={$selectedNeighborhoods.length === 0}>Selected CSV</option>
+    <option value="sgeojson" class="disabled:text-gray-300" disabled={$selectedNeighborhoods.length === 0}>Selected GeoJSON</option>
     <option value="metadata">Metadata</option>
     <option value="zip">All Data (zip)</option>
   </select>
