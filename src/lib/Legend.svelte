@@ -45,7 +45,7 @@
         {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
       </div>
       {#if $selectedConfig.raw_label}
-      <div class="text-xs pt-1">
+      <div class="text-xs">
         {formatNumber($calcSelectedRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
       </div>
       {/if}
@@ -57,7 +57,7 @@
       <div class="font-semibold">COUNTY</div>
       <div class="font-bold text-2xl">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>
       {#if $selectedConfig.raw_label}
-      <div class="text-xs pt-1">
+      <div class="text-xs">
         {formatNumber($calcCountyRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
       </div>
       {/if}
