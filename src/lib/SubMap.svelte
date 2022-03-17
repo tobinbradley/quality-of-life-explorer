@@ -7,8 +7,6 @@
   
   let download
 
-  // TODO: Add raw values to csv and geojson downloads
-
   function doDownload() {
     const selectedFilter = download === "sgeojson" || download === "scsv" ? true : false
 
@@ -23,6 +21,9 @@
           json.features.forEach((elem, jsonidx) => {
             $selectedData.years.forEach((y, idx) => {
               elem.properties[y] = $selectedData.m[elem.properties.id][idx]
+              if ($selectedConfig.raw_label) {
+                elem.properties[`${y}-raw`] = Math.round($selectedData.d[elem.properties.id][idx] * $selectedData.m[elem.properties.id][idx] * 10) / 10
+              }
             })
             if (!selectedFilter || ( selectedFilter && $selectedNeighborhoods.indexOf(elem.properties.id) !== -1 )) {
               outJSON.features.push(elem)
@@ -42,10 +43,15 @@
       header.push("NPA")
       header.push(...$selectedData.years)
 
+      if ($selectedConfig.raw_label) header.push(...$selectedData.years.map(el => `${el} Raw`))
+
       for (const key in $selectedData.m) {
         let row = [key, ...$selectedData.m[key].map(el => formatNumber(el, $selectedConfig.format || null))]
+        if ($selectedConfig.raw_label) {
+          row.push(...$selectedData.m[key].map((el, idx) => `"${formatNumber(el * $selectedData.d[key][idx], null)}"`) )
+        }
         if (!selectedFilter || ( selectedFilter && $selectedNeighborhoods.indexOf(key) !== -1 )) {
-          body += row.join(",") + "\n"
+          body += row.toString() + "\n"
         }
       }
 
