@@ -59,7 +59,7 @@
         {neighborhood}
       </td>
       <td class="text-right">
-        { formatNumber($selectedData.m[neighborhood][$yearIdx], $selectedConfig.format || null) }
+        { formatNumber($selectedData.m[neighborhood][$yearIdx], $selectedConfig.format || null) } 
       </td>
       {#if $selectedData.a}
       <td class="text-right">
@@ -73,7 +73,7 @@
       {/if}
       {#if $selectedConfig.raw_label}
       <td class="text-right">
-        { formatNumber($selectedData.m[neighborhood][$yearIdx] * $selectedData.d[neighborhood][$yearIdx]) } { $selectedConfig.raw_label }
+        { formatNumber($selectedData.m[neighborhood][$yearIdx] * $selectedData.d[neighborhood][$yearIdx]) } {@html $selectedConfig.raw_label }
       </td>
         {#if $selectedData.years.length > 1}
         <td class="text-right">
