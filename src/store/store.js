@@ -7,15 +7,29 @@ import { calcAggregate, calcRaw } from '../lib/utils'
 // This will control the number of breaks
 const colorList = ["rgb(238,250,227)", "rgb(186,228,188)", "rgb(123,204,196)", "rgb(67,162,202)", "rgb(8,104,172)"]
 
-// read URL params on load for selected metric and neighborhoods
+// Browser navigation detector
+let browserNav = false
+
+// toggle help modal
+export let help = writable(false)
+
+// Set initial metric and selected sets
 let metric = dataJSON[Math.floor(Math.random() * dataJSON.length)].metric
-let selected = []
-const args = window.location.hash.replace('#', '').split('/')
-if (args.length === 2) {
-  const met = dataJSON.filter(el => el.metric === 'm' + args[0])
-  if (met.length === 1) metric = met[0].metric
-  if (args[1].length > 0 && args[1].split(',').every((r) => geoKeys.indexOf(r) >= 0) ) selected = args[1].split(',')
+const hashArgs = readHashArgs()
+if (hashArgs[0]) metric = hashArgs[0]
+let selected = hashArgs[1]
+
+// read URL hash args
+function readHashArgs() {
+  const args = window.location.hash.replace('#', '').split('/')
+  return [
+    args[0] && dataJSON.filter(el => el.metric === 'm' + args[0]).length === 1 ?
+    'm' + args[0] : null,
+    args[1] && args[1].length > 0 && args[1].split(',').every((r) => geoKeys.indexOf(r) >= 0) ?
+    args[1].split(',') : []
+  ]
 }
+
 
 // readable data config
 export const dataConfig = readable(dataJSON.sort((a, b) => {
@@ -53,7 +67,6 @@ selectedMetric.subscribe(value => {
     })
 })
 
-
 // breaks
 export let breakCkmeans = derived(selectedData, value => {
   if (!value) return null
@@ -89,14 +102,6 @@ export let highlightNeighborhoods = writable([])
 // colors
 export const colors = readable(colorList)
 
-const hash = derived([selectedMetric, selectedNeighborhoods], ([v1, v2]) => {
-  return `#${v1.replace('m', '')}/${v2.join(',')}`
-})
-
-hash.subscribe(value => {
-  window.history.replaceState( {} , '', value )
-})
-
 // Aggregate county value
 export let calcCounty = derived([selectedData, selectedConfig], ([data, config]) => {
   if (!data) return null
@@ -121,5 +126,23 @@ export let calcCountyRaw = derived([selectedData, selectedConfig], ([data, confi
   return calcRaw(data, config, true)
 })
 
-// toggle help modal
-export let help = writable(false)
+// handle the hash
+const hash = derived([selectedMetric, selectedNeighborhoods], ([v1, v2]) => {
+  return `#${v1.replace('m', '')}/${v2.join(',')}`
+})
+hash.subscribe(value => {
+  if (!browserNav) history.pushState( {} , '', value )
+  browserNav = false
+})
+window.addEventListener('popstate', (event) => {
+  browserNav = true
+  const hashArgs = readHashArgs()
+  if (hashArgs[0]) selectedMetric.set(hashArgs[0])
+  if (hashArgs[1]) selectedNeighborhoods.set(hashArgs[1])
+})
+window.addEventListener('pushstate', (event) => {
+  browserNav = true
+  const hashArgs = readHashArgs()
+  if (hashArgs[0]) selectedMetric.set(hashArgs[0])
+  if (hashArgs[1]) selectedNeighborhoods.set(hashArgs[1])
+})
