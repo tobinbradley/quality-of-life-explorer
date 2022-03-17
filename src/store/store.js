@@ -1,12 +1,11 @@
 import { writable, readable, derived } from 'svelte/store'
 import dataJSON from '../../data/data.json'
+import geoKeys from '../assets/geokeys.json'
 import { ckmeans } from 'simple-statistics'
 import { calcAggregate, calcRaw } from '../lib/utils'
 
 // This will control the number of breaks
 const colorList = ["rgb(238,250,227)", "rgb(186,228,188)", "rgb(123,204,196)", "rgb(67,162,202)", "rgb(8,104,172)"]
-
-// BUG: how do I verify the passed NPA's are solid?
 
 // read URL params on load for selected metric and neighborhoods
 let metric = dataJSON[Math.floor(Math.random() * dataJSON.length)].metric
@@ -15,7 +14,7 @@ const args = window.location.hash.replace('#', '').split('/')
 if (args.length === 2) {
   const met = dataJSON.filter(el => el.metric === 'm' + args[0])
   if (met.length === 1) metric = met[0].metric
-  if (args[1].length > 0) selected = args[1].split(',')
+  if (args[1].length > 0 && args[1].split(',').every((r) => geoKeys.indexOf(r) >= 0) ) selected = args[1].split(',')
 }
 
 // readable data config
