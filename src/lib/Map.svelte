@@ -162,7 +162,7 @@
       "fill-color",
       {
         "property": "id",
-        "default": "rgb(242,243,240)",
+        "default": "rgba(242,243,240, 0)",
         "type": "categorical",
         "stops": stops
       }
@@ -189,6 +189,13 @@
         stops: heights
       }
     )
+
+    let filter3d = []
+    for (const key in $selectedData.m) {
+      const val = $selectedData.m[key][$yearIdx]
+      if (val !== null) filter3d.push(key)
+    }
+    map.setFilter("neighborhoods-3d", ["match", ["get", "id"], filter3d, true, false])
   }
 
 
@@ -224,7 +231,7 @@
 </script>
 
 <div id="map" use:init />
-<button class="absolute bottom-2 right-2 mapboxgl-ctrl-group hover:bg-gray-100 px-2 py-1"
+<button class="absolute bottom-2 right-2 bg-white shadow border-2 border-gray-200 rounded-md hover:bg-gray-100 p-1"
 on:click={() => $selectedNeighborhoods = []}
 >Clear</button>
 <Legend />
