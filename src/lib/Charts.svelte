@@ -40,7 +40,7 @@
 
   // histogram
   $: if (mounted && $selectedNeighborhoods && $selectedData && $yearIdx >= 0) {
-    //distributionChart()
+    distributionChart()
   }
 
   function trendChart() {
