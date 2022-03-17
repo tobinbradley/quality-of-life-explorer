@@ -40,7 +40,7 @@
 
   // histogram
   $: if (mounted && $selectedNeighborhoods && $selectedData && $yearIdx >= 0) {
-    distributionChart()
+    //distributionChart()
   }
 
   function trendChart() {
@@ -107,7 +107,7 @@
     }
 
     if ($selectedConfig.format && $selectedConfig.format === "percent") {
-      //options.yaxis.min = 0
+      options.yaxis.min = 0
       options.yaxis.max = 100
     }
 
@@ -120,10 +120,18 @@
   }
 
   function distributionChart() {
-    const histGenerator = bin()
-    const histData = histGenerator($breakCkmeans.flat())
     const data = []
     const sdata = []
+
+    // bin the current year
+    const histDataArray = []
+    for (const key in $selectedData.m) {
+      const val = $selectedData.m[key][$yearIdx]
+      if (val !== null) histDataArray.push(val)
+    }
+    
+    const histogram = bin().thresholds(10)
+    const bins = histogram(histDataArray)
 
     // make array for selected values
     const selecteVals = []
@@ -131,8 +139,7 @@
       selecteVals.push($selectedData.m[el][$yearIdx])
     })
 
-    histData.forEach((el, idx) => {
-      //data.push(el.length)
+    bins.forEach((el, idx) => {
       const datum = {
         x: idx + 1,
         y: el.length + 1
@@ -154,7 +161,7 @@
 
     const options = {
       title: {
-        text: "Histogram",
+        text: `NPA Distribution, ${$selectedData.years[$yearIdx]}`,
         margin: 0,
         offsetY: 20
       },
@@ -233,6 +240,6 @@
 </script>
 
 <div class="bg-white shadow-md p-2">
-  <div id="tchart" />
+  <div id="tchart" class="pt-2" />
   <div id="dchart" class="px-3 pb-2" />
 </div>
