@@ -84,7 +84,10 @@
         }
       ],
       xaxis: {
-        categories: $selectedData.years
+        categories: $selectedData.years,
+        tooltip: {
+          enabled: false
+        }
       },
       stroke: {
         curve: "smooth"
@@ -129,7 +132,7 @@
       const val = $selectedData.m[key][$yearIdx]
       if (val !== null) histDataArray.push(val)
     }
-    
+
     const histogram = bin().thresholds(10)
     const bins = histogram(histDataArray)
 
