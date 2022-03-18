@@ -53,6 +53,7 @@
       },
       chart: {
         type: "line",
+        height: "220px",
         toolbar: {
           tools: {
             download: true,
