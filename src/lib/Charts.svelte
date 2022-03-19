@@ -152,7 +152,7 @@
       if (el.some((r) => selecteVals.indexOf(r) >= 0)) {
         datum.goals = [
           {
-            name: "Expected",
+            name: "Selected",
             value: 0,
             strokeHeight: 4,
             strokeColor: "#DB2777"
@@ -171,7 +171,7 @@
       },
       series: [
         {
-          name: "Actual",
+          name: "Frequency",
           data: data
         }
       ],
