@@ -517,7 +517,7 @@
     "category": "Housing",
     "label": "years",
     "title": "Housing Age",
-    "subtitle": "Average age of single-family housing units", 
+    "subtitle": "Average age of single-family housing units",
     "related": ["m8", "m9", "m68", "m6"]
   },
   {
@@ -691,7 +691,7 @@
     "title": "Nuisance Violations",
     "decimals": 1,
     "subtitle": "Nuisance violations per 100 housing units",
-    "related": ["m68", "m59", "m60", "m52", "73"]
+    "related": ["m68", "m59", "m60", "m52", "m73"]
   },
   {
     "metric": "m34",
