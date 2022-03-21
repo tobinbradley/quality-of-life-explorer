@@ -5,8 +5,6 @@
   import "maplibre-gl/dist/maplibre-gl.css"
   import mapStyle from "../assets/positron-mecklenburg.json"
 
-  // TODO: adress search point
-
   let map
   let mapReady
   let maplibre
