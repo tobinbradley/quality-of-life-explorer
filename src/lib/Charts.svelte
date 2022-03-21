@@ -189,10 +189,13 @@
       }
 
       if (el.some((r) => selecteVals.indexOf(r) >= 0)) {
+        var result = el.filter(function(n) {
+          return selecteVals.indexOf(n) > -1;
+        })
         datum.goals = [
           {
-            name: "Expected",
-            value: 0,
+            name: "Selected",
+            value: result.length,
             strokeHeight: 4,
             strokeColor: "#DB2777",
           },
@@ -210,7 +213,7 @@
       },
       series: [
         {
-          name: "Actual",
+          name: "NPA Frequency",
           data: data,
         },
       ],
@@ -269,7 +272,13 @@
         show: false,
       },
       tooltip: {
-        enabled: false,
+        enabled: true,
+        x: {
+          show: false
+        },
+        marker: {
+            show: false
+          }
       },
     }
 
@@ -282,14 +291,8 @@
   }
 </script>
 
-<style>
-  /* :global(#tchart .apexcharts-xaxis-label:last-of-type tspan) {
-    text-anchor: end;
-  } */
-</style>
-
 
 <div class="bg-white shadow-md p-2">
   <div id="tchart" class="pt-2" />
-  <div id="dchart" class="px-3 pb-2" />
+  <div id="dchart" class="pb-2" />
 </div>
