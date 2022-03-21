@@ -26,7 +26,7 @@
 
 </script>
 
-<div class=" max-h-96 overflow-y-auto">
+<div class="max-h-72 overflow-y-auto">
 {#if $selectedData && $selectedNeighborhoods.length > 0}
 <table class="w-full">
   <thead>
@@ -59,7 +59,7 @@
         {neighborhood}
       </td>
       <td class="text-right">
-        { formatNumber($selectedData.m[neighborhood][$yearIdx], $selectedConfig.format || null) } 
+        { formatNumber($selectedData.m[neighborhood][$yearIdx], $selectedConfig.format || null) }
       </td>
       {#if $selectedData.a}
       <td class="text-right">
