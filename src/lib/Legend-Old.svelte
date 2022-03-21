@@ -2,9 +2,7 @@
   import { selectedConfig, selectedData, breaks, minBreak, yearIdx, colors, calcCounty, calcCountyRaw, calcSelected, calcSelectedRaw, selectedNeighborhoods, highlightNeighborhoods } from "../store/store"
   import { formatNumber, isNumeric } from "./utils"
 
-  // BUG: fonts jank on Linux - default font stack?
-
-  // filter id's by break range for hover and select
+    // filter id's by break range for hover and select
   function getIds(rIdx) {
     const range = [...$breaks]
     range.unshift(-1)
@@ -39,7 +37,7 @@
     {#if $selectedNeighborhoods.length > 0}
     <!-- selected -->
     <div class="flex-grow text-center">
-      <div class="text-sm text-stone-600 font-semibold">SELECTED</div>      
+      <div class="text-sm text-stone-600 font-semibold">SELECTED</div>
       <div class="font-semibold">
         {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
       </div>
