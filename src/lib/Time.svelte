@@ -86,10 +86,6 @@
   input[type=range]:focus {
     outline: none;
   }
-  input[type=range][disabled] {
-    opacity: 0.3;
-    cursor: default;
-  }
   input::-webkit-slider-runnable-track {
     box-sizing: border-box;
     width: 100%;
