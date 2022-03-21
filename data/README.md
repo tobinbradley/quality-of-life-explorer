@@ -1,26 +1,14 @@
-# mecklenburg-quality-of-life-data
-
-Mecklenburg County data for the Quality of Life Dashboard.
-
-## Related Projects
-
-- [quality-of-life-dashboard](https://github.com/tobinbradley/quality-of-life-dashboard)
-- [quality-of-life-report](https://github.com/tobinbradley/quality-of-life-report)
-- [quality-of-life-embed](https://github.com/tobinbradley/quality-of-life-embed)
-
-## Get Started
-
-This project requires [NodeJS](http://nodejs.org/).
-
-```bash
-git clone https://github.com/tobinbradley/mecklenburg-quality-of-life-data.git data
-cd data
-npm install
-```
-
-It isn't meant as a stand-alone repository, but rather to be used with the other Quality of Life projects.
+# Data Configuration
 
 ## Customizing your Data
+
+There are three pieces to the Dashboard data:
+
+* The `data.json` configuration file
+* `metadata`: a markdown file named for each metric containing metadata and placed in the metadata folder.
+* `metric data`: data in CSV format for each metric that is used to build the metric.
+* The geography in GeoJSON, located in `public/data/geography/geography.geojson.json`.
+
 
 ![data design](http://i.imgur.com/pRdRkFG.png)
 
@@ -29,7 +17,7 @@ There are several parts to configuring this repo:
 - Creating your geography (GeoJSON)
 - Creating your data files (CSV)
 - Creating your metadata (Markdown)
-- Updating configuration files
+- Updating the `data.json` configuration file
 
 The existing files are a good guidepost for creating your own, so dig in before you get started.
 
@@ -37,15 +25,15 @@ The existing files are a good guidepost for creating your own, so dig in before 
 
 The first thing you'll need is your geography, in GeoJSON. Your geography:
 
-- Must be named `geography.geojson.json` and placed in the root folder.
+- Must be named `geography.geojson.json`
 - Must be WGS84 (EPSG:4326).
 - Must contain an `id` property that's a string and a unique identifier for each polygon that you'll use for your data files.
 
-For serving and rendering GeoJSON, smaller is better, but watch out for topologically unaware simplification tools, as they'll leave ugly slivers in your data. You could use `v.generalize` in [QGIS](http://qgis.org/en/site/) (or [GRASS](http://grass.osgeo.org/) directly), or you could go the shapefile->[topojson](http://grass.osgeo.org/)->geojson route.
+For serving and rendering GeoJSON, smaller is better. Try using [mapshaper](https://mapshaper.org/) to squeeze it down as much as possible.
 
 ### Creating your data files
 
-Data files are simple CSV's in the format:
+Data files are CSV's in the format:
 
 ```csv
 id,y_2000,y_2010
@@ -61,11 +49,6 @@ The type of data will decide the files required:
 - `mean`: The data is averaged when polygons are selected. This will require a `n<metric>.csv` file.
 - `weighted`: A weighted average is calculated when polygons are selected. This requires the raw data in `r<metric>.csv` and a denominator for weighting/calculations in `d<metric>.csv`. r/d is each individual polygon value.
 
-After creating your data files, run the test suite to make sure the basics check out.
-
-```bash
-npm run test --silent
-```
 
 ### Creating your metadata
 
@@ -90,14 +73,6 @@ Dog pound yo.
 ```
 
 The markdown is processed to HTML by the consuming projects, and as there's a lot of ugly text processing going on, messing with the layout will involve tinkering with code.
-
-### Updating configuration files
-
-There are two configuration files:
-
-- `data.json`: Configuration information for your metrics.
-- `groups.json`: Groups of your geography units that you want to make selectable as a group.
-
 
 
 ### Tips and Gotchas
@@ -127,34 +102,29 @@ Don't edit Markdown in Word. You're welcome.
 
 ```javascript
 {
-  // metric identifier "m<the metric number>"
-  "m2": {
-    // metric number
-    "metric": "2",
-    // indicates accuracy data is bundled (optional)
-    "accuracy": "true",
-    // data category grouping
-    "category": "Character",
-    // number of decimal places to display (default is 0) (optional)
-    "decimals": 1,
-    // metric unit informaiton (optional)
-    "label": "Years",
-    // prefix for number display (optional)
-    "prefix": "$",
-    // [optional] label for raw number if available (also makes raw number visible)
-    "raw_label": "units",
-    // suffix for number display (optional)
-    "suffix": "%",
-    // title
-    "title": "Age of Residents",
-    // type of calculation: sum, mean, or weighted
-    "type": "weighted",
-    // override total geography value for particular years (optional)
-    "world_val": {
-      "y_2015": 35
-    },
-    // longer metric description
-    "subtitle": "How old the people are"
-  }
-}
+  // metric id, required
+  "metric": "m2",
+  // metric category, required
+  "category": "Character",
+  // label for units, optional
+  "label": "years",
+  // metric title, required
+  "title": "Age of Residents",
+  // overrides full geometry value for metric for given year, optional
+  "world_val": {
+    "y_2017": 35
+  },
+  // overrides full geometry value for raw value for given year, optional
+  "raw_val": {
+    "y_2017": 35
+  },
+  // descriptive subtitle, optional
+  "subtitle": "Median age of residents",
+  // related metric id's, optional
+  "related": ["m47", "m13", "m12"],
+  // label for raw data, also tells Dashboard to display raw data, optional
+  "raw_label": "people",
+  // variable is a raw sum value, optional
+  "sum": true
+}, ...
 ```

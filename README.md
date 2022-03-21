@@ -15,7 +15,7 @@ npm run prebuild
 npm run dev
 ```
 
-The Dashboard should launch in your default web browser with a live reload server. To build the site for production, run `npm run build` and copy the `dist` folder contents to your web server.
+The Dashboard will be available at `http://localhost:3000`. To build the site for production, run `npm run build` and copy the `dist` folder contents to your web server.
 
-
+For more information on the data configuration, see the README in the data folder.
 ```
