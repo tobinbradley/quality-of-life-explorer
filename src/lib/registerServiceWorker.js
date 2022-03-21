@@ -1,4 +1,4 @@
-import { notifications } from '../store//notifications.js'
+import { notifications } from '../store/notifications.js'
 
 let newWorker
 
