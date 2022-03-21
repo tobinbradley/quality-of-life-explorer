@@ -22,13 +22,13 @@
   class="bg-white inline-block absolute top-0 left-0 shadow-md"
   style="width: 260px;"
 >
-  <h2 class="border-b-2 border-stone-200 p-1 font-semibold">
+  <h2 class="border-b-2 border-stone-200 p-1 text-sm font-medium text-center">
     {$selectedConfig.title},
     {#if $selectedData}
       {$selectedData.years[$yearIdx]}
     {/if}
   </h2>
-  <div class="text-xs text-stone-600 p-1 leading-tight">
+  <div class="text-xs text-center text-stone-600 p-1 leading-tight">
     {@html $selectedConfig.subtitle}
     {#if $selectedConfig.label}
     (<span class="italic">{@html $selectedConfig.label}</span>)
@@ -39,13 +39,13 @@
   <div class="flex columns-2 p-1  gap-1">
     {#if $selectedNeighborhoods.length > 0}
     <!-- selected -->
-    <div class="flex-grow text-center text-stone-800">
-      <div class="font-semibold">SELECTED</div>
-      <div class="font-bold text-2xl">
+    <div class="flex-grow text-center text-pink-600">
+      <div class="font-medium">SELECTED</div>
+      <div class="font-bold text-2xl leading-7">
         {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
       </div>
       {#if $selectedConfig.raw_label}
-      <div class="text-xs">
+      <div class="text-xs leading-none pt-1">
         {formatNumber($calcSelectedRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
       </div>
       {/if}
@@ -53,11 +53,11 @@
     {/if}
 
     <!-- county -->
-    <div class="flex-grow text-center text-stone-800">
-      <div class="font-semibold">COUNTY</div>
-      <div class="font-bold text-2xl">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>
+    <div class="flex-grow text-center text-sky-600">
+      <div class="font-medium">COUNTY</div>
+      <div class="font-bold text-2xl leading-7">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>
       {#if $selectedConfig.raw_label}
-      <div class="text-xs">
+      <div class="text-xs leading-none pt-1">
         {formatNumber($calcCountyRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
       </div>
       {/if}
@@ -66,7 +66,7 @@
   {/if}
 
   {#if $breaks}
-  <div class="pt-1">
+  <div>
     <svg width='100%' height='45px' role="img" aria-label="choropleth legend">
       <g class='bars'>
         {#each $colors as color, idx}
