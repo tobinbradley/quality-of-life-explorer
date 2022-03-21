@@ -136,7 +136,7 @@
 
   {#each Object.keys(groups) as group}
     <select
-      class="ml-1 text-white bg-pink-600 shadow transition-shadow  hover:shadow-lg pl-3 py-1 rounded"
+      class="ml-1 text-white bg-highlight shadow transition-shadow  hover:shadow-lg pl-3 py-1 rounded"
       bind:value={download}
       on:change={() => selecGroup(group)}
     >
@@ -150,11 +150,11 @@
 
 <div class="py-3 text-right">
   <button
-    class="text-white bg-pink-600 shadow transition-shadow  hover:shadow-lg px-3 py-1 rounded"
+    class="text-white bg-highlight shadow transition-shadow  hover:shadow-lg px-3 py-1 rounded"
     on:click={print}>Print</button
   >
   <select
-    class="ml-1 text-white bg-pink-600 shadow transition-shadow hover:shadow-lg px-3 py-1 rounded"
+    class="ml-1 text-white bg-highlight shadow transition-shadow hover:shadow-lg px-3 py-1 rounded"
     bind:value={download}
     on:change={doDownload}
   >

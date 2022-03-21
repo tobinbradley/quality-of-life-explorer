@@ -57,9 +57,8 @@
     box-sizing: border-box;
     width: 0;
     height: 34px;
-    border-color: transparent transparent transparent rgb(158, 158, 158);
-    transition: 180ms all ease;
-    cursor: pointer;
+    border-color: transparent;
+    @apply border-l-highlight transition-all cursor-pointer;
     border-style: double;
     border-width: 0px 0 0px 25px;
   }
@@ -72,5 +71,68 @@
   .playpause input[type="checkbox"]:checked + label {
     border-style: solid;
     border-width: 17px 0 17px 25px;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+      -moz-appearance: none;
+            appearance: none;
+    padding: 0;
+    width: 100%;
+    height: 22px;
+    cursor: pointer;
+    display: block;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range][disabled] {
+    opacity: 0.3;
+    cursor: default;
+  }
+  input::-webkit-slider-runnable-track {
+    box-sizing: border-box;
+    width: 100%;
+    height: 6px;
+    @apply bg-highlight;
+    border-radius: 100px;
+    margin: 11px 0;
+  }
+  input::-moz-range-track {
+    box-sizing: border-box;
+    width: 100%;
+    height: 6px;
+    @apply bg-gray-400;
+    border-radius: 100px;
+    margin: 11px 0;
+  }
+  input[type="range"]::-moz-range-progress {
+    @apply bg-highlight;
+    height: 6px;
+    border-radius: 12px;
+}
+  input::-webkit-slider-thumb {
+    box-sizing: border-box;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+    border: 6px solid #fff;
+    height: 24px;
+    width: 24px;
+    border-radius: 100px;
+    background: #333940;
+    cursor: pointer;
+    -webkit-appearance: none;
+            appearance: none;
+    transform: translateY(-50%);
+    margin-top: 2px;
+  }
+  input::-moz-range-thumb {
+    box-sizing: border-box;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+    border: 6px solid #fff;
+    height: 24px;
+    width: 24px;
+    border-radius: 100px;
+    background: #333940;
+    cursor: pointer;
   }
 </style>

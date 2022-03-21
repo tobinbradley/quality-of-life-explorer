@@ -282,6 +282,13 @@
   }
 </script>
 
+<style>
+  /* :global(#tchart .apexcharts-xaxis-label:last-of-type tspan) {
+    text-anchor: end;
+  } */
+</style>
+
+
 <div class="bg-white shadow-md p-2">
   <div id="tchart" class="pt-2" />
   <div id="dchart" class="px-3 pb-2" />

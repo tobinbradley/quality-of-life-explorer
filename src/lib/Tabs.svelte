@@ -14,10 +14,10 @@
 
 <style>
   .tabgroup .active {
-    @apply border-b-pink-500 text-slate-700;
+    @apply border-b-highlight text-slate-700;
   }
   .metricgroup .active {
-    @apply bg-pink-600 text-white shadow-md;
+    @apply bg-highlight text-white shadow-md;
   }
 </style>
 

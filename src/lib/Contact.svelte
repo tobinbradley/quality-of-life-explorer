@@ -36,7 +36,7 @@
 
     <div class="text-right">
       {#if !sent}
-      <button class="bg-pink-600 text-white shadow-md py-1 px-2 rounded" on:click={sendMail}>Send</button>
+      <button class="bg-highlight text-white shadow transition-shadow hover:shadow-lg py-1 px-2 rounded" on:click={sendMail}>Send</button>
       {:else}
       Thanks for the feedback!
       {/if}

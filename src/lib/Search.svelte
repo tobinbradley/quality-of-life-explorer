@@ -221,7 +221,7 @@
 
   <p class="text-sm text-stone-600">
     Enter a <span
-      class="text-pink-800 hover:cursor-pointer"
+      class="text-highlight hover:cursor-pointer"
       title="Neighborhood Profile Areas (NPAs) are geographic areas used for the organization and presentation of data in the Quality of Life Study. The boundaries were developed with community input and are based on one or more Census block groups."
     >
       NPA</span

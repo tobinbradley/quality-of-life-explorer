@@ -35,7 +35,7 @@
   }
 
   .dropdown:hover .dropbtn {
-    @apply border-b-pink-500;
+    @apply border-b-highlight;
   }
 
   .dropdown:hover .dropdown-content {

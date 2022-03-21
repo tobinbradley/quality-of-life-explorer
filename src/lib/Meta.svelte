@@ -36,7 +36,7 @@
       <h2>Related Variables</h2>
       <ul class="ml-2">
         {#each $selectedConfig.related as metric}
-          <li><button class="text-pink-600 underline" on:click={() => relatedVariable(metric)}>{ $dataConfig.filter(el => el.metric === metric)[0].title}</button></li>
+          <li><button class="text-highlight underline" on:click={() => relatedVariable(metric)}>{ $dataConfig.filter(el => el.metric === metric)[0].title}</button></li>
         {/each}
       </ul>
     </div>

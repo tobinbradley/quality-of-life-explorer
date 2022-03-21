@@ -58,7 +58,7 @@
     </label>
   </div>
   <div class="text-center my-6">
-    <button class="bg-pink-600 text-white hover:shadow-lg hover:bg-pink-700 transition-all uppercase fill-white px-8 py-4 rounded shadow-md" onclick="window.print()">
+    <button class="bg-highlight text-white hover:shadow-lg transition-shadow uppercase fill-white px-8 py-4 rounded shadow-md" onclick="window.print()">
       <svg class="icon-printer h-10 w-10"><use xlink:href="#icon-printer"></use></svg>
       <span>Print</span>
     </button>
