@@ -5,11 +5,10 @@
     calcCounty,
     calcSelected,
     selectedNeighborhoods,
-    breakCkmeans,
     yearIdx,
   } from "../store/store"
-  import { formatNumber } from "./utils"
-  import { bin } from "d3-array"
+  import { formatNumber, isNumeric } from "./utils"
+  import { equalIntervalBreaks } from 'simple-statistics'
   import { onMount } from "svelte"
 
   let tchart
@@ -145,26 +144,14 @@
     if (!tchart) {
       tchart = new ApexCharts(document.querySelector("#tchart"), options)
       tchart.render()
-      // .then(e => {
-      //   const lastXlabel = document.querySelector('#tchart .apexcharts-xaxis-label:last-child tspan')
-      //   if (lastXlabel) {
-      //     lastXlabel.innerHTML = $selectedData.years[$selectedData.years.length - 1]
-      //   }
-      // })
     } else {
       tchart.updateOptions(options)
-      // .then(e => {
-      //   const lastXlabel = document.querySelector('#tchart .apexcharts-xaxis-label:last-child tspan')
-      //   if (lastXlabel) {
-      //     lastXlabel.innerHTML = $selectedData.years[$selectedData.years.length - 1]
-      //   }
-      // })
     }
   }
 
   function distributionChart() {
+    const binCount = 10
     const data = []
-    const sdata = []
 
     // bin the current year
     const histDataArray = []
@@ -173,37 +160,55 @@
       if (val !== null) histDataArray.push(val)
     }
 
-    const histogram = bin().thresholds(10)
-    const bins = histogram(histDataArray)
+    const equalBreaks = equalIntervalBreaks(histDataArray, binCount)
+    equalBreaks.shift()
+    const equalBins= Array(binCount).fill(0)
+    const equalSelectBins = Array(binCount).fill(0)
 
-    // make array for selected values
-    const selecteVals = []
-    $selectedNeighborhoods.forEach((el) => {
-      selecteVals.push($selectedData.m[el][$yearIdx])
+
+    for (const key in $selectedData.m) {
+      equalBreaks.every((el, idx) => {
+        if (!isNumeric($selectedData.m[key][$yearIdx])) return false
+
+        if ($selectedData.m[key][$yearIdx] <= el) {
+          equalBins[idx] += 1
+          return false
+        }
+        return true
+      })
+    }
+
+    $selectedNeighborhoods.forEach(n => {
+      equalBreaks.every((el, idx) => {
+        if (!isNumeric($selectedData.m[n][$yearIdx])) return false
+
+        if ($selectedData.m[n][$yearIdx] <= el) {
+          equalSelectBins[idx] += 1
+          return false
+        }
+        return true
+      })
     })
 
-    bins.forEach((el, idx) => {
+    equalBins.forEach((el, idx) => {
       const datum = {
         x: idx + 1,
-        y: el.length + 1,
+        y: el,
       }
 
-      if (el.some((r) => selecteVals.indexOf(r) >= 0)) {
-        var result = el.filter(function(n) {
-          return selecteVals.indexOf(n) > -1;
-        })
+      if (equalSelectBins[idx] > 0) {
         datum.goals = [
           {
             name: "Selected",
-            value: result.length,
-            strokeHeight: 4,
+            value: equalSelectBins[idx],
+            strokeHeight: 3,
             strokeColor: "#DB2777",
           },
         ]
       }
-
       data.push(datum)
     })
+
 
     const options = {
       title: {
@@ -215,11 +220,12 @@
         {
           name: "NPA Frequency",
           data: data,
-        },
+        }
       ],
       chart: {
-        height: 100,
+        height: 130,
         type: "bar",
+        stacked: false,
         sparkline: {
           enabled: false,
         },
@@ -256,9 +262,13 @@
       dataLabels: {
         enabled: false,
       },
+      legend: {
+        show: false
+      },
       yaxis: {
         show: false,
       },
+      colors: ["#008FFB", "#DB2777"],
       xaxis: {
         axisBorder: {
           show: false,
@@ -266,19 +276,23 @@
         axisTicks: {
           show: false,
         },
-        floating: true,
+        labels: {
+          show: false
+        }
       },
       grid: {
         show: false,
       },
       tooltip: {
         enabled: true,
+        followCursor: true,
+        marker: {
+          show: false,
+        },
         x: {
           show: false
         },
-        marker: {
-            show: false
-          }
+
       },
     }
 
