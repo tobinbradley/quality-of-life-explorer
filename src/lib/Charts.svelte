@@ -6,7 +6,7 @@
     calcSelected,
     selectedNeighborhoods,
     breakCkmeans,
-    yearIdx
+    yearIdx,
   } from "../store/store"
   import { formatNumber } from "./utils"
   import { bin } from "d3-array"
@@ -44,69 +44,96 @@
   }
 
   function trendChart() {
+    const countySeries = []
+    $calcCounty.forEach((el, idx) => {
+      countySeries.push({
+        x: $selectedData.years[idx],
+        y: el,
+      })
+    })
+
+    // so we don't duplicate years
+    const usedYears = []
+
     let options = {
       title: {
-        text: $selectedConfig.title
+        text: $selectedConfig.title,
       },
       legend: {
-        showForSingleSeries: true
+        showForSingleSeries: true,
       },
       chart: {
         type: "line",
-        height: "220px",
+        height: "240px",
+        zoom: {
+          enabled: false,
+        },
         toolbar: {
-          tools: {
-            download: true,
-            selection: false,
-            zoom: false,
-            zoomin: false,
-            zoomout: false,
-            pan: false,
-            reset: false
-          },
           export: {
             csv: {
               filename: $selectedConfig.title,
-              headerCategory: "Year"
+              headerCategory: "Year",
             },
             svg: {
-              filename: $selectedConfig.title
+              filename: $selectedConfig.title,
             },
             png: {
-              filename: $selectedConfig.title
-            }
-          }
-        }
+              filename: $selectedConfig.title,
+            },
+          },
+        },
       },
       series: [
         {
           name: "County",
-          data: $calcCounty
-        }
+          data: countySeries,
+        },
       ],
       xaxis: {
-        categories: $selectedData.years,
+        type: "datetime",
         tooltip: {
-          enabled: false
-        }
+          enabled: false,
+        },
+        labels: {
+          datetimeFormatter: {
+            year: "yyyy",
+            month: "MMM yyyy",
+            day: "dd MMM",
+            hour: "HH:mm",
+          },
+        },
       },
       stroke: {
-        curve: "smooth"
+        curve: "smooth",
       },
       colors: ["#008FFB", "#DB2777"],
       yaxis: {
         min: 0,
         labels: {
           formatter: (value) =>
-            formatNumber(value, $selectedConfig.format || null)
-        }
-      }
+            formatNumber(value, $selectedConfig.format || null),
+        },
+      },
+      tooltip: {
+        x: {
+          format: "yyyy",
+        },
+      },
     }
 
     if ($selectedNeighborhoods.length > 0) {
+      const selectSeries = []
+      $calcSelected.forEach((el, idx) => {
+        if (el !== null) {
+          selectSeries.push({
+            x: $selectedData.years[idx],
+            y: el,
+          })
+        }
+      })
       options.series.push({
         name: "Selected",
-        data: $calcSelected
+        data: selectSeries,
       })
     }
 
@@ -118,8 +145,20 @@
     if (!tchart) {
       tchart = new ApexCharts(document.querySelector("#tchart"), options)
       tchart.render()
+      // .then(e => {
+      //   const lastXlabel = document.querySelector('#tchart .apexcharts-xaxis-label:last-child tspan')
+      //   if (lastXlabel) {
+      //     lastXlabel.innerHTML = $selectedData.years[$selectedData.years.length - 1]
+      //   }
+      // })
     } else {
       tchart.updateOptions(options)
+      // .then(e => {
+      //   const lastXlabel = document.querySelector('#tchart .apexcharts-xaxis-label:last-child tspan')
+      //   if (lastXlabel) {
+      //     lastXlabel.innerHTML = $selectedData.years[$selectedData.years.length - 1]
+      //   }
+      // })
     }
   }
 
@@ -146,17 +185,17 @@
     bins.forEach((el, idx) => {
       const datum = {
         x: idx + 1,
-        y: el.length + 1
+        y: el.length + 1,
       }
 
       if (el.some((r) => selecteVals.indexOf(r) >= 0)) {
         datum.goals = [
           {
-            name: "Selected",
+            name: "Expected",
             value: 0,
             strokeHeight: 4,
-            strokeColor: "#DB2777"
-          }
+            strokeColor: "#DB2777",
+          },
         ]
       }
 
@@ -167,19 +206,19 @@
       title: {
         text: `NPA Distribution, ${$selectedData.years[$yearIdx]}`,
         margin: 0,
-        offsetY: 20
+        offsetY: 20,
       },
       series: [
         {
-          name: "Frequency",
-          data: data
-        }
+          name: "Actual",
+          data: data,
+        },
       ],
       chart: {
         height: 100,
         type: "bar",
         sparkline: {
-          enabled: false
+          enabled: false,
         },
         toolbar: {
           offsetY: 20,
@@ -190,48 +229,48 @@
             zoomin: false,
             zoomout: false,
             pan: false,
-            reset: false
+            reset: false,
           },
           export: {
             csv: {
-              filename: $selectedConfig.title + ' Histogram',
-              headerCategory: "Year"
+              filename: $selectedConfig.title + " Histogram",
+              headerCategory: "Year",
             },
             svg: {
-              filename: $selectedConfig.title + ' Histogram'
+              filename: $selectedConfig.title + " Histogram",
             },
             png: {
-              filename: $selectedConfig.title + ' Histogram'
-            }
-          }
-        }
+              filename: $selectedConfig.title + " Histogram",
+            },
+          },
+        },
       },
       plotOptions: {
         bar: {
-          columnWidth: "95%"
-        }
+          columnWidth: "95%",
+        },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       yaxis: {
-        show: false
+        show: false,
       },
       xaxis: {
         axisBorder: {
-          show: false
+          show: false,
         },
         axisTicks: {
-          show: false
+          show: false,
         },
-        floating: true
+        floating: true,
       },
       grid: {
-        show: false
+        show: false,
       },
       tooltip: {
-        enabled: false
-      }
+        enabled: false,
+      },
     }
 
     if (!dchart) {
