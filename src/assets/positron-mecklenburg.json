@@ -212,7 +212,7 @@
       "source-layer": "building",
       "minzoom": 13,
       "paint": {
-        "fill-color": "rgb(234, 234, 229)",
+        "fill-color": "rgba(234, 234, 229, 0)",
         "fill-outline-color": "rgb(219, 219, 218)",
         "fill-antialias": true
       }
@@ -912,14 +912,29 @@
       },
       "source": "meckbase",
       "source-layer": "place",
-      "maxzoom": 14,
+      "minzoom": 5,
       "filter": [
         "all",
-        ["==", "$type", "Point"],
-        ["all", ["!=", "capital", 2], ["==", "class", "city"], [">", "rank", 3]]
+        [
+          "==",
+          "class",
+          "city"
+        ]
       ],
       "layout": {
-        "text-size": 11,
+        "text-size": {
+          "base": 1,
+          "stops": [
+            [
+              7,
+              12
+            ],
+            [
+              11,
+              16
+            ]
+          ]
+        },
         "icon-image": {
           "base": 1,
           "stops": [
@@ -928,7 +943,7 @@
           ]
         },
         "text-transform": "uppercase",
-        "text-font": ["Roboto Regular"],
+        "text-font": ["Roboto Medium"],
         "text-justify": "left",
         "visibility": "visible",
         "text-offset": [0.5, 0.2],
