@@ -153,18 +153,14 @@
     const binCount = 10
     const data = []
 
-    // bin the current year
-    const histDataArray = []
-    for (const key in $selectedData.m) {
-      const val = $selectedData.m[key][$yearIdx]
-      if (val !== null) histDataArray.push(val)
-    }
+    const histDataArray = Object.values($selectedData.m).map(el => { 
+      if (el[$yearIdx] !== null) return el[$yearIdx]
+    })
 
     const equalBreaks = equalIntervalBreaks(histDataArray, binCount)
     equalBreaks.shift()
     const equalBins= Array(binCount).fill(0)
     const equalSelectBins = Array(binCount).fill(0)
-
 
     for (const key in $selectedData.m) {
       equalBreaks.every((el, idx) => {
