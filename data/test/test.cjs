@@ -1,8 +1,9 @@
 const test = require("ava");
 const fs = require("fs");
+const path = require('path')
 const readline = require("readline");
-const dataConfig = require("../data/data.json");
-const geoJSON = require("../public/data/geography/geography.geojson.json");
+const dataConfig = require("../data.json");
+const geoJSON = require("../../public/data/geography/geography.geojson.json");
 
 // geojson id's into sorted array
 let geoids = [];
@@ -29,19 +30,29 @@ function arraysContainSame(a, b) {
 
 // make sure correct files exist for computation method
 dataConfig.forEach(el => {
+  const file = path.resolve(`./data/metric/r${el.metric.replace('m', '')}.csv`)
+  const dfile = path.resolve(`./data/metric/d${el.metric.replace('m', '')}.csv`)
+  const afile = path.resolve(`./data/metric/${el.metric}-accuracy.csv`)
+  const metafile = path.resolve(`./data/meta/${el.metric}.md`)
 
-    console.log(`../data/metric/r${el.metric.replace('m', '')}.csv`)
-    test(`file(s) exist for r${el.metric}`, (t) => {
-      t.true(
-        fs.existsSync(`../data/metric/r${el.metric.replace('m', '')}.csv`),
-        `file ${el.metric} exists`
-      );
-    });
+  test(`file exists for ${file}`, (t) => {
+    t.true(
+      fs.existsSync(file),
+      `file ${file} exists`
+    );
+  });
 
-    // test file id's and headers
-    checkFileContents(`../data/metric/r${el.metric.replace('m', '')}.csv`);
+  test(`meta file exists for ${metafile}`, (t) => {
+    t.true(
+      fs.existsSync(metafile),
+      `file ${metafile} exists`
+    );
+  });
 
-
+  // test file id's and headers
+  checkFileContents(file)
+  if (fs.existsSync(dfile)) checkFileContents(dfile)
+  if (fs.existsSync(afile)) checkFileContents(afile)
 
 })
 
