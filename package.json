@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "prebuild": "node build/build.cjs",
     "postbuild": "workbox generateSW workbox-config.cjs",
-    "test": "ava ./data/test/test.cjs"
+    "test": "ava"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.40",
@@ -31,5 +31,10 @@
     "apexcharts": "^3.33.2",
     "maplibre-gl": "^2.1.7",
     "simple-statistics": "^7.7.5"
+  },
+  "ava": {
+    "files": [
+      "data/test/test.cjs"
+    ]
   }
 }
