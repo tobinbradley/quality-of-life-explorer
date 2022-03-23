@@ -27,7 +27,7 @@
       style="background: {themes[notification.type]};"
       transition:fly={{ y: 30 }}
     >
-      <div class="block p-4 text text-white font-medium text-center">
+      <div class="block p-4 text-white font-medium text-center">
         {@html notification.message}
       </div>
       {#if notification.icon}<i class={notification.icon} />{/if}
