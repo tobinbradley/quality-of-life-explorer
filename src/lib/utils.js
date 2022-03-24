@@ -73,6 +73,7 @@ export function calcAggregate(data, config, county = false, selected = null) {
     } else {
 
       if (data.m && data.d) {
+        // aggregate
         let n = 0
         let d = 0
         for (const key in data.m) {
@@ -84,6 +85,18 @@ export function calcAggregate(data, config, county = false, selected = null) {
           }
         }
         agg.push(n / d)
+      } else {
+        // average
+        let val = 0
+        let count = 0
+        for (const key in data.m) {
+          const mval = data.m[key][yearIdx]
+          if (isNumeric(mval) && ((selected && selected.indexOf(key) !== -1) || !selected)) {
+            val += mval
+            count++
+          }
+        }
+        agg.push(val / count)
       }
     }
   })
