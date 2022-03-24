@@ -13,6 +13,19 @@ const dataSrc = path.resolve("./data/metric/")
 const dataDest = path.resolve("./public/data/metric/")
 const geoStatsDest = path.resolve("./src/assets/geostats.json")
 
+fs.mkdirSync(metaDest,  { recursive: true }, (err) => {
+  if (err) {
+      throw err;
+  }
+  console.log(`${metaDest} is deleted!`);
+})
+fs.mkdirSync(dataDest,  { recursive: true }, (err) => {
+  if (err) {
+      throw err;
+  }
+  console.log(`${metaDest} is deleted!`);
+})
+
 fs.mkdirSync(metaDest, { recursive: true }, (err) => {
   if (err) throw err
 })
