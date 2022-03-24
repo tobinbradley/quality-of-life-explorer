@@ -202,6 +202,6 @@ geography.features.forEach(el => {
 
 fs.writeFileSync(
   geoStatsDest,
-  JSON.stringify({keys: keys, bounds: bounds}, null, "  ")
+  JSON.stringify({keys: keys, bounds: [[ bounds._sw.lng, bounds._sw.lat], [bounds._ne.lng, bounds._ne.lat]]}, null, "  ")
 )
 
