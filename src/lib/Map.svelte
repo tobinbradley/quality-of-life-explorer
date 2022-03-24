@@ -1,9 +1,9 @@
 <script>
   import Legend from './Legend.svelte'
-  import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig, highlightNeighborhoods, mapZoom } from "../store/store"
+  import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig, highlightNeighborhoods, mapZoom, mapFullExtent } from "../store/store"
   import { isNumeric, formatNumber } from "./utils"
   import "maplibre-gl/dist/maplibre-gl.css"
-  import mapStyle from "../assets/positron-mecklenburg.json"
+  import mapStyle from "../assets/gl-style.json"
 
   let map
   let mapReady
@@ -74,14 +74,14 @@
       style: mapStyle,
       attributionControl: false,
       minZoom: 8,
-      bounds: [
-        [-81.058099999999996, 35.0016000000000034],
-        [-80.5503999999999962, 35.5152000000000001],
-      ],
+      bounds: $mapFullExtent,
       maxBounds: [
-        [-82.641, 34.115],
-        [-79.008, 36.762],
+        [$mapFullExtent[0][0] - 1, $mapFullExtent[0][1] - 1],
+        [$mapFullExtent[1][0] + 1, $mapFullExtent[1][1] + 1]
       ],
+      fitBoundsOptions: {
+        padding: {top: 10, bottom: 20, left: 5, right: 5}
+      },
       preserveDrawingBuffer: navigator.userAgent.toLowerCase().indexOf("firefox") > -1
     }
 
@@ -199,9 +199,7 @@
 
   // full extent button
   class FullExtent {
-    constructor({ center = [-80.84, 35.26], zoom = 9.3 }) {
-      this._center = center
-      this._zoom = zoom
+    constructor() {
     }
     onAdd(map) {
       this._map = map
@@ -212,7 +210,11 @@
       this._btn.setAttribute("aria-label", "Zoom to full extent")
       this._btn.setAttribute("title", "Zoom to full extent")
       this._btn.onclick = function () {
-        map.flyTo({ center: _this._center, zoom: _this._zoom, pitch: 0, bearing: 0 })
+        map.setPitch(0)
+        map.setBearing(0)
+        map.fitBounds($mapFullExtent, {
+          padding: {top: 10, bottom: 20, left: 5, right: 5}
+        })
       }
       this._container = document.createElement("div")
       this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group"

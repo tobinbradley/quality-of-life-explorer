@@ -1,6 +1,6 @@
 import { writable, readable, derived } from 'svelte/store'
 import dataJSON from '../../data/data.json'
-import geoKeys from '../assets/geokeys.json'
+import geoStats from '../assets/geostats.json'
 import { ckmeans } from 'simple-statistics'
 import { calcAggregate, calcRaw } from '../lib/utils'
 
@@ -12,6 +12,9 @@ let browserNav = false
 
 // toggle help modal
 export let help = writable(false)
+
+// geojson extent
+export const mapFullExtent = readable(geoStats.bounds)
 
 // Set initial metric and selected sets
 let metric = dataJSON[Math.floor(Math.random() * dataJSON.length)].metric
@@ -25,7 +28,7 @@ function readHashArgs() {
   return [
     args[0] && dataJSON.filter(el => el.metric === 'm' + args[0]).length === 1 ?
     'm' + args[0] : null,
-    args[1] && args[1].length > 0 && args[1].split(',').every((r) => geoKeys.indexOf(r) >= 0) ?
+    args[1] && args[1].length > 0 && args[1].split(',').every((r) => geoStats.keys.indexOf(r) >= 0) ?
     args[1].split(',') : []
   ]
 }

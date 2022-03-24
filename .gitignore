@@ -28,3 +28,4 @@ public/data/meta
 public/data/metric
 deploy.sh
 *.zip
+src/assets/geostats.json
