@@ -8,7 +8,7 @@
 </script>
 
 {#if !show}
-<div class="bg-pink-600 text-white rounded p-5 shadow-md text-center relative" use:seen>
+<div class="bg-highlight text-white rounded p-5 shadow-md text-center relative" use:seen>
   <div class="absolute top-3 right-3">
   <button aria-label="Close" class="rounded-full p-1 transition-colors duration-300 ease-in-out hover:bg-pink-400" on:click={() => show = "false"} >
     <svg class="w-4 h-4 fill-current"
