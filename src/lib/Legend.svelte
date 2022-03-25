@@ -28,12 +28,14 @@
       {$selectedData.years[$yearIdx]}
     {/if}
   </h2>
+  {#if $selectedConfig.subtitle}
   <div class="text-xs text-center text-stone-600 p-1 leading-tight">
     {@html $selectedConfig.subtitle}
     {#if $selectedConfig.label}
     (<span class="italic">{@html $selectedConfig.label}</span>)
     {/if}
   </div>
+  {/if}
 
   {#if $selectedData}
   <div class="flex columns-2 p-1  gap-1">
