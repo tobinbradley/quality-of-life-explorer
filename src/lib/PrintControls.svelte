@@ -1,9 +1,9 @@
 <script>
   import { printOptions } from '../store/print'
-  import { selectedMetric, dataConfig} from '../store/store'
+  import { selectedMetric, dataConfig, dataCategories} from '../store/store'
 
   let title = $printOptions.title
-  const categories = [...new Set($dataConfig.map(el => el.category))]
+  const categories = $dataCategories
 
   $: {
     $printOptions.title = title

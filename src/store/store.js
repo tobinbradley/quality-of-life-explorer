@@ -39,6 +39,11 @@ export const dataConfig = readable(dataJSON.sort((a, b) => {
   return a.category - b.category || a.title - b.title
 }))
 
+// data categories
+export const dataCategories = derived(dataConfig, val => {
+  return [...new Set(val.map(el => el.category))]
+})
+
 // what's new list
 export const whatsnew = readable([
   "m5", "m6", "m7", "m30", "m53", "m68", "m69", "m75", "m76", "m82"

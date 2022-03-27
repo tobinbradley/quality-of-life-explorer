@@ -1,8 +1,8 @@
 <script>
-  import { selectedConfig, selectedMetric, dataConfig, whatsnew } from '../store/store'
+  import { selectedConfig, selectedMetric, dataConfig, dataCategories, whatsnew } from '../store/store'
 
   // unique ../store/storees for tabs
-  const categories = [...new Set($dataConfig.map(el => el.category))]
+  const categories = $dataCategories
 
   // active category
   let activeCategory

@@ -1,9 +1,9 @@
 <script>
-  import { dataConfig, selectedNeighborhoods } from '../store/store'
+  import { dataConfig, selectedNeighborhoods, dataCategories } from '../store/store'
   import { printOptions } from '../store/print'
   import { formatNumber, calcAggregate, calcRaw } from './utils'
 
-  const categories = [...new Set($dataConfig.map(el => el.category))]
+  const categories = $dataCategories
   const maxYears = {}
 
 

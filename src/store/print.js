@@ -1,10 +1,9 @@
-import { writable } from 'svelte/store'
-import dataJSON from '../../data/data.json'
+import { get, writable } from 'svelte/store'
+import { dataCategories } from './store'
 
-const categories = [...new Set(dataJSON.map(el => el.category))]
+
 const cats = {}
-
-categories.forEach(cat => {
+get(dataCategories).forEach(cat => {
   cats[cat] = true
 })
 
