@@ -4,7 +4,7 @@ const config = {
   theme: {
     extend: {
       colors: {
-        'highlight': "#DB2777"
+        'highlight': "#be185d"
       }
     }
   },
