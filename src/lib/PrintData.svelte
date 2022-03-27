@@ -32,7 +32,7 @@
 
 
 {#each categories as cat}
-<div class="relative bg-white shadow-md print:shadow-none page p-2" class:hidden="{!$printOptions.data}">
+<div class="relative bg-white shadow-md print:shadow-none page p-2" class:hidden="{!$printOptions.data || !$printOptions.dataCats[cat]}">
   <h2 class="font-semibold my-2 text-2xl">{cat}</h2>
   <table>
     <thead>

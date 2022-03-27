@@ -57,6 +57,17 @@
       </span>
     </label>
   </div>
+  <div class="ml-9 mb-3" class:hidden="{$printOptions.data === false}">
+    {#each categories as cat}
+      <label class="block text-gray-500 font-bold">
+        <input class="mr-2 leading-tight" type="checkbox" bind:checked={$printOptions.dataCats[cat]} >
+        <span>
+        {cat}
+        </span>
+      </label>
+    {/each}
+  </div>
+
   <div class="text-center my-6">
     <button class="bg-highlight text-white hover:shadow-lg transition-shadow uppercase fill-white px-8 py-4 rounded shadow-md" onclick="window.print()">
       <svg class="icon-printer h-10 w-10"><use xlink:href="#icon-printer"></use></svg>
