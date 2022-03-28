@@ -763,6 +763,17 @@
       }
     },
     {
+      "id": "neighborhoods-default-outline",
+      "type": "line",
+      "source": "neighborhoods",
+      "layout": {},
+      "paint": {
+        "line-color": "rgba(0,0,0,1)",
+        "line-width": 0.4,
+        "line-opacity": 0.4
+      }
+    },
+    {
       "id": "neighborhoods-outline",
       "type": "line",
       "source": "neighborhoods",
