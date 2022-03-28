@@ -406,6 +406,7 @@
       },
       "source": "meckbase",
       "source-layer": "transportation",
+      "minzoom": 9.5,
       "maxzoom": 11,
       "filter": [
         "all",
