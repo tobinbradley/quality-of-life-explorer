@@ -80,7 +80,7 @@
         [$mapFullExtent[1][0] + 1, $mapFullExtent[1][1] + 1]
       ],
       fitBoundsOptions: {
-        padding: {top: 10, bottom: 20, left: 70, right: 70}
+        padding: 10
       },
       preserveDrawingBuffer: navigator.userAgent.toLowerCase().indexOf("firefox") > -1
     }
@@ -149,7 +149,7 @@
         if ($selectedData.m[key][$yearIdx] <= el) {
           stops.push([key, $colors[idx]])
           let height = el * (3000 / $breaks[$breaks.length - 1])
-          if (isNumeric(height)) heights.push([key, height])          
+          if (isNumeric(height)) heights.push([key, height])
           return false
         }
         return true
@@ -214,7 +214,7 @@
         map.setPitch(0)
         map.setBearing(0)
         map.fitBounds($mapFullExtent, {
-          padding: {top: 10, bottom: 20, left: 70, right: 70}
+          padding: 10
         })
       }
       this._container = document.createElement("div")

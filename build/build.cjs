@@ -4,7 +4,7 @@ const csv = require("csvtojson")
 const config = require("../data/data.json")
 const marked = require("marked")
 const geography = require("../public/data/geography/geography.geojson.json")
-const gl = require("maplibre-gl")
+const bbox = require("@turf/bbox").default
 
 // resolve source and destination paths
 const metaSrc = path.resolve("./data/meta")
@@ -13,17 +13,17 @@ const dataSrc = path.resolve("./data/metric/")
 const dataDest = path.resolve("./public/data/metric/")
 const geoStatsDest = path.resolve("./src/assets/geostats.json")
 
-fs.mkdirSync(metaDest,  { recursive: true }, (err) => {
+fs.mkdirSync(metaDest, { recursive: true }, (err) => {
   if (err) {
-      throw err;
+    throw err
   }
-  console.log(`${metaDest} is deleted!`);
+  console.log(`${metaDest} is deleted!`)
 })
-fs.mkdirSync(dataDest,  { recursive: true }, (err) => {
+fs.mkdirSync(dataDest, { recursive: true }, (err) => {
   if (err) {
-      throw err;
+    throw err
   }
-  console.log(`${metaDest} is deleted!`);
+  console.log(`${metaDest} is deleted!`)
 })
 
 fs.mkdirSync(metaDest, { recursive: true }, (err) => {
@@ -44,7 +44,7 @@ marked.setOptions({
   pedantic: false,
   sanitize: false,
   smartLists: true,
-  smartypants: false
+  smartypants: false,
 })
 
 var _getAllFilesFromFolder = function (dir) {
@@ -206,15 +206,25 @@ goNPA()
 // Geography related config
 /********************************************* */
 
+console.log(bbox(geography))
+
 const keys = []
-let bounds = new gl.LngLatBounds()
-geography.features.forEach(el => {
-  keys.push(el.properties.id)  
-  bounds.extend(...el.geometry.coordinates)
+const bounds = bbox(geography)
+geography.features.forEach((el) => {
+  keys.push(el.properties.id)
 })
 
 fs.writeFileSync(
   geoStatsDest,
-  JSON.stringify({keys: keys, bounds: [[ bounds._sw.lng, bounds._sw.lat], [bounds._ne.lng, bounds._ne.lat]]}, null, "  ")
+  JSON.stringify(
+    {
+      keys: keys,
+      bounds: [
+        [bounds[0], bounds[1]],
+        [bounds[2], bounds[3]],
+      ],
+    },
+    null,
+    "  "
+  )
 )
-
