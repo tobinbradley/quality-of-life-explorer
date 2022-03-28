@@ -20,7 +20,7 @@
 
 <div
   class="bg-white inline-block absolute top-0 left-0 shadow-md"
-  style="width: 260px;"
+  style="width: 240px;"
 >
   <h2 class="border-b-2 border-stone-200 p-1 text-sm font-medium text-center">
     {$selectedConfig.title},
