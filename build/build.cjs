@@ -206,8 +206,6 @@ goNPA()
 // Geography related config
 /********************************************* */
 
-console.log(bbox(geography))
-
 const keys = []
 const bounds = bbox(geography)
 geography.features.forEach((el) => {
