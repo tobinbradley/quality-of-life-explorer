@@ -22,7 +22,7 @@
         type: "FeatureCollection",
         features: [],
       }
-      fetch("./public/data/geography/geography.geojson.json")
+      fetch("./data/geography/geography.geojson.json")
         .then((response) => {
           if (!response.ok) {
             throw new Error()
