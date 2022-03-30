@@ -1,7 +1,7 @@
 <script>
   import Legend from './Legend.svelte'
-  import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig, highlightNeighborhoods, mapZoom, mapFullExtent } from "../store/store"
-  import { isNumeric, formatNumber } from "./utils"
+  import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig, highlightNeighborhoods, mapZoom, mapFullExtent, minBreak } from "../store/store"
+  import { isNumeric, formatNumber, sendDownload } from "./utils"
   import "maplibre-gl/dist/maplibre-gl.css"
   import mapStyle from "../assets/gl-style.json"
 
@@ -20,7 +20,7 @@
 
   function init(node) {
     (async () => {
-      const { default: gl } = await import("maplibre-gl")
+      const { default: gl } = await import("maplibre-gl")      
       maplibre = gl
       createMap(gl)
     })()
@@ -82,14 +82,15 @@
       fitBoundsOptions: {
         padding: 10
       },
-      preserveDrawingBuffer: navigator.userAgent.toLowerCase().indexOf("firefox") > -1
+      preserveDrawingBuffer: true
     }
 
     map = new gl.Map(mapOptions)
 
     map.addControl(new gl.NavigationControl(), "top-right")
-    map.addControl(new FullExtent({}), "top-right")
+    map.addControl(new FullExtent(), "top-right")
     map.addControl(new gl.FullscreenControl(), "top-right")
+    map.addControl(new GLImage(), "top-right")
     map.addControl(new gl.AttributionControl(), 'bottom-left')
 
     let popup = new gl.Popup({
@@ -200,8 +201,6 @@
 
   // full extent button
   class FullExtent {
-    constructor() {
-    }
     onAdd(map) {
       this._map = map
       let _this = this
@@ -229,11 +228,77 @@
     }
   }
 
+  // export map button
+  class GLImage {
+    onAdd(map) {
+      this._map = map;
+
+      this._btn = document.createElement("button");
+      this._btn.className = "mapboxgl-ctrl-icon mapboxgl-ctrl-gl-image";
+      this._btn.type = "button";
+      this._btn.setAttribute("aria-label", "Download map image");
+      this._btn.setAttribute("title", "Download map image")
+
+      this._btn.onclick = function() {        
+        const mapCanvas = map.getCanvas()
+      
+        // create legend canvas
+        const legendCanvas = document.createElement('canvas')      
+        legendCanvas.height = 25
+        legendCanvas.width = mapCanvas.width
+        const legendCtx = legendCanvas.getContext("2d")
+        legendCtx.fillStyle = 'rgba(255,255,255,0.4)';
+        legendCtx.fillRect(0,0,legendCanvas.width, legendCanvas.height);
+        
+        // set legend and breaks
+        $colors.forEach((c, i) => {
+          const start = (mapCanvas.width / $colors.length) * i
+          const textStart = (mapCanvas.width / $colors.length) * (i + 1)
+          const width = (mapCanvas.width / $colors.length)
+          legendCtx.fillStyle = c
+          legendCtx.fillRect(start, 15, width, 25)
+          
+          legendCtx.font = "14px";
+          legendCtx.fillStyle = "black";
+          i < $colors.length - 1 ? legendCtx.textAlign = "center" : legendCtx.textAlign = "end"
+          legendCtx.fillText(formatNumber($breaks[i], "short"), textStart, 12)
+        })
+        
+        // min break number
+        legendCtx.textAlign = "start"
+        legendCtx.fillText(formatNumber($minBreak, "short"), 0, 12)
+        
+        // merge into new canvas
+        const mergeCanvas = document.createElement('canvas')
+        mergeCanvas.width = mapCanvas.width
+        mergeCanvas.height = mapCanvas.height + 15
+        const mergeCtx = mergeCanvas.getContext("2d")
+        mergeCtx.drawImage(mapCanvas, 0, 0)
+        mergeCtx.drawImage(legendCanvas, 0, mapCanvas.height - 15)
+
+        // send to browser
+        sendDownload(mergeCanvas.toDataURL("image/png"), null, `${$selectedConfig.title}, ${$selectedData.years[$yearIdx]}.png`)
+      }
+
+      this._container = document.createElement("div");
+      this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group";
+      this._container.appendChild(this._btn);
+
+      return this._container;
+    }
+
+    onRemove() {
+      this._container.parentNode.removeChild(this._container);
+      this._map = undefined;
+    }
+  }
+
 </script>
 
 <div id="map" use:init />
-<button class="absolute bottom-2 right-2 bg-white shadow border-2 border-gray-200 rounded-md hover:bg-gray-100 p-1"
-on:click={() => $selectedNeighborhoods = []}
+<button 
+  class="absolute bottom-2 right-2 bg-white shadow border-2 text-sm border-gray-200 rounded-md hover:bg-gray-100 p-1"
+  on:click={() => $selectedNeighborhoods = []}
 >Clear</button>
 <Legend />
 
@@ -245,6 +310,12 @@ on:click={() => $selectedNeighborhoods = []}
   }
   :global(.mapboxgl-ctrl-fullextent) {
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNMTc2LjMgMTE4LjhoNjQuNVY0NC4xQzIxNS4zIDY1LjMgMTkyLjQgOTAuNSAxNzYuMyAxMTguOHoiLz48cGF0aCBkPSJNMTQxLjYgMjY5LjJjMS43IDMxLjQgOC43IDY1LjIgMjAuNSA5My41aDc4Ljd2LTkzLjVIMTQxLjZ6Ii8+PHBhdGggZD0iTTE3Ni43IDM5My4yYzE2LjEgMjguMyAzOC42IDUzLjUgNjQuMSA3NC43VjM5My4ySDE3Ni43eiIvPjxwYXRoIGQ9Ik00ODkuOSAxNDkuMkgzODIuM2MxMC41IDI4LjYgMTYuNSA1OC41IDE4IDg5LjZINTEyQzUxMC4xIDIwNi45IDUwMi41IDE3NyA0ODkuOSAxNDkuMnoiLz48cGF0aCBkPSJNMjcxLjIgNDQuNHY3NC40aDY0QzMxOS4yIDkwLjYgMjk2LjcgNjUuNiAyNzEuMiA0NC40eiIvPjxwYXRoIGQ9Ik0xNjIuMSAxNDkuMmMtMTEuOCAyOC4zLTE4LjggNTguMi0yMC41IDg5LjZoOTkuMnYtODkuNkgxNjIuMXoiLz48cGF0aCBkPSJNNDAwLjMgMjY5LjJjLTEuNSAzMS4xLTcuNSA2NS0xOCA5My41aDEwNy42YzEyLjYtMjcuNyAyMC4zLTYxLjYgMjIuMS05My41SDQwMC4zeiIvPjxwYXRoIGQ9Ik0yNzEuMiAwdjYuOGM0MS42IDI5LjQgNzUuOSA2Ny43IDk3LjkgMTEyaDEwNC42QzQzMS4xIDUwLjkgMzU2IDUgMjcxLjIgMHoiLz48cGF0aCBkPSJNMzguMyAxMTguOGgxMDQuNmMyMi00NC4zIDU2LjQtODIuNiA5OC0xMTJWMEMxNTYuMSA1IDgwLjkgNTAuOSAzOC4zIDExOC44eiIvPjxwYXRoIGQ9Ik0xNDIuOSAzOTMuMkgzOC4zQzgwLjkgNDYxLjEgMTU2LjEgNTA3IDI0MC44IDUxMnYtNi44QzE5OS4yIDQ3NS43IDE2NC45IDQzNy41IDE0Mi45IDM5My4yeiIvPjxwYXRoIGQ9Ik0yMi4xIDE0OS4yQzkuNSAxNzcgMS45IDIwNi45IDAgMjM4LjhoMTExLjdjMS41LTMxLjEgNy41LTYxIDE4LTg5LjZIMjIuMXoiLz48cGF0aCBkPSJNMzY5LjEgMzkzLjJjLTIyIDQ0LjMtNTYuMyA4Mi42LTk3LjkgMTEyVjUxMmM4NC43LTUgMTU5LjgtNTAuOSAyMDIuNS0xMTguOEgzNjkuMXoiLz48cGF0aCBkPSJNMTExLjcgMjY5LjJIMGMxLjkgMzEuOSA5LjUgNjUuOCAyMi4xIDkzLjVIMTI5LjhDMTE5LjIgMzM0LjIgMTEzLjMgMzAwLjQgMTExLjcgMjY5LjJ6Ii8+PHBhdGggZD0iTTI3MS4yIDI2OS4ydjkzLjVoNzguN2MxMS44LTI4LjMgMTguNi02Mi4yIDIwLjMtOTMuNUgyNzEuMnoiLz48cGF0aCBkPSJNMzUwIDE0OS4ySDI3MS4ydjg5LjZoOTlDMzY4LjYgMjA3LjUgMzYxLjcgMTc3LjUgMzUwIDE0OS4yeiIvPjxwYXRoIGQ9Ik0yNzEuMiAzOTMuMnY3NC40YzI1LjQtMjEuMiA0OC00Ni4yIDY0LTc0LjRIMjcxLjJ6Ii8+PC9zdmc+);
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+  :global(.mapboxgl-ctrl-gl-image) {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDMyIDMyIj4NCjxwYXRoIGQ9Ik0yNy42MjQgMjAuOTU1bC0wLjk1OCA1LjA3MmgtMjEuMzMybC0wLjk1OC01LjA3MmgtMi4zODV2OC4wNjJoMjguMDE4di04LjA2MmgtMi4zODV6TTI3LjAyMCAxMS45NDZoLTcuMDIydi0yLjkzaC03Ljk5NHYyLjkzaC02Ljk1NWwxMC45MTQgMTEuNDEyIDExLjA1Ny0xMS40MTJ6TTE5Ljk5NyAzLjk4MmgtNy45OTR2MS4wNjZoNy45OTR2LTEuMDY2ek0xOS45OTcgNS45NzNoLTcuOTk0djIuMDM4aDcuOTk0di0yLjAzOHoiLz4NCjwvc3ZnPg==);
     background-size: 22px 22px;
     background-repeat: no-repeat;
     background-position: center center;
