@@ -277,7 +277,10 @@
         mergeCtx.drawImage(legendCanvas, 0, mapCanvas.height - 15)
 
         // send to browser
-        sendDownload(mergeCanvas.toDataURL("image/png"), null, `${$selectedConfig.title}, ${$selectedData.years[$yearIdx]}.png`)
+        // sendDownload(mergeCanvas.toDataURL("image/png"), null, `${$selectedConfig.title}, ${$selectedData.years[$yearIdx]}.png`)
+
+        // send plain map export until I get the whole legend properly recreated in canvas
+        sendDownload(map.getCanvas().toDataURL("image/png"), null, `${$selectedConfig.title}, ${$selectedData.years[$yearIdx]}.png`)
       }
 
       this._container = document.createElement("div");
