@@ -3,6 +3,7 @@ import './css/metadata.css'
 import './css/table.css'
 import './lib/registerServiceWorker'
 import Tabs from './lib/Tabs.svelte'
+import LegendTop from './lib/Legend-Top.svelte'
 import Meta from './lib/Meta.svelte'
 import Map from './lib/Map.svelte'
 import SubMap from './lib/SubMap.svelte'
@@ -15,6 +16,7 @@ import NavMenu from './lib/NavMenu.svelte'
 import Help from './lib/Help.svelte'
 import Welcome from './lib/Welcome.svelte'
 
+
 new NavMenu({
   target: document.getElementById("navmenu")
 })
@@ -25,6 +27,10 @@ new Welcome({
 
 new Tabs({
   target: document.getElementById("tabs")
+})
+
+new LegendTop({
+  target: document.getElementById("Legend")
 })
 
 new Meta({

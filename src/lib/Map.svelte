@@ -1,5 +1,6 @@
 <script>
-  import Legend from './Legend.svelte'
+  //import Legend from './Legend.svelte'
+  import LegendTop from "./Legend-Top.svelte"
   import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig, highlightNeighborhoods, mapZoom, mapFullExtent, minBreak } from "../store/store"
   import { isNumeric, formatNumber, sendDownload } from "./utils"
   import "maplibre-gl/dist/maplibre-gl.css"
@@ -298,19 +299,23 @@
 
 </script>
 
-<div id="map" use:init />
-<button 
-  class="absolute bottom-2 right-2 bg-white shadow border-2 text-sm border-gray-200 rounded-md hover:bg-gray-100 p-1"
-  on:click={() => $selectedNeighborhoods = []}
->Clear</button>
-<Legend />
+<!-- <div class="flex flex-col h-full">
+  <LegendTop />
+  <div class="flex-grow relative"> -->
+    <div id="map" use:init class="w-full h-full"></div>
+    <button 
+      class="absolute bottom-2 right-2 bg-white shadow border-2 text-sm border-gray-200 rounded-md hover:bg-gray-100 p-1"
+      on:click={() => $selectedNeighborhoods = []}
+    >Clear</button>
+  <!-- </div>
+</div> -->
+
+
+
+<!-- <Legend /> -->
 
 
 <style>
-  #map {
-    width: 100%;
-    height: 100%;
-  }
   :global(.mapboxgl-ctrl-fullextent) {
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNMTc2LjMgMTE4LjhoNjQuNVY0NC4xQzIxNS4zIDY1LjMgMTkyLjQgOTAuNSAxNzYuMyAxMTguOHoiLz48cGF0aCBkPSJNMTQxLjYgMjY5LjJjMS43IDMxLjQgOC43IDY1LjIgMjAuNSA5My41aDc4Ljd2LTkzLjVIMTQxLjZ6Ii8+PHBhdGggZD0iTTE3Ni43IDM5My4yYzE2LjEgMjguMyAzOC42IDUzLjUgNjQuMSA3NC43VjM5My4ySDE3Ni43eiIvPjxwYXRoIGQ9Ik00ODkuOSAxNDkuMkgzODIuM2MxMC41IDI4LjYgMTYuNSA1OC41IDE4IDg5LjZINTEyQzUxMC4xIDIwNi45IDUwMi41IDE3NyA0ODkuOSAxNDkuMnoiLz48cGF0aCBkPSJNMjcxLjIgNDQuNHY3NC40aDY0QzMxOS4yIDkwLjYgMjk2LjcgNjUuNiAyNzEuMiA0NC40eiIvPjxwYXRoIGQ9Ik0xNjIuMSAxNDkuMmMtMTEuOCAyOC4zLTE4LjggNTguMi0yMC41IDg5LjZoOTkuMnYtODkuNkgxNjIuMXoiLz48cGF0aCBkPSJNNDAwLjMgMjY5LjJjLTEuNSAzMS4xLTcuNSA2NS0xOCA5My41aDEwNy42YzEyLjYtMjcuNyAyMC4zLTYxLjYgMjIuMS05My41SDQwMC4zeiIvPjxwYXRoIGQ9Ik0yNzEuMiAwdjYuOGM0MS42IDI5LjQgNzUuOSA2Ny43IDk3LjkgMTEyaDEwNC42QzQzMS4xIDUwLjkgMzU2IDUgMjcxLjIgMHoiLz48cGF0aCBkPSJNMzguMyAxMTguOGgxMDQuNmMyMi00NC4zIDU2LjQtODIuNiA5OC0xMTJWMEMxNTYuMSA1IDgwLjkgNTAuOSAzOC4zIDExOC44eiIvPjxwYXRoIGQ9Ik0xNDIuOSAzOTMuMkgzOC4zQzgwLjkgNDYxLjEgMTU2LjEgNTA3IDI0MC44IDUxMnYtNi44QzE5OS4yIDQ3NS43IDE2NC45IDQzNy41IDE0Mi45IDM5My4yeiIvPjxwYXRoIGQ9Ik0yMi4xIDE0OS4yQzkuNSAxNzcgMS45IDIwNi45IDAgMjM4LjhoMTExLjdjMS41LTMxLjEgNy41LTYxIDE4LTg5LjZIMjIuMXoiLz48cGF0aCBkPSJNMzY5LjEgMzkzLjJjLTIyIDQ0LjMtNTYuMyA4Mi42LTk3LjkgMTEyVjUxMmM4NC43LTUgMTU5LjgtNTAuOSAyMDIuNS0xMTguOEgzNjkuMXoiLz48cGF0aCBkPSJNMTExLjcgMjY5LjJIMGMxLjkgMzEuOSA5LjUgNjUuOCAyMi4xIDkzLjVIMTI5LjhDMTE5LjIgMzM0LjIgMTEzLjMgMzAwLjQgMTExLjcgMjY5LjJ6Ii8+PHBhdGggZD0iTTI3MS4yIDI2OS4ydjkzLjVoNzguN2MxMS44LTI4LjMgMTguNi02Mi4yIDIwLjMtOTMuNUgyNzEuMnoiLz48cGF0aCBkPSJNMzUwIDE0OS4ySDI3MS4ydjg5LjZoOTlDMzY4LjYgMjA3LjUgMzYxLjcgMTc3LjUgMzUwIDE0OS4yeiIvPjxwYXRoIGQ9Ik0yNzEuMiAzOTMuMnY3NC40YzI1LjQtMjEuMiA0OC00Ni4yIDY0LTc0LjRIMjcxLjJ6Ii8+PC9zdmc+);
     background-size: 22px 22px;

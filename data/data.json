@@ -636,7 +636,6 @@
   {
     "metric": "m61",
     "category": "Safety",
-    "label": "calls per 1,000 people",
     "raw_label": "calls",
     "title": "Calls for Animal Care and Control",
     "decimals": 1,
@@ -646,7 +645,6 @@
   {
     "metric": "m59",
     "category": "Safety",
-    "label": "crimes per 1,000 people",
     "raw_label": "crimes",
     "title": "Crime - Property",
     "decimals": 1,
@@ -656,7 +654,6 @@
   {
     "metric": "m58",
     "category": "Safety",
-    "label": "crimes per 1,000 people",
     "raw_label": "crimes",
     "title": "Crime - Violent",
     "decimals": 1,
@@ -666,7 +663,6 @@
   {
     "metric": "m60",
     "category": "Safety",
-    "label": "calls per 1,000 people",
     "raw_label": "calls",
     "title": "Disorder-related Calls",
     "decimals": 1,
@@ -676,7 +672,6 @@
   {
     "metric": "m78",
     "category": "Safety",
-    "label": "calls per 1,000 people",
     "raw_label": "calls",
     "title": "Fire Calls for Service",
     "decimals": 1,
@@ -686,7 +681,6 @@
   {
     "metric": "m32",
     "category": "Safety",
-    "label": "violations per 100 units",
     "raw_label": "violations",
     "title": "Nuisance Violations",
     "decimals": 1,
