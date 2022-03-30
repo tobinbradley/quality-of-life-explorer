@@ -1,7 +1,17 @@
 <script>
-  //import Legend from './Legend.svelte'
-  import LegendTop from "./Legend-Top.svelte"
-  import { selectedData, breaks, yearIdx, colors, selectedNeighborhoods, selectedConfig, highlightNeighborhoods, mapZoom, mapFullExtent, minBreak } from "../store/store"
+  import Legend from "./Legend.svelte"
+  import {
+    selectedData,
+    breaks,
+    yearIdx,
+    colors,
+    selectedNeighborhoods,
+    selectedConfig,
+    highlightNeighborhoods,
+    mapZoom,
+    mapFullExtent,
+    minBreak,
+  } from "../store/store"
   import { isNumeric, formatNumber, sendDownload } from "./utils"
   import "maplibre-gl/dist/maplibre-gl.css"
   import mapStyle from "../assets/gl-style.json"
@@ -12,23 +22,26 @@
   let geoJSON
 
   // get GeoJSON for zooming
-  fetch('data/geography/geography.geojson.json')
-    .then(response => response.json())
-    .then(json => geoJSON = json)
-    .catch(error => {
-      console.error('There has been a problem with your fetch operation:', error);
+  fetch("data/geography/geography.geojson.json")
+    .then((response) => response.json())
+    .then((json) => (geoJSON = json))
+    .catch((error) => {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      )
     })
 
   function init(node) {
-    (async () => {
-      const { default: gl } = await import("maplibre-gl")      
+    ;(async () => {
+      const { default: gl } = await import("maplibre-gl")
       maplibre = gl
       createMap(gl)
     })()
   }
 
   // shade in things
-  $: if (mapReady && $breaks && $selectedData && ($yearIdx >= 0)) {
+  $: if (mapReady && $breaks && $selectedData && $yearIdx >= 0) {
     renderPolys()
   }
 
@@ -37,13 +50,13 @@
     $mapZoom = false
     let bounds = new maplibre.LngLatBounds()
 
-    geoJSON.features.forEach(el => {
+    geoJSON.features.forEach((el) => {
       if ($selectedNeighborhoods.indexOf(el.properties.id) !== -1) {
-        el.geometry.coordinates.forEach(coords => {
-            coords.forEach(coord => {
-              bounds.extend(coord)
-            })
+        el.geometry.coordinates.forEach((coords) => {
+          coords.forEach((coord) => {
+            bounds.extend(coord)
           })
+        })
       }
     })
 
@@ -53,21 +66,44 @@
   // show selected
   $: if (mapReady && $selectedNeighborhoods) {
     if ($selectedNeighborhoods.length > 0) {
-      map.setFilter("neighborhoods-outline", ["match", ["get", "id"], $selectedNeighborhoods, true, false])
+      map.setFilter("neighborhoods-outline", [
+        "match",
+        ["get", "id"],
+        $selectedNeighborhoods,
+        true,
+        false,
+      ])
     } else {
-      map.setFilter("neighborhoods-outline", ["match", ["get", "id"], ["-1"], true, false])
+      map.setFilter("neighborhoods-outline", [
+        "match",
+        ["get", "id"],
+        ["-1"],
+        true,
+        false,
+      ])
     }
   }
 
   // show highlighted neighborhoods
   $: if (mapReady && $highlightNeighborhoods) {
     if ($highlightNeighborhoods.length > 0) {
-      map.setFilter("neighborhoods-highlight", ["match", ["get", "id"], $highlightNeighborhoods, true, false])
+      map.setFilter("neighborhoods-highlight", [
+        "match",
+        ["get", "id"],
+        $highlightNeighborhoods,
+        true,
+        false,
+      ])
     } else {
-      map.setFilter("neighborhoods-highlight", ["match", ["get", "id"], ["-1"], true, false])
+      map.setFilter("neighborhoods-highlight", [
+        "match",
+        ["get", "id"],
+        ["-1"],
+        true,
+        false,
+      ])
     }
   }
-
 
   function createMap(gl) {
     let mapOptions = {
@@ -78,12 +114,12 @@
       bounds: $mapFullExtent,
       maxBounds: [
         [$mapFullExtent[0][0] - 1, $mapFullExtent[0][1] - 1],
-        [$mapFullExtent[1][0] + 1, $mapFullExtent[1][1] + 1]
+        [$mapFullExtent[1][0] + 1, $mapFullExtent[1][1] + 1],
       ],
       fitBoundsOptions: {
-        padding: 10
+        padding: 10,
       },
-      preserveDrawingBuffer: true
+      preserveDrawingBuffer: true,
     }
 
     map = new gl.Map(mapOptions)
@@ -92,14 +128,14 @@
     map.addControl(new FullExtent(), "top-right")
     map.addControl(new gl.FullscreenControl(), "top-right")
     map.addControl(new GLImage(), "top-right")
-    map.addControl(new gl.AttributionControl(), 'bottom-left')
+    map.addControl(new gl.AttributionControl(), "bottom-left")
 
     let popup = new gl.Popup({
       closeButton: false,
-      closeOnClick: false
+      closeOnClick: false,
     })
 
-    map.on("click", "neighborhoods", e => {
+    map.on("click", "neighborhoods", (e) => {
       const id = e.features[0].properties.id
       const idx = $selectedNeighborhoods.indexOf(id)
       if (idx === -1) {
@@ -110,21 +146,23 @@
       $selectedNeighborhoods = $selectedNeighborhoods
     })
 
-    map.on("mousemove", "neighborhoods", e => {
+    map.on("mousemove", "neighborhoods", (e) => {
       map.getCanvas().style.cursor = "pointer"
       const id = e.features[0].properties.id
 
       popup
         .setLngLat(e.lngLat)
         .setHTML(
-          `<div style="text-align: center; margin: 0; padding: 0;"><h3 style="font-size: 1.2em; margin: 0; padding: 0; line-height: 1em; font-weight: bold;">NPA ${
-            id
-          }</h3>${formatNumber($selectedData.m[id][$yearIdx], $selectedConfig.format || null, $selectedConfig.decimals || null)}</div>`
+          `<div style="text-align: center; margin: 0; padding: 0;"><h3 style="font-size: 1.2em; margin: 0; padding: 0; line-height: 1em; font-weight: bold;">NPA ${id}</h3>${formatNumber(
+            $selectedData.m[id][$yearIdx],
+            $selectedConfig.format || null,
+            $selectedConfig.decimals || null
+          )}</div>`
         )
         .addTo(map)
     })
 
-    map.on("mouseleave", "neighborhoods", e => {
+    map.on("mouseleave", "neighborhoods", (e) => {
       popup.remove()
       map.getCanvas().style.cursor = ""
     })
@@ -137,7 +175,9 @@
       }
     })
 
-    map.on("load", () => { mapReady = true })
+    map.on("load", () => {
+      mapReady = true
+    })
   }
 
   function renderPolys() {
@@ -158,47 +198,40 @@
       })
     }
 
-    map.setPaintProperty(
-      "neighborhoods",
-      "fill-color",
-      {
-        "property": "id",
-        "default": "rgba(242,243,240, 0)",
-        "type": "categorical",
-        "stops": stops
-      }
-    )
+    map.setPaintProperty("neighborhoods", "fill-color", {
+      property: "id",
+      default: "rgba(242,243,240, 0)",
+      type: "categorical",
+      stops: stops,
+    })
 
-    map.setPaintProperty(
-      "neighborhoods-3d",
-      "fill-extrusion-color",
-      {
-        property: "id",
-        "default": "rgb(242,243,240)",
-        type: "categorical",
-        stops: stops
-      }
-    )
+    map.setPaintProperty("neighborhoods-3d", "fill-extrusion-color", {
+      property: "id",
+      default: "rgb(242,243,240)",
+      type: "categorical",
+      stops: stops,
+    })
 
-    map.setPaintProperty(
-      "neighborhoods-3d",
-      "fill-extrusion-height",
-      {
-        property: "id",
-        default: 0,
-        type: "categorical",
-        stops: heights
-      }
-    )
+    map.setPaintProperty("neighborhoods-3d", "fill-extrusion-height", {
+      property: "id",
+      default: 0,
+      type: "categorical",
+      stops: heights,
+    })
 
     let filter3d = []
     for (const key in $selectedData.m) {
       const val = $selectedData.m[key][$yearIdx]
       if (val !== null) filter3d.push(key)
     }
-    map.setFilter("neighborhoods-3d", ["match", ["get", "id"], filter3d, true, false])
+    map.setFilter("neighborhoods-3d", [
+      "match",
+      ["get", "id"],
+      filter3d,
+      true,
+      false,
+    ])
   }
-
 
   // full extent button
   class FullExtent {
@@ -214,7 +247,7 @@
         map.setPitch(0)
         map.setBearing(0)
         map.fitBounds($mapFullExtent, {
-          padding: 10
+          padding: 10,
         })
       }
       this._container = document.createElement("div")
@@ -232,45 +265,47 @@
   // export map button
   class GLImage {
     onAdd(map) {
-      this._map = map;
+      this._map = map
 
-      this._btn = document.createElement("button");
-      this._btn.className = "mapboxgl-ctrl-icon mapboxgl-ctrl-gl-image";
-      this._btn.type = "button";
-      this._btn.setAttribute("aria-label", "Download map image");
+      this._btn = document.createElement("button")
+      this._btn.className = "mapboxgl-ctrl-icon mapboxgl-ctrl-gl-image"
+      this._btn.type = "button"
+      this._btn.setAttribute("aria-label", "Download map image")
       this._btn.setAttribute("title", "Download map image")
 
-      this._btn.onclick = function() {        
+      this._btn.onclick = function () {
         const mapCanvas = map.getCanvas()
-      
+
         // create legend canvas
-        const legendCanvas = document.createElement('canvas')      
+        const legendCanvas = document.createElement("canvas")
         legendCanvas.height = 25
         legendCanvas.width = mapCanvas.width
         const legendCtx = legendCanvas.getContext("2d")
-        legendCtx.fillStyle = 'rgba(255,255,255,0.4)';
-        legendCtx.fillRect(0,0,legendCanvas.width, legendCanvas.height);
-        
+        legendCtx.fillStyle = "rgba(255,255,255,0.4)"
+        legendCtx.fillRect(0, 0, legendCanvas.width, legendCanvas.height)
+
         // set legend and breaks
         $colors.forEach((c, i) => {
           const start = (mapCanvas.width / $colors.length) * i
           const textStart = (mapCanvas.width / $colors.length) * (i + 1)
-          const width = (mapCanvas.width / $colors.length)
+          const width = mapCanvas.width / $colors.length
           legendCtx.fillStyle = c
           legendCtx.fillRect(start, 15, width, 25)
-          
-          legendCtx.font = "14px";
-          legendCtx.fillStyle = "black";
-          i < $colors.length - 1 ? legendCtx.textAlign = "center" : legendCtx.textAlign = "end"
+
+          legendCtx.font = "14px"
+          legendCtx.fillStyle = "black"
+          i < $colors.length - 1
+            ? (legendCtx.textAlign = "center")
+            : (legendCtx.textAlign = "end")
           legendCtx.fillText(formatNumber($breaks[i], "short"), textStart, 12)
         })
-        
+
         // min break number
         legendCtx.textAlign = "start"
         legendCtx.fillText(formatNumber($minBreak, "short"), 0, 12)
-        
+
         // merge into new canvas
-        const mergeCanvas = document.createElement('canvas')
+        const mergeCanvas = document.createElement("canvas")
         mergeCanvas.width = mapCanvas.width
         mergeCanvas.height = mapCanvas.height + 15
         const mergeCtx = mergeCanvas.getContext("2d")
@@ -281,39 +316,33 @@
         // sendDownload(mergeCanvas.toDataURL("image/png"), null, `${$selectedConfig.title}, ${$selectedData.years[$yearIdx]}.png`)
 
         // send plain map export until I get the whole legend properly recreated in canvas
-        sendDownload(map.getCanvas().toDataURL("image/png"), null, `${$selectedConfig.title}, ${$selectedData.years[$yearIdx]}.png`)
+        sendDownload(
+          map.getCanvas().toDataURL("image/png"),
+          null,
+          `${$selectedConfig.title}, ${$selectedData.years[$yearIdx]}.png`
+        )
       }
 
-      this._container = document.createElement("div");
-      this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group";
-      this._container.appendChild(this._btn);
+      this._container = document.createElement("div")
+      this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group"
+      this._container.appendChild(this._btn)
 
-      return this._container;
+      return this._container
     }
 
     onRemove() {
-      this._container.parentNode.removeChild(this._container);
-      this._map = undefined;
+      this._container.parentNode.removeChild(this._container)
+      this._map = undefined
     }
   }
-
 </script>
 
-<!-- <div class="flex flex-col h-full">
-  <LegendTop />
-  <div class="flex-grow relative"> -->
-    <div id="map" use:init class="w-full h-full"></div>
-    <button 
-      class="absolute bottom-2 right-2 bg-white shadow border-2 text-sm border-gray-200 rounded-md hover:bg-gray-100 p-1"
-      on:click={() => $selectedNeighborhoods = []}
-    >Clear</button>
-  <!-- </div>
-</div> -->
-
-
-
-<!-- <Legend /> -->
-
+<div id="map" use:init class="w-full h-full" />
+<button
+  class="absolute bottom-2 right-2 bg-white shadow border-2 text-sm border-gray-200 rounded-md hover:bg-gray-100 p-1"
+  on:click={() => ($selectedNeighborhoods = [])}>Clear</button
+>
+<Legend />
 
 <style>
   :global(.mapboxgl-ctrl-fullextent) {
@@ -328,5 +357,4 @@
     background-repeat: no-repeat;
     background-position: center center;
   }
-
 </style>

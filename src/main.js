@@ -3,9 +3,9 @@ import './css/metadata.css'
 import './css/table.css'
 import './lib/registerServiceWorker'
 import Tabs from './lib/Tabs.svelte'
-import LegendTop from './lib/Legend-Top.svelte'
 import Meta from './lib/Meta.svelte'
 import Map from './lib/Map.svelte'
+// import LegendTop from "./lib/Legend-Top.svelte"
 import SubMap from './lib/SubMap.svelte'
 import Charts from './lib/Charts.svelte'
 import Search from './lib/Search.svelte'
@@ -29,9 +29,9 @@ new Tabs({
   target: document.getElementById("tabs")
 })
 
-new LegendTop({
-  target: document.getElementById("Legend")
-})
+// new LegendTop({
+//   target: document.getElementById("LegendTop")
+// })
 
 new Meta({
   target: document.getElementById("meta")

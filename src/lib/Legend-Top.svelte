@@ -18,8 +18,8 @@
   }
 </script>
 
-<div>
-<div class="bg-white flex gap-4 px-2 pt-2 items-center justify-center" style="min-height: 70px;">
+<div class="bg-white">
+<div class="flex gap-4 px-2 pt-2 items-center justify-center" >
   <div class="flex-grow">
     <h2 class="text-lg font-bold leading-none">
       {$selectedConfig.title},
@@ -36,7 +36,7 @@
     </div>
     {/if}
   </div>
-  
+
 
   {#if $selectedData}
     {#if $selectedNeighborhoods.length > 0}
@@ -71,7 +71,7 @@
   </div>
 
   {#if $breaks}
-  <div class="bg-white">
+  <div>
     <svg width='100%' height='30px' role="img" aria-label="choropleth legend">
       <g class='bars'>
         {#each $colors as color, idx}
@@ -91,8 +91,8 @@
     </svg>
   </div>
   {/if}
-</div>
 
+</div>
 
 
 <style>
