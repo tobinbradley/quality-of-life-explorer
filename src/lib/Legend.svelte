@@ -42,7 +42,7 @@
     {#if $selectedNeighborhoods.length > 0}
     <!-- selected -->
     <div class="flex-grow text-center text-pink-600">
-      <div class="font-medium">SELECTED</div>
+      <div class="font-medium leading-none">SELECTED</div>
       <div class="font-bold text-2xl leading-7">
         {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
       </div>
@@ -56,7 +56,7 @@
 
     <!-- county -->
     <div class="flex-grow text-center text-sky-600">
-      <div class="font-medium">COUNTY</div>
+      <div class="font-medium leading-none">COUNTY</div>
       <div class="font-bold text-2xl leading-7">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>
       {#if $selectedConfig.raw_label}
       <div class="text-xs leading-none pt-1">
