@@ -3,6 +3,11 @@ import dataJSON from '../../data/data.json'
 import geoStats from '../assets/geostats.json'
 import { ckmeans } from 'simple-statistics'
 import { calcAggregate, calcRaw } from '../lib/utils'
+import { data } from 'autoprefixer'
+
+// sort data JSON by category and title
+dataJSON.sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title))
+
 
 // This will control the number of breaks
 const colorList = ["rgb(238,250,227)", "rgb(186,228,188)", "rgb(123,204,196)", "rgb(67,162,202)", "rgb(8,104,172)"]
@@ -35,9 +40,7 @@ function readHashArgs() {
 
 
 // readable data config
-export const dataConfig = readable(dataJSON.sort((a, b) => {
-  return a.category - b.category || a.title - b.title
-}))
+export const dataConfig = readable(dataJSON)
 
 // data categories
 export const dataCategories = derived(dataConfig, val => {
