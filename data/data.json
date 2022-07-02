@@ -743,5 +743,13 @@
     "title": "Transit Ridership",
     "subtitle": "Average weekly bus and train boardings per stop",
     "related": ["m36", "m10", "m33", "m47", "m75"]
+  },
+  {
+    "metric": "m88",
+    "category": "Economy",
+    "format": "percent",
+    "title": "Internet Access",
+    "subtitle": "Percentage of households with high speed Internet access",
+    "related": ["m20", "m39", "m33", "m40"]
   }
 ]
