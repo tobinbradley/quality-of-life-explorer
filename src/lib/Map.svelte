@@ -150,16 +150,20 @@
       map.getCanvas().style.cursor = "pointer"
       const id = e.features[0].properties.id
 
-      popup
-        .setLngLat(e.lngLat)
-        .setHTML(
-          `<div style="text-align: center; margin: 0; padding: 0;"><h3 style="font-size: 1.2em; margin: 0; padding: 0; line-height: 1em; font-weight: bold;">NPA ${id}</h3>${formatNumber(
-            $selectedData.m[id][$yearIdx],
-            $selectedConfig.format || null,
-            $selectedConfig.decimals || null
-          )}</div>`
-        )
-        .addTo(map)
+      if ($selectedData.m[id] && $selectedData.m[id][$yearIdx]) {
+        popup
+          .setLngLat(e.lngLat)
+          .setHTML(
+            `<div style="text-align: center; margin: 0; padding: 0;"><h3 style="font-size: 1.2em; margin: 0; padding: 0; line-height: 1em; font-weight: bold;">NPA ${id}</h3>${formatNumber(
+              $selectedData.m[id][$yearIdx],
+              $selectedConfig.format || null,
+              $selectedConfig.decimals || null
+            )}</div>`
+          )
+          .addTo(map)
+      } else {
+        popup.remove()
+      }
     })
 
     map.on("mouseleave", "neighborhoods", (e) => {
