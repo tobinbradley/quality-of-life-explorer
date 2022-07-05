@@ -3,7 +3,6 @@ import dataJSON from '../../data/data.json'
 import geoStats from '../assets/geostats.json'
 import { ckmeans } from 'simple-statistics'
 import { calcAggregate, calcRaw } from '../lib/utils'
-import { data } from 'autoprefixer'
 
 // sort data JSON by category and title
 dataJSON.sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title))
