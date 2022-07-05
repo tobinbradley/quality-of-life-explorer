@@ -53,7 +53,7 @@
       on:click={() => $selectedMetric = metric.metric}>
       <span class="py-2 px-3 inline-block">{metric.title}</span>
       {#if $whatsnew.indexOf(metric.metric) !== -1}
-      <span class="bg-slate-700 text-white py-2 px-1 inline-block rounded-full">new</span>
+      <span class="bg-slate-700 text-white p-2 inline-block rounded-full">new</span>
       {/if}
     </button>
     {/each}
