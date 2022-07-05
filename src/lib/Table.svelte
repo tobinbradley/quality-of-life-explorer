@@ -54,39 +54,41 @@
   </thead>
   <tbody>
     {#each $selectedNeighborhoods as neighborhood}
-    <tr on:mouseleave={() => $highlightNeighborhoods = []} on:mouseenter={() => $highlightNeighborhoods = [neighborhood]} class="hover:bg-yellow-100 transition-colors">
-      <td  class="text-center">
-        {neighborhood}
-      </td>
-      <td class="text-right">
-        { formatNumber($selectedData.m[neighborhood][$yearIdx], $selectedConfig.format || null) }
-      </td>
-      {#if $selectedData.a}
-      <td class="text-right">
-        ± { formatNumber($selectedData.a[neighborhood][$yearIdx], "percent") }
-      </td>
+      {#if $selectedData.m[neighborhood]}
+        <tr on:mouseleave={() => $highlightNeighborhoods = []} on:mouseenter={() => $highlightNeighborhoods = [neighborhood]} class="hover:bg-yellow-100 transition-colors">
+          <td  class="text-center">
+            {neighborhood}
+          </td>
+          <td class="text-right">
+            { formatNumber($selectedData.m[neighborhood][$yearIdx], $selectedConfig.format || null) }
+          </td>
+          {#if $selectedData.a}
+          <td class="text-right">
+            ± { formatNumber($selectedData.a[neighborhood][$yearIdx], "percent") }
+          </td>
+          {/if}
+          {#if $selectedData.years.length > 1}
+          <td class="text-right">
+            {@html trend($selectedData.m[neighborhood][0], $selectedData.m[neighborhood][$selectedData.years.length - 1], "percent")}
+          </td>
+          {/if}
+          {#if $selectedConfig.raw_label}
+          <td class="text-right">
+            { formatNumber($selectedData.m[neighborhood][$yearIdx] * $selectedData.d[neighborhood][$yearIdx]) } {@html $selectedConfig.raw_label }
+          </td>
+            {#if $selectedData.years.length > 1}
+            <td class="text-right">
+              {@html
+                trend(
+                  $selectedData.m[neighborhood][0] * $selectedData.d[neighborhood][0],
+                  $selectedData.m[neighborhood][$selectedData.years.length - 1] * $selectedData.d[neighborhood][$selectedData.years.length - 1]
+                )
+              }
+            </td>
+            {/if}
+          {/if}
+        </tr>
       {/if}
-      {#if $selectedData.years.length > 1}
-      <td class="text-right">
-        {@html trend($selectedData.m[neighborhood][0], $selectedData.m[neighborhood][$selectedData.years.length - 1], "percent")}
-      </td>
-      {/if}
-      {#if $selectedConfig.raw_label}
-      <td class="text-right">
-        { formatNumber($selectedData.m[neighborhood][$yearIdx] * $selectedData.d[neighborhood][$yearIdx]) } {@html $selectedConfig.raw_label }
-      </td>
-        {#if $selectedData.years.length > 1}
-        <td class="text-right">
-          {@html
-            trend(
-              $selectedData.m[neighborhood][0] * $selectedData.d[neighborhood][0],
-              $selectedData.m[neighborhood][$selectedData.years.length - 1] * $selectedData.d[neighborhood][$selectedData.years.length - 1]
-            )
-          }
-        </td>
-        {/if}
-      {/if}
-    </tr>
     {/each}
   </tbody>
 </table>

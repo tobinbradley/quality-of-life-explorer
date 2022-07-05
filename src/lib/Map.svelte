@@ -190,7 +190,7 @@
 
     for (const key in $selectedData.m) {
       $breaks.every((el, idx) => {
-        if (!isNumeric($selectedData.m[key][$yearIdx])) return false
+        if (!$selectedData.m[key] || !isNumeric($selectedData.m[key][$yearIdx])) return false
 
         if ($selectedData.m[key][$yearIdx] <= el) {
           stops.push([key, $colors[idx]])
@@ -315,9 +315,6 @@
         const mergeCtx = mergeCanvas.getContext("2d")
         mergeCtx.drawImage(mapCanvas, 0, 0)
         mergeCtx.drawImage(legendCanvas, 0, mapCanvas.height - 15)
-
-        // send to browser
-        // sendDownload(mergeCanvas.toDataURL("image/png"), null, `${$selectedConfig.title}, ${$selectedData.years[$yearIdx]}.png`)
 
         // send plain map export until I get the whole legend properly recreated in canvas
         sendDownload(

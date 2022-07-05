@@ -153,7 +153,7 @@
     const binCount = 10
     const data = []
 
-    const histDataArray = Object.values($selectedData.m).map(el => { 
+    const histDataArray = Object.values($selectedData.m).map(el => {
       if (el[$yearIdx] !== null) return el[$yearIdx]
     })
 
@@ -176,7 +176,7 @@
 
     $selectedNeighborhoods.forEach(n => {
       equalBreaks.every((el, idx) => {
-        if (!isNumeric($selectedData.m[n][$yearIdx])) return false
+        if (!$selectedData.m[n] || !isNumeric($selectedData.m[n][$yearIdx])) return false
 
         if ($selectedData.m[n][$yearIdx] <= el) {
           equalSelectBins[idx] += 1
