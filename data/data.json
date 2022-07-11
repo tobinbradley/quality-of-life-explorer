@@ -748,8 +748,8 @@
     "metric": "m88",
     "category": "Economy",
     "format": "percent",
-    "title": "Internet Access",
+    "title": "High Speed Internet Access",
     "subtitle": "Percentage of households with high speed Internet access",
-    "related": ["m20", "m39", "m33", "m40"]
+    "related": ["m2", "m14", "m18", "m16", "m15", "m17", "m12", "m13"]
   }
 ]
