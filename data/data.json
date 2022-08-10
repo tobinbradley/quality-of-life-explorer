@@ -285,14 +285,6 @@
     "related": ["m32", "m68", "m73", "m31"]
   },
   {
-    "metric": "m50",
-    "category": "Engagement",
-    "format": "percent",
-    "raw_label": "households",
-    "title": "Arts and Culture Participation",
-    "subtitle": "Percentage of households that participate in ASC-sponsored arts or cultural activities"
-  },
-  {
     "metric": "m72",
     "category": "Engagement",
     "label": "residents serving per 1,000 people",
