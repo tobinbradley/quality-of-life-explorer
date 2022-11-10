@@ -14,24 +14,24 @@
     "test": "ava || true"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.49",
+    "@sveltejs/vite-plugin-svelte": "^1.1.0",
     "@turf/bbox": "^6.5.0",
-    "autoprefixer": "^10.4.7",
+    "autoprefixer": "^10.4.13",
     "ava": "4.3",
     "csvtojson": "^2.0.10",
-    "marked": "^4.0.17",
-    "postcss": "^8.4.14",
+    "marked": "^4.2.2",
+    "postcss": "^8.4.18",
     "postcss-load-config": "^4.0.1",
-    "svelte": "^3.48.0",
+    "svelte": "^3.53.1",
     "svelte-preprocess": "^4.10.7",
-    "tailwindcss": "^3.1.4",
-    "vite": "^2.9.13",
-    "workbox-cli": "^6.5.3"
+    "tailwindcss": "^3.2.3",
+    "vite": "^3.2.3",
+    "workbox-cli": "^6.5.4"
   },
   "dependencies": {
-    "apexcharts": "^3.35.3",
-    "maplibre-gl": "^2.1.9",
-    "simple-statistics": "^7.7.5"
+    "apexcharts": "^3.36.3",
+    "maplibre-gl": "^2.4.0",
+    "simple-statistics": "^7.8.0"
   },
   "ava": {
     "files": [
