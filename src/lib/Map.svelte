@@ -23,11 +23,11 @@
   let maplibre
   let geoJSON
 
-  // take flyto arg, including iframe parent
-  // icky, i know
-  window.flyTo = (loc) => {
-    map.flyTo(loc)
-  }
+  // let map take flyto arg from parent
+  // useful for "story telling" iframe
+  window.addEventListener("message", (event) => {
+    map.flyTo(event.data)
+  }, false)
 
   // get GeoJSON for zooming
   fetch("data/geography/geography.geojson.json")
