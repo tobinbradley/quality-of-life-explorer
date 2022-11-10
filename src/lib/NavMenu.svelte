@@ -12,17 +12,17 @@
     <a
       href="http://charlottenc.gov/HNS/CE/CommunityInfo/Pages/QOL.aspx"
       class="text-black px-2 py-2 block hover:bg-slate-300 text-sm"
-      target="_blank">About</a
+      target="_blank" rel="noreferrer">About</a
     >
     <a
       href="downloads/qol-data.zip"
       class="text-black px-2 py-2 block hover:bg-slate-300 whitespace-nowrap text-sm"
-      target="_blank">Data (zip)</a
+      target="_blank" rel="noreferrer">Data (zip)</a
     >
     <a
       href="https://github.com/tobinbradley/quality-of-life-explorer"
       class="text-black px-2 py-2 block hover:bg-slate-300 text-sm"
-      target="_blank">Github</a
+      target="_blank" rel="noreferrer">Github</a
     >
   </div>
 </div>
