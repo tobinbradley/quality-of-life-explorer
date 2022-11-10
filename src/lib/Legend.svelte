@@ -2,6 +2,8 @@
   import { selectedConfig, selectedData, breaks, minBreak, yearIdx, colors, calcCounty, calcCountyRaw, calcSelected, calcSelectedRaw, selectedNeighborhoods, highlightNeighborhoods } from "../store/store"
   import { formatNumber, isNumeric } from "./utils"
 
+  export let interactive = true
+
   // filter id's by break range for hover and select
   function getIds(rIdx) {
     const range = [...$breaks]
@@ -15,6 +17,10 @@
       }
     }
     return ids
+  }
+
+  function setIds(idx) {
+    if (interactive) $selectedNeighborhoods = getIds(idx)
   }
 </script>
 
@@ -74,7 +80,7 @@
         {#each $colors as color, idx}
         <rect fill="{color}" x="{(100 / $colors.length) * idx}%" y="20" width='{100 / $colors.length}%' height='25'
           on:mouseenter={() => $highlightNeighborhoods = getIds(idx)}
-          on:click={() => $selectedNeighborhoods = getIds(idx)}
+          on:click={() => setIds(idx)}
           on:mouseleave={() => $highlightNeighborhoods = []}
         ></rect>
         {/each}

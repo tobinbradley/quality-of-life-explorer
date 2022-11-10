@@ -16,10 +16,18 @@
   import "maplibre-gl/dist/maplibre-gl.css"
   import mapStyle from "../assets/gl-style.json"
 
+  export let interactive = true
+
   let map
   let mapReady
   let maplibre
   let geoJSON
+
+  // take flyto arg, including iframe parent
+  // icky, i know
+  window.flyTo = (loc) => {
+    map.flyTo(loc)
+  }
 
   // get GeoJSON for zooming
   fetch("data/geography/geography.geojson.json")
@@ -120,31 +128,36 @@
         padding: 10,
       },
       preserveDrawingBuffer: true,
+      interactive: interactive
     }
 
     map = new gl.Map(mapOptions)
 
-    map.addControl(new gl.NavigationControl(), "top-right")
-    map.addControl(new FullExtent(), "top-right")
-    map.addControl(new gl.FullscreenControl(), "top-right")
-    map.addControl(new GLImage(), "top-right")
-    map.addControl(new gl.AttributionControl(), "bottom-left")
+    if (interactive) {
+      map.addControl(new gl.NavigationControl(), "top-right")
+      map.addControl(new FullExtent(), "top-right")
+      map.addControl(new gl.FullscreenControl(), "top-right")
+      map.addControl(new GLImage(), "top-right")
+      map.addControl(new gl.AttributionControl(), "bottom-left")
+    }
 
     let popup = new gl.Popup({
       closeButton: false,
       closeOnClick: false,
     })
 
-    map.on("click", "neighborhoods", (e) => {
-      const id = e.features[0].properties.id
-      const idx = $selectedNeighborhoods.indexOf(id)
-      if (idx === -1) {
-        $selectedNeighborhoods.push(id)
-      } else {
-        $selectedNeighborhoods.splice(idx, 1)
-      }
-      $selectedNeighborhoods = $selectedNeighborhoods
-    })
+    if (interactive) {
+      map.on("click", "neighborhoods", (e) => {
+        const id = e.features[0].properties.id
+        const idx = $selectedNeighborhoods.indexOf(id)
+        if (idx === -1) {
+          $selectedNeighborhoods.push(id)
+        } else {
+          $selectedNeighborhoods.splice(idx, 1)
+        }
+        $selectedNeighborhoods = $selectedNeighborhoods
+      })
+    }
 
     map.on("mousemove", "neighborhoods", (e) => {
       map.getCanvas().style.cursor = "pointer"
@@ -339,11 +352,13 @@
 </script>
 
 <div id="map" use:init class="w-full h-full" />
+{#if interactive}
 <button
   class="absolute bottom-2 right-2 bg-white shadow border-2 text-sm border-gray-200 rounded-md hover:bg-gray-100 p-1"
   on:click={() => ($selectedNeighborhoods = [])}>Clear</button
 >
-<Legend />
+{/if}
+<Legend interactive={interactive} />
 
 <style>
   :global(.mapboxgl-ctrl-fullextent) {
