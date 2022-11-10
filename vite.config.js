@@ -5,6 +5,9 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 export default defineConfig({
   base: './',
   plugins: [svelte()],
+  server: {
+    port: 3000
+  },
   build: {
     rollupOptions: {
       input: {
