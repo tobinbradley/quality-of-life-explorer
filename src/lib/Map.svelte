@@ -17,6 +17,7 @@
   import mapStyle from "../assets/gl-style.json"
 
   export let interactive = true
+  export let flyto
 
   let map
   let mapReady
@@ -26,7 +27,15 @@
   // let map take flyto arg from parent
   // useful for "story telling" iframe
   window.addEventListener("message", (event) => {
-    map.flyTo(event.data)
+    if (event.data.pitch || event.data.center || event.data.bearing || event.data.zoom) {
+      map.flyTo(event.data)
+    } else {
+      map.setPitch(0)
+      map.setBearing(0)
+      map.fitBounds($mapFullExtent, {
+        padding: 10
+      })
+    }
   }, false)
 
   // get GeoJSON for zooming
@@ -133,31 +142,33 @@
 
     map = new gl.Map(mapOptions)
 
-    if (interactive) {
-      map.addControl(new gl.NavigationControl(), "top-right")
-      map.addControl(new FullExtent(), "top-right")
-      map.addControl(new gl.FullscreenControl(), "top-right")
-      map.addControl(new GLImage(), "top-right")
-      map.addControl(new gl.AttributionControl(), "bottom-left")
+    if (flyto) {
+      map.flyTo(flyto)
     }
+
+    // map controls
+    map.addControl(new gl.NavigationControl(), "top-right")
+    map.addControl(new FullExtent(), "top-right")
+    map.addControl(new gl.FullscreenControl(), "top-right")
+    map.addControl(new GLImage(), "top-right")
+    map.addControl(new gl.AttributionControl(), "bottom-left")
 
     let popup = new gl.Popup({
       closeButton: false,
       closeOnClick: false,
     })
 
-    if (interactive) {
-      map.on("click", "neighborhoods", (e) => {
-        const id = e.features[0].properties.id
-        const idx = $selectedNeighborhoods.indexOf(id)
-        if (idx === -1) {
-          $selectedNeighborhoods.push(id)
-        } else {
-          $selectedNeighborhoods.splice(idx, 1)
-        }
-        $selectedNeighborhoods = $selectedNeighborhoods
-      })
-    }
+    // map click select/deselect
+    map.on("click", "neighborhoods", (e) => {
+      const id = e.features[0].properties.id
+      const idx = $selectedNeighborhoods.indexOf(id)
+      if (idx === -1) {
+        $selectedNeighborhoods.push(id)
+      } else {
+        $selectedNeighborhoods.splice(idx, 1)
+      }
+      $selectedNeighborhoods = $selectedNeighborhoods
+    })
 
     map.on("mousemove", "neighborhoods", (e) => {
       map.getCanvas().style.cursor = "pointer"
@@ -185,7 +196,7 @@
     })
 
     map.on("rotate", (e) => {
-      if (map.getPitch() >= 20) {
+      if (map.getPitch() >= 15) {
         map.setLayoutProperty("neighborhoods-3d", "visibility", "visible")
       } else {
         map.setLayoutProperty("neighborhoods-3d", "visibility", "none")
@@ -358,7 +369,7 @@
   on:click={() => ($selectedNeighborhoods = [])}>Clear</button
 >
 {/if}
-<Legend interactive={interactive} />
+<Legend />
 
 <style>
   :global(.mapboxgl-ctrl-fullextent) {
