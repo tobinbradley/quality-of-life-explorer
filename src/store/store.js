@@ -32,7 +32,7 @@ function readHashArgs() {
   return [
     args[0] && dataJSON.filter(el => el.metric === 'm' + args[0]).length === 1 ?
     'm' + args[0] : null,
-    args[1] && args[1].length > 0 && args[1].split(',').every((r) => geoStats.keys.indexOf(r) >= 0) ?
+    args[1] && args[1].length > 0 && args[1].split(',').filter((r) => geoStats.keys.includes(r)) ?
     args[1].split(',') : []
   ]
 }
