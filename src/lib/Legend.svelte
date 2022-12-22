@@ -76,6 +76,7 @@
         <rect fill="{color}" x="{(100 / $colors.length) * idx}%" y="20" width='{100 / $colors.length}%' height='25'
           on:mouseenter={() => $highlightNeighborhoods = getIds(idx)}
           on:click={() => $selectedNeighborhoods = getIds(idx)}
+          on:keypress={() => $selectedNeighborhoods = getIds(idx)}
           on:mouseleave={() => $highlightNeighborhoods = []}
         ></rect>
         {/each}
