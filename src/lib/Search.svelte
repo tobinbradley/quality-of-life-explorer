@@ -81,7 +81,7 @@
 
       // NSA
       fetch(
-        `https://api.mcmap.org/v1/query/neighborhood_statistical_areas?columns=gid as id, nsa_name as label, 'NSA' as cat&limit=10&filter=nsa_name ilike '${str}%'`
+        `https://api.mcmap.org/v1/query/neighborhood_statistical_areas?columns=gid as id, nsa_name as label, 'NSA' as cat&limit=10&filter=nsa_name%20ilike%20'${str}%25'`
       )
         .then((response) => {
           if (!response.ok) {
