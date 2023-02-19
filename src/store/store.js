@@ -48,7 +48,7 @@ export const dataCategories = derived(dataConfig, val => {
 
 // what's new list
 export const whatsnew = readable([
-  "m88"
+  "m71", "m41", "m2", "m47", "m43", "m4", "m74", "m79", "m45", "m36", "m46", "m76", "m75", "m35", "m69", "m30", "m9", "m8", "m83", "m68", "m34", "m19", "m7", "m6", "m5", "m42", "m11"
  ])
 
 
