@@ -1,0 +1,18 @@
+#sw-dialog::backdrop {
+  background-color: rgba(0,0,0, 0.4);
+  backdrop-filter: blur(3px);
+}
+#sw-dialog[open] {
+  animation: show-dialog 1s ease normal;
+}
+@keyframes show-dialog {
+  from {
+    opacity: 0;
+    transform: translateY(-110%);
+
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}

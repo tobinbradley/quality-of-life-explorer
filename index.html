@@ -183,8 +183,19 @@
       </div>
     </footer>
 
-    <div id="toast"></div>
     <div id="help"></div>
+
+    <!-- service worker dialog -->
+  <dialog id="sw-dialog" class=" bg-highlight text-white px-3 py-2 rounded-r-md border-l-2 border-white shadow-lg">
+    <div class="flex place-items-center">
+      <div class="flex-1 pr-8 text-lg">
+        The Quality of Life Explorer has been updated!
+      </div>
+      <div>
+        <button class="px-4 py-2 border-2 border-white rounded bg-white text-highlight hover:bg-highlight hover:text-white transition-colors duration-300" onclick="window.location.reload()">Refresh</button>
+      </div>
+    </div>
+  </dialog>
 
     <svg
       style="position: absolute; width: 0; height: 0; overflow: hidden"

@@ -1,6 +1,7 @@
 import "./tailwind.css"
 import './css/metadata.css'
 import './css/table.css'
+import './css/sw-dialog.css'
 import './lib/registerServiceWorker'
 import Tabs from './lib/Tabs.svelte'
 import Meta from './lib/Meta.svelte'
@@ -8,7 +9,6 @@ import Map from './lib/Map.svelte'
 import SubMap from './lib/SubMap.svelte'
 import Charts from './lib/Charts.svelte'
 import Search from './lib/Search.svelte'
-import Toast from './lib/Toast.svelte'
 import Embed from './lib/Embed.svelte'
 import Contact from './lib/Contact.svelte'
 import NavMenu from './lib/NavMenu.svelte'
@@ -46,10 +46,6 @@ new Charts({
 
 new Search({
   target: document.getElementById("search")
-})
-
-new Toast({
-  target: document.getElementById("toast")
 })
 
 new Help({
