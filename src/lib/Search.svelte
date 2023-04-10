@@ -1,6 +1,5 @@
 <script>
   import { selectedNeighborhoods, selectedData, mapZoom } from "../store/store"
-  import { notifications } from "../store/notifications.js"
   import { isNumeric } from "./utils"
 
   let searchString = ""
@@ -40,10 +39,6 @@
               "There has been a problem with your fetch operation:",
               error
             )
-            notifications.danger(
-              "Search encountered a problem. Are you offline?",
-              5000
-            )
           })
       }
     }
@@ -73,10 +68,6 @@
             "There has been a problem with your fetch operation:",
             error
           )
-          notifications.danger(
-            "Search encountered a problem. Are you offline?",
-            5000
-          )
         })
 
       // NSA
@@ -96,10 +87,6 @@
           console.error(
             "There has been a problem with your fetch operation:",
             error
-          )
-          notifications.danger(
-            "Search encountered a problem. Are you offline?",
-            5000
           )
         })
     }
@@ -129,10 +116,6 @@
             "There has been a problem with your fetch operation:",
             error
           )
-          notifications.danger(
-            "Search encountered a problem. Are you offline?",
-            5000
-          )
         })
     }
     if (cat === "ZIP") {
@@ -154,10 +137,6 @@
             "There has been a problem with your fetch operation:",
             error
           )
-          notifications.danger(
-            "Search encountered a problem. Are you offline?",
-            5000
-          )
         })
     }
     if (cat === "ADDRESS") {
@@ -178,10 +157,6 @@
           console.error(
             "There has been a problem with your fetch operation:",
             error
-          )
-          notifications.danger(
-            "Search encountered a problem. Are you offline?",
-            5000
           )
         })
     }
