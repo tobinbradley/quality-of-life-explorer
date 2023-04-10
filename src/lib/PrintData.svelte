@@ -38,8 +38,8 @@
     <thead>
       <tr>
         <th>Variable</th>
-        <th class="bg-sky-200">Selected</th>
-        <th class="bg-green-200">County</th>
+        <th class="bg-sky-200 text-right">Selected</th>
+        <th class="bg-green-200 text-right">County</th>
         <th></th>
       </tr>
     </thead>
@@ -49,7 +49,7 @@
         <td>
           <span class="font-semibold">{@html metric.title} ({maxYears[metric.metric] || ''})</span><br>{@html metric.subtitle}
         </td>
-        <td class="bg-sky-200">
+        <td class="bg-sky-200 text-right">
           {#await fetchData(metric.metric, "agg", false, $selectedNeighborhoods)}
             &nbsp;
           {:then result}
@@ -68,7 +68,7 @@
             {/await}
           {/if}
         </td>
-        <td class="bg-green-200">
+        <td class="bg-green-200 text-right">
           {#await fetchData(metric.metric, "agg", true)}
             &nbsp;
           {:then result}
