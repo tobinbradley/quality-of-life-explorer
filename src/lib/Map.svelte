@@ -14,7 +14,6 @@
   } from "../store/store"
   import { isNumeric, formatNumber, sendDownload } from "./utils"
   import "maplibre-gl/dist/maplibre-gl.css"
-  import * as pmtiles from 'pmtiles'
   import mapStyle from "../assets/gl-style.json"
 
   export let interactive = true
@@ -54,9 +53,6 @@
     ;(async () => {
       const { default: gl } = await import("maplibre-gl")
       maplibre = gl
-      //pmtiles
-      let protocol = new pmtiles.Protocol();
-      gl.addProtocol("pmtiles",protocol.tile);
       createMap(gl)
     })()
   }
@@ -81,7 +77,7 @@
       }
     })
 
-    map.fitBounds(bounds, { padding: 100 })
+    if (bounds.lng) map.fitBounds(bounds, { padding: 100 })
   }
 
   // show selected
