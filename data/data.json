@@ -145,7 +145,7 @@
     "format": "money",
     "title": "Household Income",
     "world_val": {
-      "y_2020": 69240
+      "y_2021": 73124
     },
     "subtitle": "Median household income",
     "related": ["m38", "m20", "m39", "m47", "m40"]
@@ -554,7 +554,7 @@
     "format": "money",
     "title": "Rental Costs",
     "world_val": {
-      "y_2020": 1195
+      "y_2021": 1276
     },
     "subtitle": "Median gross rent of renter-occupied housing units",
     "related": ["m53", "m29", "m37", "m82"]
