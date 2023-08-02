@@ -45,6 +45,8 @@ marked.setOptions({
   sanitize: false,
   smartLists: true,
   smartypants: false,
+  mangle: false,
+  headerIds: false
 })
 
 var _getAllFilesFromFolder = function (dir) {
@@ -69,17 +71,10 @@ for (let i = 0; i < files.length; i++) {
       return console.log(err)
     }
 
-    marked.parse(
-      data.replace(/[\u200B-\u200D\uFEFF]/g, ""),
-      function (err, content) {
-        if (err) {
-          return console.log(err)
-        }
-        fs.writeFileSync(
-          path.join(metaDest, path.basename(files[i]).split(".")[0]) + ".html",
-          content
-        )
-      }
+    const md = marked.parse(data.replace(/[\u200B-\u200D\uFEFF]/g, ""))
+    fs.writeFileSync(
+      path.join(metaDest, path.basename(files[i]).split(".")[0]) + ".html",
+      md
     )
   })
 }
