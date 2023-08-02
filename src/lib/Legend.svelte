@@ -45,7 +45,7 @@
     <div class="flex-grow text-center text-pink-600">
       <div class="font-medium leading-none">SELECTED</div>
       <div class="font-bold text-2xl leading-7">
-        {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null)}
+        {formatNumber($calcSelected[$yearIdx], $selectedConfig.format || null, $selectedConfig.decimals || null)}
       </div>
       {#if $selectedConfig.raw_label}
       <div class="text-xs leading-none pt-1">
@@ -58,7 +58,9 @@
     <!-- county -->
     <div class="flex-grow text-center text-sky-600">
       <div class="font-medium leading-none">COUNTY</div>
-      <div class="font-bold text-2xl leading-7">{formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null)}</div>
+      <div class="font-bold text-2xl leading-7">
+        {formatNumber($calcCounty[$yearIdx], $selectedConfig.format || null, $selectedConfig.decimals || null)}
+      </div>
       {#if $selectedConfig.raw_label}
       <div class="text-xs leading-none pt-1">
         {formatNumber($calcCountyRaw[$yearIdx])} <span class="whitespace-nowrap">{@html $selectedConfig.raw_label}</span>
@@ -78,6 +80,8 @@
           on:click={() => $selectedNeighborhoods = getIds(idx)}
           on:keypress={() => $selectedNeighborhoods = getIds(idx)}
           on:mouseleave={() => $highlightNeighborhoods = []}
+          role="button"
+          tabindex="0"
         ></rect>
         {/each}
       </g>
