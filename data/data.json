@@ -357,7 +357,15 @@
     "subtitle": "Percentage of land area that is impervious",
     "related": ["m11", "m47", "m3"]
   },
-
+  {
+    "metric": "m23",
+    "category": "Environment",
+    "format": "percent",
+    "raw_label": "units",
+    "title": "Residential Recycling",
+    "subtitle": "Percentage of eligible households that participate in municipal curbside recycling",
+    "related": ["m24", "m25"]
+  },
   {
     "metric": "m24",
     "category": "Environment",
