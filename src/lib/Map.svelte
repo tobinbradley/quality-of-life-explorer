@@ -65,6 +65,27 @@
     renderPolys()
   }
 
+  // show highlighted neighborhoods
+  $: if (mapReady && $highlightNeighborhoods) {
+    if ($highlightNeighborhoods.length > 0) {
+      map.setFilter("neighborhoods-highlight", [
+        "match",
+        ["get", "id"],
+        $highlightNeighborhoods,
+        true,
+        false,
+      ])
+    } else {
+      map.setFilter("neighborhoods-highlight", [
+        "match",
+        ["get", "id"],
+        ["-1"],
+        true,
+        false,
+      ])
+    }
+  }
+
   // zoom to selected on page load or on search result
   $: if (mapReady && geoJSON && $mapZoom && $selectedNeighborhoods.length > 0) {
     $mapZoom = false
@@ -202,6 +223,15 @@
         "type": "geojson",
         "attribution": "<a href='https://mcmap.org/qol' target='_blank'>Quality of Life Explorer</a>",
         "data": "data/geography/geography.geojson.json"
+      })
+      map.addLayer({
+        "id": "neighborhoods-highlight",
+        "type": "fill",
+        "source": "neighborhoods",
+        "filter": ["match", ["get", "id"], ["-1"], true, false],
+        "paint": {
+          "fill-color": "#FDE047"
+        }
       })
       map.addLayer({
         "id": "neighborhoods",
