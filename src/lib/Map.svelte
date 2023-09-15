@@ -14,10 +14,13 @@
   } from "../store/store"
   import { isNumeric, formatNumber, sendDownload } from "./utils"
   import "maplibre-gl/dist/maplibre-gl.css"
-  import mapStyle from "../assets/gl-style.json"
+  // import mapStyle from "../assets/gl-style.json"
 
   export let interactive = true
   export let flyto
+
+  const apiKey = "AAPK47243148443e45dbbafdc12899934519XllUJyQWQ7aZCKvAnVoh_KLNXdG8F5gj2PPlGaHdLk_HmMrkzZDbuykgCFlHVELl"
+  const basemapEnum = "arcgis/light-gray"
 
   let map
   let mapReady
@@ -101,31 +104,10 @@
     }
   }
 
-  // show highlighted neighborhoods
-  $: if (mapReady && $highlightNeighborhoods) {
-    if ($highlightNeighborhoods.length > 0) {
-      map.setFilter("neighborhoods-highlight", [
-        "match",
-        ["get", "id"],
-        $highlightNeighborhoods,
-        true,
-        false,
-      ])
-    } else {
-      map.setFilter("neighborhoods-highlight", [
-        "match",
-        ["get", "id"],
-        ["-1"],
-        true,
-        false,
-      ])
-    }
-  }
-
   function createMap(gl) {
     let mapOptions = {
       container: "map",
-      style: mapStyle,
+      style: `https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/${basemapEnum}?token=${apiKey}`,
       attributionControl: false,
       minZoom: 8,
       bounds: $mapFullExtent,
@@ -204,6 +186,62 @@
     })
 
     map.on("load", () => {
+
+      const layers = map.getStyle().layers;
+        // Find the index of the first line layer in the map style
+        let firstSymbolId;
+        for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'line') {
+                firstSymbolId = layers[i].id;
+                break;
+            }
+        }
+
+      // add layers
+      map.addSource("neighborhoods", {
+        "type": "geojson",
+        "attribution": "<a href='https://mcmap.org/qol' target='_blank'>Quality of Life Explorer</a>",
+        "data": "data/geography/geography.geojson.json"
+      })
+      map.addLayer({
+        "id": "neighborhoods",
+        "type": "fill",
+        "source": "neighborhoods",
+        "paint": {
+          "fill-color": "rgba(0,0,0,0)",
+          "fill-outline-color": "white"
+        }
+      }, firstSymbolId)
+      map.addLayer({
+        "id": "neighborhoods-default-outline",
+        "type": "line",
+        "source": "neighborhoods",
+        "layout": {},
+        "paint": {
+          "line-color": "rgba(0,0,0,1)",
+          "line-width": 0.4,
+          "line-opacity": 0.4
+        }
+      })
+      map.addLayer({
+        "id": "neighborhoods-outline",
+        "type": "line",
+        "source": "neighborhoods",
+        "layout": {},
+        "filter": ["match", ["get", "id"], ["-1"], true, false],
+        "paint": {
+          "line-color": "#DB2777",
+          "line-width": 3.5
+        }
+      })
+      map.addLayer({
+        "id": "neighborhoods-3d",
+        "type": "fill-extrusion",
+        "source": "neighborhoods",
+        "layout": {
+          "visibility": "none"
+        }
+      })
       mapReady = true
     })
   }
@@ -279,7 +317,7 @@
         })
       }
       this._container = document.createElement("div")
-      this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group"
+      this._container.className = "maplibregl-ctrl maplibregl-ctrl-group"
       this._container.appendChild(this._btn)
 
       return this._container
@@ -294,9 +332,9 @@
   class GLImage {
     onAdd(map) {
       this._map = map
-
+      let _this = this
       this._btn = document.createElement("button")
-      this._btn.className = "mapboxgl-ctrl-icon mapboxgl-ctrl-gl-image"
+      this._btn.className = "mapbox-ctrl-icon mapboxgl-ctrl-gl-image"
       this._btn.type = "button"
       this._btn.setAttribute("aria-label", "Download map image")
       this._btn.setAttribute("title", "Download map image")
@@ -349,7 +387,7 @@
       }
 
       this._container = document.createElement("div")
-      this._container.className = "mapboxgl-ctrl mapboxgl-ctrl-group"
+      this._container.className = "maplibregl-ctrl maplibregl-ctrl-group"
       this._container.appendChild(this._btn)
 
       return this._container
