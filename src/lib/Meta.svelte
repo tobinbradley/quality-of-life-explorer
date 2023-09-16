@@ -4,8 +4,6 @@
   let meta = ''
   let about = ''
 
-  console.log($selectedConfig)
-
   $:{
     fetch(`./data/meta/${$selectedMetric}.html`)
       .then(response => response.text())
