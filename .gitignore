@@ -32,3 +32,4 @@ src/assets/geostats.json
 TODO.md
 bun.lockb
 package-lock.json
+.env
