@@ -6,7 +6,7 @@
   "description": "Mecklenburg County Quality of Life Explorer",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node build/build.cjs && vite",
     "build": "vite build",
     "preview": "vite preview",
     "prebuild": "node build/build.cjs",
