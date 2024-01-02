@@ -14,13 +14,10 @@
   } from "../store/store"
   import { isNumeric, formatNumber, sendDownload } from "./utils"
   import "maplibre-gl/dist/maplibre-gl.css"
-  // import mapStyle from "../assets/gl-style.json"
+ 
 
   export let interactive = true
   export let flyto
-
-  const apiKey = "AAPK47243148443e45dbbafdc12899934519XllUJyQWQ7aZCKvAnVoh_KLNXdG8F5gj2PPlGaHdLk_HmMrkzZDbuykgCFlHVELl"
-  const basemapEnum = "arcgis/light-gray"
 
   let map
   let mapReady
@@ -128,7 +125,7 @@
   function createMap(gl) {
     let mapOptions = {
       container: "map",
-      style: `https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/styles/${basemapEnum}?token=${apiKey}`,
+      style: `${import.meta.env.VITE_MAPTILES}`,
       attributionControl: false,
       minZoom: 8,
       bounds: $mapFullExtent,
